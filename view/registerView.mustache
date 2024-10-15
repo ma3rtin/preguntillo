@@ -1,0 +1,26 @@
+
+<h2>Registro de Usuario</h2>
+
+<form action="/usuario/register" method="POST" enctype="multipart/form-data">
+    <label for="user">Nombre de usuario:</label><br>
+    <input type="text" id="user" name="user" required><br><br>
+
+    <label for="name">Nombre completo:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="email">Correo electrónico:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="pass">Contraseña:</label><br>
+    <input type="password" id="pass" name="pass" required><br><br>
+
+    <label for="birthyear">Año de nacimiento:</label><br>
+    <input type="number" id="birthyear" name="birthyear" min="1900" max="2024" required><br><br>
+
+    <label for="photo">Subir foto:</label><br>
+    <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
+
+    <input type="submit" value="Registrarse">
+</form>
+
+

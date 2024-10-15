@@ -15,7 +15,7 @@ class Configuration
 
     public function getUsuarioController()
     {
-        return new \controller\UsuarioController($this->getUsuarioModel(), $this->getPresenter());
+        return new UsuarioController($this->getUsuarioModel(), $this->getPresenter());
     }
 
     private function getPresenter()
