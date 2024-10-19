@@ -18,6 +18,21 @@ class UsuarioController
         $this->presenter->show('login', []);
     }
 
+    public function login()
+    {
+        $username = isset($_POST['username']) ? $_POST['username'] : null;
+        $pass = isset($_POST['pass']) ? $_POST['pass'] : null;
+
+        if (is_null($username) || is_null($pass)) {
+            $this->presenter->show('login', ["error" => "Todos los campos son obligatorios"]);
+            return;
+        }
+        $this->model->validate($username, $pass) ?
+                    $this->redirectHome()
+                    : $this->presenter->show('login', ["error" => "Usuario o contraseña incorrectos"]);
+
+    }
+
     public function registerForm()
     {
         $this->presenter->show('register', []);
@@ -25,18 +40,39 @@ class UsuarioController
 
     public function register()
     {
-        $_POST['user'] = isset($_POST['user']) ? $_POST['user'] : null;
-        $_POST['name'] = isset($_POST['name']) ? $_POST['name'] : null;
-        $_POST['email'] = isset($_POST['email']) ? $_POST['email'] : null;
-        $_POST['pass'] = isset($_POST['pass']) ? $_POST['pass'] : null;
-        $_POST['birthyear'] = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
-        $_POST['photo'] = isset($_POST['photo']) ? $_POST['photo'] : null;
+        $user = isset($_POST['user']) ? $_POST['user'] : null;
+        $name = isset($_POST['name']) ? $_POST['name'] : null;
+        $email = isset($_POST['email']) ? $_POST['email'] : null;
+        $pass = isset($_POST['pass']) ? $_POST['pass'] : null;
+        $birtihyear = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
+        $photo = ($_FILES['photo']['size'] > 0) ? $_FILES['photo'] : null;
 
-        if ($_POST['user'] == null || $_POST['name'] == null || $_POST['email'] == null || $_POST['pass'] == null || $_POST['birthyear'] == null) {
+        if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($birtihyear)
+         || is_null($photo)) {
             $this->presenter->show('register', ["error" => "Todos los campos son obligatorios"]);
             return;
         }
-        $this->model->register($_POST['user'], $_POST['name'], $_POST['email'], $_POST['pass'], $_POST['birthyear'], $_POST['photo']);
+        $this->model->register($user, $name, $email, $pass, $birtihyear, $photo);
         $this->presenter->show('login', []);
+    }
+
+    public function profile()
+    {
+        $username = isset($_GET['username']) ? $_GET['username'] : null;
+        $data['user'] = $this->model->getUserData($username);
+        $this->presenter->show('profile', $data);
+    }
+
+
+    public function home()
+    {
+        $data['user'] = $this->model->getUserData($_SESSION['username']);
+        $this->presenter->show('home', $data);
+    }
+
+    public function redirectHome()
+    {
+        header('location: /usuario/home');
+        exit();
     }
 }
