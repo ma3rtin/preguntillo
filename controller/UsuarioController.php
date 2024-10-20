@@ -53,7 +53,22 @@ class UsuarioController
             return;
         }
         $this->model->register($user, $name, $email, $pass, $birtihyear, $photo);
-        $this->presenter->show('login', []);
+        header("location: /usuario/login");
+    }
+
+    public function validateEmail()
+    {
+        $token = isset($_GET['token']) ? $_GET['token'] : null;
+        $userId = isset($_GET['userid']) ? $_GET['userid'] : null;
+
+        if (is_null($token) || is_null($userId)) {
+            $this->presenter->show('validateEmail', ["error" => "Usuario y token requeridos"]);
+            return;
+        }
+        if($this->model->validateToken($token, $userId))
+            $this->presenter->show('login', ["success" => "Cuenta verificada"]);
+        else
+            $this->presenter->show('login', ["error" => "Token invalido"]);
     }
 
     public function profile()
