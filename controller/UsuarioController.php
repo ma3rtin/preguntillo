@@ -30,10 +30,12 @@ class UsuarioController
             $this->presenter->show('login', $data);
             return;
         }
-        $this->model->validate($username, $pass) ?
-                    $this->redirectHome()
-                    : $this->presenter->show('login', ["error" => "Usuario o contraseña incorrectos"]);
-
+        if($this->model->validate($username, $pass))
+            $this->redirectHome();
+        else{
+            $data['error'] = "Usuario o contraseña incorrectos";
+            $this->presenter->show('login', $data);
+        }
     }
 
     public function registerForm()
@@ -63,21 +65,22 @@ class UsuarioController
     public function validateEmail()
     {
         $token = isset($_GET['token']) ? $_GET['token'] : null;
-        $userId = isset($_GET['userid']) ? $_GET['userid'] : null;
+        $userId = isset($_GET['id']) ? $_GET['id'] : null;
+        $data['css'] = '/public/css/loginForm.css';
 
-        if (is_null($token) || is_null($userId)) {
-            $this->presenter->show('validateEmail', ["error" => "Usuario y token requeridos"]);
-            return;
-        }
-        if($this->model->validateToken($token, $userId))
-            $this->presenter->show('login', ["success" => "Cuenta verificada"]);
-        else
-            $this->presenter->show('login', ["error" => "Token invalido"]);
+        if (empty($token) || empty($userId))
+            $data['error'] = "Usuario y token requeridos";
+
+        $this->model->validateToken($token, $userId) ?
+            $data['success'] = "Cuenta verificada" : $data['error'] = "Token invalido";
+
+        $this->presenter->show('login', $data);
     }
 
     public function profile()
     {
         $username = isset($_GET['username']) ? $_GET['username'] : null;
+        $data['css'] = "/public/css/profile.css";
         $data['user'] = $this->model->getUserData($username);
         $this->presenter->show('profile', $data);
     }
@@ -85,6 +88,7 @@ class UsuarioController
 
     public function home()
     {
+        $data['css'] = "/public/css/home.css";
         $data['user'] = $this->model->getUserData($_SESSION['username']);
         $this->presenter->show('home', $data);
     }

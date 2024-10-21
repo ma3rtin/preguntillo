@@ -1,12 +1,16 @@
 <h2 class="body-title">Iniciar sesión</h2>
 
-<form method="post" action="/usuario/login">
-    <label for="username">Usuario</label>
-    <input type="text" name="username">
-    <label for="pass">Contraseña</label>
-    <input type="password" name="pass">
-    <input type="submit" value="Ingresar">
-</form>
+<div class = "container-login-form">
+ <form class="login-form" method="post" action="/usuario/login">
+     <label for="username">Usuario</label>
+     <input class="input-bar" type="text" name="username">
+     <label for="pass">Contraseña</label>
+     <input class="input-bar" type="password" name="pass">
+     <button class="button btn-login" type="submit">Ingresar </button>
+
+     <button class="button btn-signIn"><a href="/usuario/registerForm">Registrarse</a></button>
+ </form>
+</div>
 
 
 

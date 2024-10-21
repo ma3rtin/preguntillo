@@ -89,7 +89,7 @@ class UsuarioModel
 //        $sender = new FileEmailSender();
 //        $sender->validateMail($email, $subject, $message);
 
-        $filePath = 'C:\xampp\htdocs\preguntillo\tokens.json';
+        $filePath = 'C:\xampp\htdocs\PW2\preguntillo\public\tokens.json';
 
         if (!file_exists($filePath)) {
             $data = [];
