@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Lilita+One&display=swap');
+
+header {
+    background-color: #8c52ff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-title {
+    color: #fff;
+    letter-spacing: 3px;
+    font-size: 40px;
+    font-family: "Cherry Bomb One", system-ui;
+    text-align: center;
+}
+
+.logo {
+    height: 80px;
+}
