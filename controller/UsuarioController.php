@@ -52,18 +52,28 @@ class UsuarioController
         $name = isset($_POST['name']) ? $_POST['name'] : null;
         $email = isset($_POST['email']) ? $_POST['email'] : null;
         $pass = isset($_POST['pass']) ? $_POST['pass'] : null;
+        $pass2 = isset($_POST['pass2']) ? $_POST['pass2'] : null;
         $birthyear = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
         $photo = ($_FILES['photo']['size'] > 0) ? $_FILES['photo'] : null;
 
-        if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($birthyear)
+        if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($pass2) || is_null($birthyear)
          || is_null($photo)) {
             $data['css'] = "/public/css/registerForm.css";
             $data['error'] = "Todos los campos son obligatorios";
             $this->presenter->show('register', $data);
             return;
         }
+
+        if ($pass != $pass2) {
+            $data['css'] = "/public/css/registerForm.css";
+            $data['error'] = "Las contraseñas no coinciden";
+            $this->presenter->show('register', $data);
+            return;
+        }
+
         $this->model->register($user, $name, $email, $pass, $birthyear, $photo);
         header("location: /usuario/loginForm");
+        exit();
     }
 
     public function validateEmail()
