@@ -20,10 +20,7 @@ class UsuarioModel
         if (sizeof($user) == 0) {
             return false;
         }else{
-            $user = $user[0];
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['usuario'];
-            return true;
+            return $user[0];
         }
     }
 
@@ -78,7 +75,7 @@ class UsuarioModel
                 VALUES (" . $token . ", " . $user['id'] . ")";
         $this->database->execute($sql);
 
-        $this->sendMail($user['mail'], $user['usuario'], $token);
+        $this->sendMail($user['mail'], $user['id'], $token);
     }
 
     private function sendMail($email, $user, $token)
@@ -89,7 +86,7 @@ class UsuarioModel
 //        $sender = new FileEmailSender();
 //        $sender->validateMail($email, $subject, $message);
 
-        $filePath = 'C:\xampp\htdocs\PW2\preguntillo\public\tokens.json';
+        $filePath = 'C:\xampp\htdocs\preguntillo\public\tokens.json';
 
         if (!file_exists($filePath)) {
             $data = [];

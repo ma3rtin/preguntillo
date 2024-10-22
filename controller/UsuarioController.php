@@ -1,6 +1,4 @@
 <?php
-
-
 class UsuarioController
 {
 
@@ -30,11 +28,15 @@ class UsuarioController
             $this->presenter->show('login', $data);
             return;
         }
-        if($this->model->validate($username, $pass))
-            $this->redirectHome();
-        else{
+        $user = $this->model->validate($username, $pass);
+        if(!$user){
             $data['error'] = "Usuario o contraseña incorrectos";
             $this->presenter->show('login', $data);
+        }
+        else{
+            $_SESSION['username'] = $user['usuario'];
+            $_SESSION['id'] = $user['id'];
+            $this->redirectHome();
         }
     }
 
@@ -55,11 +57,13 @@ class UsuarioController
 
         if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($birthyear)
          || is_null($photo)) {
-            $this->presenter->show('register', ["error" => "Todos los campos son obligatorios"]);
+            $data['css'] = "/public/css/registerForm.css";
+            $data['error'] = "Todos los campos son obligatorios";
+            $this->presenter->show('register', $data);
             return;
         }
         $this->model->register($user, $name, $email, $pass, $birthyear, $photo);
-        header("location: /usuario/login");
+        header("location: /usuario/loginForm");
     }
 
     public function validateEmail()

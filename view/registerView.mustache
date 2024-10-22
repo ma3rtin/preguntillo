@@ -1,4 +1,6 @@
-
+{{#error}}
+    <script>alert('{{error}}');</script>
+{{/error}}
 <h2 class="body-title">Registro de Usuario</h2>
 
 <div class="container-form">
@@ -26,7 +28,8 @@
     <label for="photo">Subir foto:</label><br>
     <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
 
-    <button class="button btn-register" type="submit">Registrarse </button>
+    <button class="button btn-register" type="submit">Registrarse </button><br><br>
+    <a href="/usuario/loginForm">Iniciar sesión</a>
 </form>
-
 </div>
+
