@@ -3,11 +3,14 @@ class UsuarioController
 {
 
     private $model;
+    
+    private $emailSender;
     private $presenter;
 
-    public function  __construct($model, $presenter)
+    public function  __construct($model, $emailSender, $presenter)
     {
         $this->model = $model;
+        $this->emailSender = $emailSender;
         $this->presenter = $presenter;
     }
 
@@ -31,6 +34,9 @@ class UsuarioController
         $user = $this->model->validate($username, $pass);
         if(!$user){
             $data['error'] = "Usuario o contraseña incorrectos";
+            $this->presenter->show('login', $data);
+        }else if(!$user['activo']){
+            $data['error'] = "Correo electrónico no validado.";
             $this->presenter->show('login', $data);
         }
         else{
@@ -71,7 +77,10 @@ class UsuarioController
             return;
         }
 
-        $this->model->register($user, $name, $email, $pass, $birthyear, $photo);
+        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo);
+
+        $this->emailSender->sendValidationMail($data[0], $data[1], $data[2]);
+
         header("location: /usuario/loginForm");
         exit();
     }

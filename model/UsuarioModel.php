@@ -11,7 +11,7 @@ class UsuarioModel
 
     public function validate($user, $pass)
     {
-        $sql = "SELECT u.id, u.usuario
+        $sql = "SELECT u.id, u.usuario, u.activo
                 FROM usuario u
                 WHERE usuario = '" . $user . "' 
                 AND contraseña = '" . $pass . "'";
@@ -43,7 +43,7 @@ class UsuarioModel
             VALUES ('" . $user . "', '" . $name . "', '" . $email . "', '" . $pass . "', '" . $birthyear . "', '" . $photoValue . "', 0)";
             $this->database->execute($sql);
 
-            $this->createToken($user);
+            return $this->createToken($user);
         }
     }
 
@@ -75,26 +75,7 @@ class UsuarioModel
                 VALUES (" . $token . ", " . $user['id'] . ")";
         $this->database->execute($sql);
 
-        $this->sendMail($user['mail'], $user['id'], $token);
-    }
-
-    private function sendMail($email, $user, $token)
-    {
-//        $subject = 'Registro Exitoso';
-//        $message = "Gracias por registrarte en Preguntillo. Tu usuario es: " . $user . ", valida tu cuenta haciendo click en el siguiente <a href='http://localhost/usuario/validateEmail?token='" . $token . "&user=" . $user . "'>enlace</a>. '";
-//
-//        $sender = new FileEmailSender();
-//        $sender->validateMail($email, $subject, $message);
-
-        $filePath = 'C:\xampp\htdocs\preguntillo\public\tokens.json';
-
-        if (!file_exists($filePath)) {
-            $data = [];
-        } else {
-            $data = json_decode(file_get_contents($filePath), true);
-        }
-        $data[$user] = $token;
-        file_put_contents($filePath, json_encode($data, JSON_PRETTY_PRINT));
+        return [$user['mail'], $user['id'], $token];
     }
 
 
