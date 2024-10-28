@@ -1,6 +1,29 @@
 {{#user}}
-    <h1>Perfil de {{nombre}}</h1>
-    <p>Usuario: {{usuario}}</p>
-    <p>Email: {{mail}}</p>
-    <img src="/public/users/{{foto}}" alt="{{name}}">
+    <div class="profile-info">
+        <img src="/public/users/{{foto}}" alt="{{name}}">
+        <h1>@{{usuario}}</h1>
+        <p>{{nombre}}</p>
+    </div>
+
+    <div class="profile-card">
+        <div class="card-info">
+            <i class="fa-solid fa-gamepad"></i>
+            <p class="info-amount">Cantidad</p>
+            <p class="info-title">Partidas</p>
+        </div>
+        <div class="card-info">
+            <i class="fa-solid fa-trophy"></i>
+            <p class="info-amount">Cantidad</p>
+            <p class="info-title">Ranking</p>
+        </div>
+        <div class="card-info">
+            <i class="fa-solid fa-star"></i>
+            <p class="info-amount">Cantidad</p>
+            <p class="info-title">Experiencia</p>
+        </div>
+    </div>
+    <div class="qr-map">
+        <img class="qr" src="/public/users/{{foto}}" alt="QR del usuario">
+        <img class="map" src="{{mapa}}" alt="Hogar del usuario">
+    </div>
 {{/user}}
