@@ -21,8 +21,16 @@ body {
     background-color: #ffffff;
     border-radius: 30px;
     padding: 20px;
-    width: 500px;
     max-width: 100%;
+}
+
+.field-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.input-container{
+    width: 80%;
 }
 
 .register-form label {
@@ -34,7 +42,7 @@ body {
 
 .register-form input {
     border-radius: 6px;
-    width: 70%;
+    width: 80%;
     height: 40px;
     border: none;
     margin-bottom: 20px;

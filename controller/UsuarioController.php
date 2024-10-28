@@ -61,6 +61,8 @@ class UsuarioController
         $pass2 = isset($_POST['pass2']) ? $_POST['pass2'] : null;
         $birthyear = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
         $photo = ($_FILES['photo']['size'] > 0) ? $_FILES['photo'] : null;
+        $latitude = isset($_POST['latitude']) ? $_POST['latitude'] : null;
+        $longitude = isset($_POST['longitude']) ? $_POST['longitude'] : null;
 
         if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($pass2) || is_null($birthyear)
          || is_null($photo)) {
@@ -77,7 +79,7 @@ class UsuarioController
             return;
         }
 
-        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo);
+        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo, $latitude, $longitude);
 
         $this->emailSender->sendValidationMail($data[0], $data[1], $data[2]);
 
@@ -105,6 +107,11 @@ class UsuarioController
         $username = isset($_GET['username']) ? $_GET['username'] : null;
         $data['css'] = "/public/css/profile.css";
         $data['user'] = $this->model->getUserData($username);
+        $latitud = $data['user']['latitud'];
+        $longitud = $data['user']['longitud'];
+        $apiKey = 'AIzaSyCUkdndYG9gSK35o6qXfqaG1w8i5oj1TGA';
+        $data['mapa'] = "https://maps.googleapis.com/maps/api/staticmap?center={$latitud},{$longitud}&zoom=15&size=600x300&markers=color:red%7Clabel:U%7C{$latitud},{$longitud}&key={$apiKey}";
+
         $this->presenter->show('profile', $data);
     }
 
