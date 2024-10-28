@@ -3,13 +3,14 @@ class UsuarioController
 {
 
     private $model;
-    
     private $emailSender;
     private $presenter;
+    private $qrMaker;
 
-    public function  __construct($model, $emailSender, $presenter)
+    public function  __construct($model, $qrMaker,$emailSender, $presenter)
     {
         $this->model = $model;
+        $this->qrMaker = $qrMaker;
         $this->emailSender = $emailSender;
         $this->presenter = $presenter;
     }
@@ -111,6 +112,7 @@ class UsuarioController
         $longitud = $data['user']['longitud'];
         $apiKey = 'AIzaSyCUkdndYG9gSK35o6qXfqaG1w8i5oj1TGA';
         $data['mapa'] = "https://maps.googleapis.com/maps/api/staticmap?center={$latitud},{$longitud}&zoom=15&size=600x300&markers=color:red%7Clabel:U%7C{$latitud},{$longitud}&key={$apiKey}";
+        $data['qr'] = $this->qrMaker->createQRCode("http://localhost/usuario/profile/username=" . $data['user']['usuario']);
 
         $this->presenter->show('profile', $data);
     }

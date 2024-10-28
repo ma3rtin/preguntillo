@@ -13,6 +13,8 @@ include_once('vendor/PHPMailer/src/Exception.php');
 
 include_once('vendor/PHPMailer/src/PHPMailer.php');
 include_once('vendor/mustache/src/Mustache/Autoloader.php');
+include_once('vendor/phpqrcode/qrlib.php');
+include_once('helper/QRMaker.php');
 
 class Configuration
 {
@@ -22,7 +24,12 @@ class Configuration
 
     public function getUsuarioController()
     {
-        return new UsuarioController($this->getUsuarioModel(),$this->getEmailSender(), $this->getPresenter());
+        return new UsuarioController($this->getUsuarioModel(), $this->getQRMaker(), $this->getEmailSender(), $this->getPresenter());
+    }
+
+    private function getQRMaker()
+    {
+        return new QRMaker();
     }
 
     private function getEmailSender()

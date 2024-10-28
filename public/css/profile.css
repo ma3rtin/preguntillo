@@ -83,11 +83,14 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    margin: auto;
     margin-top: 20px;
+    width: 80%;
 }
 
-.qr, .map{
-    max-width: 50%;
-    max-height: 250px;
+.qr{
+    width: 300px;
 }
+
+
