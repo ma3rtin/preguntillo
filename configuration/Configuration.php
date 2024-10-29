@@ -16,13 +16,14 @@ include_once('vendor/mustache/src/Mustache/Autoloader.php');
 
 class Configuration
 {
-    public function __construct()
-    {
-    }
+    public function __construct(){}
 
     public function getUsuarioController()
     {
         return new UsuarioController($this->getUsuarioModel(),$this->getEmailSender(), $this->getPresenter());
+    }
+    public function getPartidaController(){
+        return new PartidaController($this->getPartidaModel(), $this->getPresenter());
     }
 
     private function getEmailSender()
@@ -55,5 +56,10 @@ class Configuration
     private function getUsuarioModel()
     {
         return new UsuarioModel($this->getDatabase());
+    }
+
+    private function getPartidaModel()
+    {
+            return new PartidaModel($this->getDatabase());
     }
 }

@@ -42,9 +42,8 @@ class UsuarioModel
             $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo) 
             VALUES ('" . $user . "', '" . $name . "', '" . $email . "', '" . $pass . "', '" . $birthyear . "', '" . $photoValue . "', 0)";
             $this->database->execute($sql);
-
-            return $this->createToken($user);
         }
+        return $this->createToken($user);
     }
 
     private function checkUserExists($user)
