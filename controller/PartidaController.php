@@ -10,7 +10,11 @@ class PartidaController{
     }
 
     public function llamarPartida(){
-        $partida = null;
+       return $this->model->getPartida();
+    }
+
+    public function mostrarPartida()
+    {
 
     }
 
