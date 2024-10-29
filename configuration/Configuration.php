@@ -32,6 +32,9 @@ class Configuration
     public function getPartidaController(){
         return new PartidaController($this->getPartidaModel(), $this->getPresenter());
     }
+    public function getPartidaController(){
+        return new PartidaController($this->getPartidaModel(), $this->getPresenter());
+    }
 
     private function getEmailSender()
     {
