@@ -18,9 +18,7 @@ include_once('helper/QRMaker.php');
 
 class Configuration
 {
-    public function __construct()
-    {
-    }
+    public function __construct(){}
 
     public function getUsuarioController()
     {
@@ -30,6 +28,9 @@ class Configuration
     private function getQRMaker()
     {
         return new QRMaker();
+    }
+    public function getPartidaController(){
+        return new PartidaController($this->getPartidaModel(), $this->getPresenter());
     }
 
     private function getEmailSender()
@@ -62,5 +63,10 @@ class Configuration
     private function getUsuarioModel()
     {
         return new UsuarioModel($this->getDatabase());
+    }
+
+    private function getPartidaModel()
+    {
+            return new PartidaModel($this->getDatabase());
     }
 }
