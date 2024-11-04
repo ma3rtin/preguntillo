@@ -9,12 +9,17 @@ class PartidaController{
         $this->presenter = $presenter;
     }
 
-    public function llamarPartida(){
-       return $this->model->getPartida();
+    public function startGame(){
+       return $this->model->getGame();
     }
 
-    public function mostrarPartida()
-    {
+    public function showGame(){
+        $data["partidas"] = $this->startGame();
+        return $this->presenter->show('partida', $data);
+    }
+
+    /*En el controller tiene que estar el metodo de seleccionar la respuesta*/
+    public function chooseAnswer(){
 
     }
 

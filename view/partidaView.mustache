@@ -1,0 +1,14 @@
+<html>
+<body>
+{{#partidas}}
+    <h1>Partida</h1>
+    <div class="question-container">
+        <div class="question">{{pregunta_desc}}</div>
+        {{#opciones}}
+            <button class="option" name="opcion_{{id}}">{{opcion_desc}}</button>
+        {{/opciones}}
+    </div>
+{{/partidas}}
+</body>
+</html>
+

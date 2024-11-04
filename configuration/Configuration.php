@@ -4,7 +4,11 @@ include_once("helper/MysqlObjectDatabase.php");
 include_once("helper/FileEmailSender.php");
 include_once("helper/Router.php");
 include_once("helper/MustachePresenter.php");
+
 include_once("controller/UsuarioController.php");
+include_once("controller/PartidaController.php");
+
+include_once("model/PartidaModel.php");
 include_once("model/UsuarioModel.php");
 
 include_once('vendor/PHPMailer/src/PHPMailer.php');
@@ -32,10 +36,6 @@ class Configuration
     public function getPartidaController(){
         return new PartidaController($this->getPartidaModel(), $this->getPresenter());
     }
-    public function getPartidaController(){
-        return new PartidaController($this->getPartidaModel(), $this->getPresenter());
-    }
-
     private function getEmailSender()
     {
         return new FileEmailSender();
