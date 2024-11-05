@@ -1,7 +1,7 @@
 <?php
 
 class PartidaModel{
-  private $database;
+    private $database;
     public function __construct($database){
         $this->database = $database;
     }
@@ -33,35 +33,44 @@ class PartidaModel{
         return $preguntas[0]['id'];
     }
 
-    public function getGame(){
-        $partida = $this->generatePartida();
-        $insert = "INSERT INTO partida_pregunta(partida_id,pregunta_id)
-                   values (".$partida['id'].",".$this->getPreguntaRandom().");";
-        $this->database->execute($insert);
+    public function getIncorrectAnswer($preguntaId){
+        $sql = "select incorrecta.id as incorrecta_id, incorrecta.opcion_desc as incorrecta_desc
+                from opcion incorrecta
+                join pregunta_opcion prop on prop.opcion_incorrecta = incorrecta.id
+                where prop.pregunta_id = $preguntaId;";
+        return $this->database->query($sql);
+    }
 
-        $sql = "select pr.id,pr.pregunta_desc,incorrecta.id , incorrecta.opcion_desc,correcta.id ,correcta.opcion_desc
-                from partida_pregunta parp
-                join partida part on part.id = parp.partida_id
-                join usuario us on us.id = part.usuario_id
-                join pregunta pr on pr.id = parp.pregunta_id
-                join opcion correcta on correcta.id = pr.opcion_correcta
-                join pregunta_opcion prop on prop.pregunta_id = pr.id
-                join opcion incorrecta on incorrecta.id = prop.opcion_incorrecta
-                order by pr.id;";
+    public function getGame() {
+        $partida = $this->generatePartida();
+        if ($partida['id'] === null) {
+            $insert = "INSERT INTO partida_pregunta(partida_id, pregunta_id)
+                   VALUES (" . $partida['id'] . ", " . $this->getPreguntaRandom() . ");";
+            $this->database->execute($insert);
+        }
+
+        $sql = "SELECT pr.id, pr.pregunta_desc,
+                   correcta.id AS correcta_id, correcta.opcion_desc AS correcta_desc
+            FROM partida_pregunta parp
+            JOIN partida part ON part.id = parp.partida_id
+            JOIN usuario us ON us.id = part.usuario_id
+            JOIN pregunta pr ON pr.id = parp.pregunta_id
+            JOIN opcion correcta ON correcta.id = pr.opcion_correcta
+            JOIN pregunta_opcion prop ON prop.pregunta_id = pr.id";
 
         $question = $this->database->query($sql);
+        $incorrectas = $this->getIncorrectAnswer($question[0]['id']);
 
         return [
             'pregunta_desc' => $question[0]['pregunta_desc'],
             'opciones' => [
-                ['id' => $question[0]['id'], 'correcta' => $question[0]['opcion_desc']],
-                ['id' => $question[0]['id'], 'incorrecta' => $question[0]['opcion_desc']],
-                ['id' => $question[0]['id'], 'incorrecta' => $question[0]['opcion_desc']]
+                ['id' => $question[0]['correcta_id'], 'opcion_desc' => $question[0]['correcta_desc']],
+                ['id' => $incorrectas[0]['incorrecta_id'], 'opcion_desc' => $incorrectas[0]['incorrecta_desc']],
+                ['id' => $incorrectas[1]['incorrecta_id'], 'opcion_desc' => $incorrectas[1]['incorrecta_desc']]
             ]
         ];
     }
 
-    /*Dividir las opciones correcta e incorrecta*/
     public function getCorrectAnswer(){
         $sql = "select id from opcion 
                 where id in 
