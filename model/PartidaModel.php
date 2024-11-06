@@ -1,18 +1,15 @@
 <?php
-
 class PartidaModel{
     private $database;
     public function __construct($database){
         $this->database = $database;
     }
-
     public function getIdDeUsuarioActivo(){
         $sql = "SELECT id FROM usuario where activo = 1;";
         $usuarios = $this->database->query($sql);
 
         return $usuarios[0]['id'];
     }
-
     private function generatePartida(){
         $id_user = $this->getIdDeUsuarioActivo();
         if($id_user != null){
@@ -26,11 +23,24 @@ class PartidaModel{
         return $partidas[0];
     }
 
-    public function getPreguntaRandom(){
-        $sql = "SELECT id FROM pregunta where estado_id = 1 order by rand() limit 1;";
+    public function getPreguntaRandom($usuarioId) {
+        $sql = "SELECT p.id 
+            FROM pregunta p
+            WHERE NOT EXISTS (
+                SELECT 1 
+                FROM usuario_pregunta up
+                WHERE up.pregunta_id = p.id AND up.usuario_id = $usuarioId
+            )
+            ORDER BY RAND() 
+            LIMIT 1;";
+
         $preguntas = $this->database->query($sql);
 
-        return $preguntas[0]['id'];
+        if (!empty($preguntas)) {
+            return $preguntas[0]['id'];
+        }
+
+        return null;
     }
 
     public function getIncorrectAnswer($preguntaId){
@@ -41,54 +51,60 @@ class PartidaModel{
         return $this->database->query($sql);
     }
 
-    public function getGame() {
+    public function getCorrectAnswer($preguntaId){
+        $sql = "select id as correcta_id, opcion_desc as correcta_desc
+                from opcion
+                where id in 
+                (select opcion_correcta from pregunta 
+                 where opcion_correcta = opcion.id 
+                 and pregunta.id = $preguntaId);";
+        return $this->database->query($sql);
+    }
+
+    public function getGame($usuarioId) {
         $partida = $this->generatePartida();
+        $pregunta = $this->getPreguntaRandom($usuarioId);
         if ($partida['id'] === null) {
             $insert = "INSERT INTO partida_pregunta(partida_id, pregunta_id)
-                   VALUES (" . $partida['id'] . ", " . $this->getPreguntaRandom() . ");";
+                   VALUES (" . $partida['id'] . ", " . $pregunta . ");";
             $this->database->execute($insert);
         }
 
-        $sql = "SELECT pr.id, pr.pregunta_desc,
-                   correcta.id AS correcta_id, correcta.opcion_desc AS correcta_desc
-            FROM partida_pregunta parp
-            JOIN partida part ON part.id = parp.partida_id
-            JOIN usuario us ON us.id = part.usuario_id
-            JOIN pregunta pr ON pr.id = parp.pregunta_id
-            JOIN opcion correcta ON correcta.id = pr.opcion_correcta
-            JOIN pregunta_opcion prop ON prop.pregunta_id = pr.id";
+        $sql = "SELECT pr.pregunta_desc from pregunta pr
+                where pr.id = $pregunta";
 
         $question = $this->database->query($sql);
-        $incorrectas = $this->getIncorrectAnswer($question[0]['id']);
+        $incorrectas = $this->getIncorrectAnswer($pregunta);
+        $correcta = $this->getCorrectAnswer($pregunta);
 
         return [
-            'pregunta_desc' => $question[0]['pregunta_desc'],
+            'pregunta_desc' => $question[0]['pregunta_desc'],'pregunta_id' => $pregunta,
             'opciones' => [
-                ['id' => $question[0]['correcta_id'], 'opcion_desc' => $question[0]['correcta_desc']],
+                ['id' => $correcta[0]['correcta_id'], 'opcion_desc' => $correcta[0]['correcta_desc']],
                 ['id' => $incorrectas[0]['incorrecta_id'], 'opcion_desc' => $incorrectas[0]['incorrecta_desc']],
                 ['id' => $incorrectas[1]['incorrecta_id'], 'opcion_desc' => $incorrectas[1]['incorrecta_desc']]
-            ]
-        ];
+            ]];
     }
 
-    public function getCorrectAnswer(){
-        $sql = "select id from opcion 
-                where id in 
-                (select opcion_correcta from pregunta 
-                 where opcion_correcta = opcion.id );";
-        return $this->database->execute($sql);
-    }
+    public function theAnswerIsCorrect($optionId,$preguntaId,$usuarioId){
+        $optionId = (int)$optionId;
+        $preguntaId = (int)$preguntaId;
 
-    public function isCorrect(){
-        $correctAnswer = $this->getCorrectAnswer();
-        if($correctAnswer != null){
-            $sql = "update pregunta 
-                    set usuario_id
-                    where opcion_correcta = $correctAnswer;";
-            $this->database->execute($sql);
+        $sql = "select opcion_correcta from pregunta
+                where id = $preguntaId;";
+        $correcta = $this->database->query($sql);
+
+        if($optionId == $correcta[0]['opcion_correcta']){
+            $insert = "insert into usuario_pregunta(usuario_id, pregunta_id,estado_id)
+                       values($usuarioId,$preguntaId,2);";
+            $this ->database->execute($insert);
             return true;
+        }else{
+            $insert = "insert into usuario_pregunta(usuario_id, pregunta_id,estado_id)
+                       values($usuarioId,$preguntaId,1);";
+            $this ->database->execute($insert);
+            return false;
         }
-        return false;
     }
 
 }

@@ -1,13 +1,20 @@
 <html>
 <body>
 {{#partidas}}
-    <h1>Partida</h1>
-    <div class="question-container">
-        <div class="question">{{pregunta_desc}}</div>
-        {{#opciones}}
-            <button class="option" name="opcion_{{id}}">{{opcion_desc}}</button>
-        {{/opciones}}
-    </div>
+    {{#mensaje}}
+        <div>{{mensaje}}</div>
+    {{/mensaje}}
+  <form method="post" action="/partida/isCorrect">
+      <h1>Partida</h1>
+      <div class="question-container">
+          <div class="question">{{pregunta_desc}}</div>
+          {{#opciones}}
+              <button class="option" value="{{id}}" name="option" type="submit">{{opcion_desc}}</button>
+          {{/opciones}}
+          <input type = "hidden" value = "{{pregunta_id}}" name = "pregunta_id">
+      </div>
+  </form>
+
 {{/partidas}}
 </body>
 </html>

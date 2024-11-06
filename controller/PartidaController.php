@@ -10,7 +10,7 @@ class PartidaController{
     }
 
     public function startGame(){
-       return $this->model->getGame();
+       return $this->model->getGame($_SESSION["id"]);
     }
 
     public function showGame(){
@@ -18,9 +18,20 @@ class PartidaController{
         return $this->presenter->show('partida', $data);
     }
 
-    /*En el controller tiene que estar el metodo de seleccionar la respuesta*/
-    public function chooseAnswer(){
+    public function isCorrect(){
+        $optionId = $_POST["option"];
+        $preguntaId = $_POST["pregunta_id"];
+        $usuarioId = $_SESSION["id"];
+        $data["mensaje"] = "Corrrrrecctttooooooooooooo";
 
+        if($this->model->theAnswerIsCorrect($optionId, $preguntaId, $usuarioId)){
+            $this->presenter->show('partida', $data);
+
+        }else{
+            //esto es para probar
+            echo "Respuesta incorrecta";
+        }
     }
+
 
 }
