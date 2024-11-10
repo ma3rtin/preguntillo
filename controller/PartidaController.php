@@ -15,21 +15,27 @@ class PartidaController{
 
     public function showGame(){
         $data["partidas"] = $this->startGame();
-        return $this->presenter->show('partida', $data);
+        if($data["partidas"] != null){
+            return $this->presenter->show('partida', $data);
+        }else{
+           header("location: /home");
+           exit();
+        }
     }
 
     public function isCorrect(){
         $optionId = $_POST["option"];
         $preguntaId = $_POST["pregunta_id"];
         $usuarioId = $_SESSION["id"];
-        $data["mensaje"] = "Corrrrrecctttooooooooooooo";
 
         if($this->model->theAnswerIsCorrect($optionId, $preguntaId, $usuarioId)){
+            $data["partidas"] = $this->startGame();
+            $data['message'] = "respuesta correcta";
             $this->presenter->show('partida', $data);
-
         }else{
-            //esto es para probar
-            echo "Respuesta incorrecta";
+            $data["partidas"] = $this->startGame();
+            $data['message'] = "respuesta incorrecta";
+            $this->presenter->show('partida', $data);
         }
     }
 

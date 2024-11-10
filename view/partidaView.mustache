@@ -1,9 +1,7 @@
 <html>
 <body>
 {{#partidas}}
-    {{#mensaje}}
-        <div>{{mensaje}}</div>
-    {{/mensaje}}
+
   <form method="post" action="/partida/isCorrect">
       <h1>Partida</h1>
       <div class="question-container">
@@ -13,9 +11,11 @@
           {{/opciones}}
           <input type = "hidden" value = "{{pregunta_id}}" name = "pregunta_id">
       </div>
-  </form>
 
+  </form>
 {{/partidas}}
+ <div>{{message}}</div>
+
 </body>
 </html>
 

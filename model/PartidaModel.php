@@ -22,7 +22,6 @@ class PartidaModel{
 
         return $partidas[0];
     }
-
     public function getPreguntaRandom($usuarioId) {
         $sql = "SELECT p.id 
             FROM pregunta p
@@ -82,19 +81,19 @@ class PartidaModel{
             'opciones' => [
                 ['id' => $correcta[0]['correcta_id'], 'opcion_desc' => $correcta[0]['correcta_desc']],
                 ['id' => $incorrectas[0]['incorrecta_id'], 'opcion_desc' => $incorrectas[0]['incorrecta_desc']],
-                ['id' => $incorrectas[1]['incorrecta_id'], 'opcion_desc' => $incorrectas[1]['incorrecta_desc']]
+                ['id' => $incorrectas[1]['incorrecta_id'], 'opcion_desc' => $incorrectas[1]['incorrecta_desc']],
+                ['id' => $incorrectas[2]['incorrecta_id'], 'opcion_desc' => $incorrectas[2]['incorrecta_desc']]
             ]];
     }
 
     public function theAnswerIsCorrect($optionId,$preguntaId,$usuarioId){
-        $optionId = (int)$optionId;
-        $preguntaId = (int)$preguntaId;
 
-        $sql = "select opcion_correcta from pregunta
-                where id = $preguntaId;";
-        $correcta = $this->database->query($sql);
+        $correcta = $this->getCorrectAnswer($preguntaId);
 
-        if($optionId == $correcta[0]['opcion_correcta']){
+        $update = "update partida set estado = 2 where usuario_id = $usuarioId;";
+        $this->database->execute($update);
+
+        if($optionId == $correcta[0]['correcta_id']){
             $insert = "insert into usuario_pregunta(usuario_id, pregunta_id,estado_id)
                        values($usuarioId,$preguntaId,2);";
             $this ->database->execute($insert);
@@ -106,5 +105,4 @@ class PartidaModel{
             return false;
         }
     }
-
 }
