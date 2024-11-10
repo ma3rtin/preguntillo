@@ -27,18 +27,6 @@
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#reportingModal" onclick="stopTimer()">Reportar Pregunta</button>
                             </div>
                         </div>
-                        <div class="card-section mb-3">
-                            <h5 class="card-title">Opciones:</h5>
-                            <ul class="list-group">
-                                {{#opciones}}
-                                    <li class="list-group-item">
-                                        <label>
-                                            <input type="radio" name="opcion" value="{{opcion}}" required> {{opcion}}
-                                        </label>
-                                    </li>
-                                {{/opciones}}
-                            </ul>
-                        </div>
                         {{#userSession.isAdmin}}
                             <div class="card-section">
                                 <h5 class="card-title">Opción Correcta:</h5>

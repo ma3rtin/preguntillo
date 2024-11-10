@@ -12,7 +12,7 @@ class OpcionModel
     public function getOpciones($idPregunta)
     {
         $sql = "SELECT * FROM opcion WHERE pregunta_id = ".$idPregunta;
-        return $this->database->select($sql);
+        return $this->database->query($sql);
     }
 
     public function deleteOpciones($idPregunta)

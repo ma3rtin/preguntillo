@@ -26,11 +26,6 @@ class PreguntaModel
 
         $resultado = $this->database->select($sql);
 
-        if (empty($resultado)) {
-            Logger::info('No se encontraron preguntas con opciones.');
-            return false;
-        }
-
         foreach ($resultado as &$row) {
             $row['opciones'] = explode(';', $row['opciones']);
             $row['opciones_correctas'] = explode(';', $row['opciones_correctas']);
@@ -43,11 +38,6 @@ class PreguntaModel
     {
         $sql = "SELECT DISTINCT id_modulo FROM pregunta";
         $resultado = $this->database->query($sql);
-
-        if (empty($resultado)) {
-            Logger::info('No se encontraron módulos.');
-            return false;
-        }
 
         return $resultado;
     }
@@ -62,11 +52,6 @@ class PreguntaModel
 
         $resultado = $this->database->query($sql);
 
-        if (empty($resultado)) {
-            Logger::info("No se encontraron preguntas para el módulo: $moduleName");
-            return false;
-        }
-
         foreach ($resultado as &$row) {
             $row['opciones'] = explode(';', $row['opciones']);
         }
@@ -74,74 +59,13 @@ class PreguntaModel
         return $resultado;
     }
 
-    public function getPreguntaBy($id, $forUser = false)
+    public function getPreguntaById($id)
     {
-        $preguntaRow = $this->database->query("SELECT * FROM pregunta WHERE id ='$id'");
-
-        if (empty($preguntaRow)) {
-            Logger::info("No se encontró la pregunta con ID: $id");
-            return false;
-        }
-
-        $idPregunta = $preguntaRow[0]['id'];
-        $sql = "SELECT pregunta_id, GROUP_CONCAT(opcion SEPARATOR ';') AS opcion, MAX(CASE WHEN opcion_correcta = 'SI' THEN opcion END) AS opcion_correcta 
-                FROM opcion WHERE pregunta_id = $idPregunta GROUP BY pregunta_id";
-
-        $resultado = $this->database->query($sql);
-        $resultado[0]['pregunta'] = $preguntaRow[0]['pregunta'];
-
-        if (empty($resultado[0])) {
-            Logger::info("No se encontraron opciones para la pregunta con ID: $id");
-            return false;
-        }
-
-        if ($forUser) {
-            $this->database->query("UPDATE pregunta SET entregada = entregada + 1 WHERE id = $id");
-        }
-
-        $resultado[0]['opciones'] = explode(';', $resultado[0]['opciones']);
-        $resultado[0]['preguntaRow'] = $preguntaRow[0];
-
-        return $resultado[0];
+        $sql = "SELECT pregunta FROM pregunta WHERE id = ".$id;
+        $preguntaObtenida = $this->database->query($sql);
+        return $preguntaObtenida[0]['pregunta'];
     }
 
-    public function getPreguntaByNivel($level, $forUser = false)
-    {
-        $sql = "SELECT p.*, AVG(p.contestada * 1.0 / p.entregada) AS promedio,
-                    CASE
-                        WHEN AVG(p.contestada * 1.0 / p.entregada) <= 0.33 THEN 'Dificil'
-                        WHEN AVG(p.contestada * 1.0 / p.entregada) <= 0.66 THEN 'Medio'
-                        ELSE 'Facil'
-                    END AS nivel
-                FROM pregunta p
-                GROUP BY p.id";
-
-        $preguntasPorNivel = $this->database->query($sql);
-
-        if (empty($preguntasPorNivel)) {
-            Logger::info("No se encontraron preguntas por nivel.");
-            return false;
-        }
-
-        $levelFilter = array_filter($preguntasPorNivel, fn($pregunta) => $pregunta['nivel'] === $level);
-        $preguntaIndex = array_rand($levelFilter);
-        $idPregunta = $levelFilter[$preguntaIndex]['id'];
-
-        $sql = "SELECT pregunta_id, GROUP_CONCAT(opcion SEPARATOR ';') AS opcion, MAX(CASE WHEN opcion_correcta = 'SI' THEN opcion END) AS opcion_correcta 
-                FROM opcion WHERE pregunta_id = $idPregunta GROUP BY pregunta_id";
-
-        $resultado = $this->database->query($sql);
-        $resultado[0]['pregunta'] = $levelFilter[$preguntaIndex]['pregunta'];
-
-        if ($forUser) {
-            $this->database->query("UPDATE pregunta SET entregada = entregada + 1 WHERE id = $idPregunta");
-        }
-
-        $resultado[0]['opciones'] = explode(';', $resultado[0]['opciones']);
-        $resultado[0]['preguntaRow'] = $levelFilter[$preguntaIndex];
-
-        return $resultado[0];
-    }
 
     public function getNivelPreguntaById($id, $forUser = false)
     {
@@ -156,13 +80,8 @@ class PreguntaModel
 
         $preguntaPorId = $this->database->query($sql);
 
-        if (empty($preguntaPorId)) {
-            Logger::info("No se encontró pregunta con ID: $id");
-            return false;
-        }
-
         if ($forUser) {
-            $this->database->query("UPDATE pregunta SET entregada = entregada + 1 WHERE id = $id");
+            $this->database->execute("UPDATE pregunta SET entregada = entregada + 1 WHERE id = $id");
         }
 
         return $preguntaPorId[0]['nivel'];
@@ -232,10 +151,6 @@ class PreguntaModel
     public function preguntasSugeridas($sql)
     {
         $resultado = $this->database->query($sql);
-        if (empty($resultado)) {
-            Logger::info('No se encontraron preguntas sugeridas.');
-            return false;
-        }
 
         foreach ($resultado as &$row) {
             if ($row['opciones']) {

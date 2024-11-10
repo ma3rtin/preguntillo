@@ -14,6 +14,7 @@ include_once("model/PartidaModel.php");
 include_once("model/UsuarioModel.php");
 include_once("model/JuegoModel.php");
 include_once("model/PreguntaModel.php");
+include_once("model/OpcionModel.php");
 
 include_once('vendor/PHPMailer/src/PHPMailer.php');
 include_once('vendor/PHPMailer/src/SMTP.php');
@@ -24,6 +25,8 @@ include_once('vendor/mustache/src/Mustache/Autoloader.php');
 include_once('vendor/phpqrcode/qrlib.php');
 include_once('helper/QRMaker.php');
 require_once 'helper/Redirect.php';
+require_once 'helper/Logger.php';
+require_once 'helper/Sesion.php';
 
 class Configuration
 {
@@ -47,7 +50,7 @@ class Configuration
     }
 
     public function getPreguntaController(){
-        return new PreguntaController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getPresenter());
+        return new PreguntaController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getOpcionModel(), $this->getPresenter());
     }
 
     private function getEmailSender()
@@ -90,5 +93,10 @@ class Configuration
     private function getPreguntaModel()
     {
         return new PreguntaModel($this->getDatabase());
+    }
+
+    private function getOpcionModel()
+    {
+        return new OpcionModel($this->getDatabase());
     }
 }

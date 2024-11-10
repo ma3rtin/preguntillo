@@ -4,12 +4,13 @@ class PreguntaController{
     private $usuarioModel;
     private $preguntaModel;
     private $partidaModel;
+    private $opcionModel;
     private $presenter;
-
-    public function __construct($usuarioModel, $preguntaModel, $partidaModel, $presenter) {
+    public function __construct($usuarioModel, $preguntaModel, $partidaModel, $opcionModel, $presenter) {
         $this->usuarioModel = $usuarioModel;
         $this->preguntaModel = $preguntaModel;
         $this->partidaModel = $partidaModel;
+        $this->opcionModel = $opcionModel;
         $this->presenter = $presenter;
     }
 
@@ -34,13 +35,12 @@ class PreguntaController{
 
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getRandomId();
         $_SESSION['tiempo_inicio'] = time();
-        $data['pregunta'] = $this->preguntaModel->getPreguntaByNivel($data['nivel'] ,true);
-        $data['dificultad'] = $this->preguntaModel->getNivelPreguntaById($idPregunta ,true);
+        $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
+//        $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);
 
-        Sesion::setPreguntas($data['pregunta']);
-
-        $this->presenter->authView('pregunta',$data);
+        $this->presenter->show('pregunta', $data);
     }
+
 
     public function validarOpcion(){
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
