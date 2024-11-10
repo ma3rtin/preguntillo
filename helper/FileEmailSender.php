@@ -38,7 +38,7 @@ class FileEmailSender
 
     public function setCredentials()
     {
-        $this->mail->setFrom('', '');
+        $this->mail->setFrom('ailinvara@gmail.com', 'Ailin Vara');
         $this->mail->Username = "";
         $this->mail->Password = "";
     }

@@ -3,10 +3,11 @@
 class UsuarioModel
 {
     private $database;
-
-    public function __construct($database)
+    private $partidaModel;
+    public function __construct($database, $partidaModel)
     {
         $this->database = $database;
+        $this->partidaModel = $partidaModel;
     }
 
     public function validate($user, $pass)
@@ -95,4 +96,15 @@ class UsuarioModel
             return false;
     }
 
+    public function getCurrentSession(){
+        $data['id'] = $_SESSION['id'] ?? null;
+
+        if(isset($data['user']['id'])){
+            $data['puntaje'] = $this->partidaModel->getPuntajeUser($data['id']);
+        }
+
+        $data['nivel'] = $this->partidaModel->getNivelUsuario($data['id']);
+
+        return $data;
+    }
 }

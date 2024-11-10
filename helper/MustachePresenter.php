@@ -23,4 +23,12 @@ class MustachePresenter{
         $contentAsString .= file_get_contents($this->partialsPathLoader . '/footer.mustache');
         return $this->mustache->render($contentAsString, $data);
     }
+
+    public function authView($session, $viewName, $viewData, $redirectTo = '/login') {
+        $session ? $this->show($viewName, $viewData) : Redirect::to($redirectTo);
+    }
+
+    public function adminView($session, $viewName, $viewData, $redirectTo = '/login') {
+        $session['rol'] == 'ADMIN' ? $this->show($viewName, $viewData) : Redirect::to($redirectTo);
+    }
 }

@@ -1,0 +1,163 @@
+<main class="container my-3">
+    <div class="row">
+
+        {{#pregunta}}
+            <div class="col mb-3">
+                <div class="progress my-2">
+                    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
+
+
+                    <input type="hidden" name="id" value="{{pregunta_id}}">
+
+                    <div class="card card-body mb-5">
+                        <div class="card-section mb-3">
+                            <h5 class="card-title">Mi puntaje es: {{puntaje}}</h5>
+                            <h5 class="card-title">La dificultad de la pregunta es: {{dificultad}}</h5>
+                            <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
+                        </div>
+                        <div class="d-flex justify-content-between ">
+                            <div class="card-section mb-3">
+                                <h5 class="card-title">Pregunta:</h5>
+                                <p class="card-text">{{pregunta}}</p>
+                            </div>
+                            <div class="card-section mb-3 d-flex align-content-center">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#reportingModal" onclick="stopTimer()">Reportar Pregunta</button>
+                            </div>
+                        </div>
+                        <div class="card-section mb-3">
+                            <h5 class="card-title">Opciones:</h5>
+                            <ul class="list-group">
+                                {{#opciones}}
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input type="radio" name="opcion" value="{{opcion}}" required> {{opcion}}
+                                        </label>
+                                    </li>
+                                {{/opciones}}
+                            </ul>
+                        </div>
+                        {{#userSession.isAdmin}}
+                            <div class="card-section">
+                                <h5 class="card-title">Opción Correcta:</h5>
+                                <p class="card-text">{{opcion_correcta}}</p>
+                            </div>
+                        {{/userSession.isAdmin}}
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Validar Respuestas</button>
+                </form>
+                {{#partidaSesion}}
+                    <pre>{{.}}</pre>
+                {{/partidaSesion}}
+            </div>
+        {{/pregunta}}
+
+        <div class="modal" id="reportingModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reportar Pregunta</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form id="reportingModalForm">
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <label for="">Caso:</label>
+                            <select class="form-select mb-3" name="caso" required >
+                                <option value="pregunta mal escrita">Pregunta mal escrita</option>
+                                <option value="La respuesta no es la correcta">La respuesta no es la correcta</option>
+                            </select>
+                            <label for="">Comentario:</label>
+                            <textarea class="form-control"  name="comentario" cols="20" rows="10" placeholder="Escriba brevemente el problema que experimenta" required></textarea>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Reportar</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            const formElementModal = document.getElementById("reportingModal")
+            const  formElementPregunta = document.getElementById("formulario-pregunta")
+            var duracionMaxima = 30; // Duración máxima en segundos
+            //var tiempoRestante = duracionMaxima;
+            let tiempoRestante = localStorage.getItem('tiempoRestante')||duracionMaxima;
+
+            // Actualiza la barra de progreso cada segundo
+            var temporizador = setInterval(function() {
+                // Calcula el porcentaje completado
+                var porcentajeCompletado = (duracionMaxima - tiempoRestante) / duracionMaxima * 100;
+
+
+
+                // Actualiza el ancho de la barra de progreso
+                document.getElementById('barraProgreso').style.width = porcentajeCompletado + '%';
+
+                // Disminuye el tiempo restante
+                tiempoRestante--;
+                localStorage.setItem('tiempoRestante', tiempoRestante);
+                // Si el tiempo ha llegado a cero, detén el temporizador
+                if (tiempoRestante < 0) {
+                    clearInterval(temporizador);
+                    document.getElementById('formulario-pregunta').submit();
+                }
+            }, 1000); // 1000 milisegundos = 1 segundo
+
+            const stopTimer = () =>{
+                clearInterval(temporizador);
+            }
+
+            const inputId = document.querySelector("form#formulario-pregunta > input[name='id']");
+            const reportPregunta = (e) =>{
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const formValues = {}
+
+                formData.forEach((value, key) => {
+                    formValues[key] = value;
+                });
+
+                let options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formValues)
+                };
+
+
+                fetch(`/api/reportPregunta/${inputId.value}`, options)
+                        .then(res => res.json())
+                        .then( data => window.location.href = "/juego/perdido")
+                        .catch(err => console.error({err}))
+            }
+            const validarPregunta = (e) => {
+                e.preventDefault();
+
+
+                localStorage.removeItem('tiempoRestante');
+
+
+                formElementPregunta.submit();
+            };
+
+
+            formElementModal.addEventListener('submit', reportPregunta)
+            formElementPregunta.addEventListener('submit',validarPregunta)
+
+        </script>
+    </div>
+</main>

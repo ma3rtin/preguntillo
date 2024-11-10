@@ -1,43 +1,30 @@
 <?php
 class PartidaController{
 
-    private $model;
+    private $usuarioModel;
+    private $partidaModel;
+
     private $presenter;
 
-    public function __construct($model, $presenter){
-        $this->model = $model;
+    public function __construct($usuarioModel, $partidaModel, $presenter) {
+        $this->usuarioModel = $usuarioModel;
+        $this->partidaModel = $partidaModel;
         $this->presenter = $presenter;
     }
 
-    public function startGame(){
-       return $this->model->getGame($_SESSION["id"]);
-    }
+    public function list() {
 
-    public function showGame(){
-        $data["partidas"] = $this->startGame();
-        if($data["partidas"] != null){
-            return $this->presenter->show('partida', $data);
-        }else{
-           header("location: /home");
-           exit();
+        if (!isset($_SESSION['id'])) {
+            header('Location: /login');
+            exit();
         }
+        $data = [
+            'partidas' => $this->partidaModel->getPartidasUser($_SESSION['id']),
+            'userSession' => $this->usuarioModel->getCurrentSession(),
+            'error' => $_SESSION['error'],
+            'success' => $_SESSION['success'],
+        ];
+
+        $this->presenter->authView($data['userSession'],'partida', $data,'/login');
     }
-
-    public function isCorrect(){
-        $optionId = $_POST["option"];
-        $preguntaId = $_POST["pregunta_id"];
-        $usuarioId = $_SESSION["id"];
-
-        if($this->model->theAnswerIsCorrect($optionId, $preguntaId, $usuarioId)){
-            $data["partidas"] = $this->startGame();
-            $data['message'] = "respuesta correcta";
-            $this->presenter->show('partida', $data);
-        }else{
-            $data["partidas"] = $this->startGame();
-            $data['message'] = "respuesta incorrecta";
-            $this->presenter->show('partida', $data);
-        }
-    }
-
-
 }

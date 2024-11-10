@@ -6,7 +6,7 @@
     <script src="https://kit.fontawesome.com/73d4e66af6.js" crossorigin="anonymous"></script>
     <link href="/public/css/header.css" rel="stylesheet">
     <link href="/public/css/footer.css" rel="stylesheet">
-    <link href={{css}} rel="stylesheet">
+    <link href="{{css}}" rel="stylesheet">
     <title>Preguntillo</title>
 </head>
 <body>
@@ -15,5 +15,14 @@
     <div class="header-content">
         <img src="/public/img/logo.png" class="logo" alt="logo">
         <h1 class="header-title">Preguntillo</h1>
+
+        {{#username}}
+            <a href="/usuario/logout">Cerrar sesión</a>
+            <p>Username: {{username}}</p>
+        {{/username}}
+        {{^username}}
+            <p>XD</p>
+        {{/username}}
+
     </div>
 </header>

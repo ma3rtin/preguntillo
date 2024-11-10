@@ -1,7 +1,6 @@
 <?php
 class UsuarioController
 {
-
     private $model;
     private $emailSender;
     private $presenter;
@@ -17,11 +16,15 @@ class UsuarioController
 
     public function loginForm()
     {
+        if (isset($_SESSION['username'])) {
+            $data = ['username' => $_SESSION['username']];
+        }
+
         $data['css'] = '/public/css/loginForm.css';
         $this->presenter->show('login', $data);
     }
 
-    public function login()
+    public function logIn()
     {
         $data['css'] = '/public/css/loginForm.css';
         $username = isset($_POST['username']) ? $_POST['username'] : null;
@@ -120,14 +123,34 @@ class UsuarioController
 
     public function home()
     {
-        $data['css'] = "/public/css/home.css";
-        $data['user'] = $this->model->getUserData($_SESSION['username']);
-        $this->presenter->show('home', $data);
+        if (isset($_SESSION['id'])){
+            $data['css'] = "/public/css/home.css";
+            $data['user'] = $this->model->getUserData($_SESSION['username']);
+            $data['userSession'] = $_SESSION;
+            $this->presenter->show('home', $data);
+        }
+        else{
+            $this->redirectLoginForm();
+        }
+    }
+
+    public function logOut()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        $this->redirectLoginForm();
     }
 
     public function redirectHome()
     {
         header('location: /usuario/home');
+        exit();
+    }
+
+    public function redirectLoginForm()
+    {
+        header('location: /loginForm');
         exit();
     }
 }

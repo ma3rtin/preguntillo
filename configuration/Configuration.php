@@ -7,9 +7,13 @@ include_once("helper/MustachePresenter.php");
 
 include_once("controller/UsuarioController.php");
 include_once("controller/PartidaController.php");
+include_once("controller/JuegoController.php");
+include_once("controller/PreguntaController.php");
 
 include_once("model/PartidaModel.php");
 include_once("model/UsuarioModel.php");
+include_once("model/JuegoModel.php");
+include_once("model/PreguntaModel.php");
 
 include_once('vendor/PHPMailer/src/PHPMailer.php');
 include_once('vendor/PHPMailer/src/SMTP.php');
@@ -19,6 +23,7 @@ include_once('vendor/PHPMailer/src/PHPMailer.php');
 include_once('vendor/mustache/src/Mustache/Autoloader.php');
 include_once('vendor/phpqrcode/qrlib.php');
 include_once('helper/QRMaker.php');
+require_once 'helper/Redirect.php';
 
 class Configuration
 {
@@ -34,8 +39,17 @@ class Configuration
         return new QRMaker();
     }
     public function getPartidaController(){
-        return new PartidaController($this->getPartidaModel(), $this->getPresenter());
+        return new PartidaController($this->getUsuarioModel(),$this->getPartidaModel(), $this->getPresenter());
     }
+
+    public function getJuegoController(){
+        return new JuegoController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getPresenter());
+    }
+
+    public function getPreguntaController(){
+        return new PreguntaController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getPresenter());
+    }
+
     private function getEmailSender()
     {
         return new FileEmailSender();
@@ -65,11 +79,16 @@ class Configuration
 
     private function getUsuarioModel()
     {
-        return new UsuarioModel($this->getDatabase());
+        return new UsuarioModel($this->getDatabase(), $this->getPartidaModel());
     }
 
     private function getPartidaModel()
     {
             return new PartidaModel($this->getDatabase());
+    }
+
+    private function getPreguntaModel()
+    {
+        return new PreguntaModel($this->getDatabase());
     }
 }

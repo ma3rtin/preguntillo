@@ -1,0 +1,150 @@
+<main class="container">
+    <div class="row mt-5">
+        <div class="col">
+            {{#error}}
+                <div class="alert alert-danger" role="alert">{{.}}</div>
+            {{/error}}
+            {{#success}}
+                <div class="alert alert-success" role="alert">{{.}}</div>
+            {{/success}}
+
+
+            <h1 class="mb-5">Sugerir una pregunta</h1>
+            <form id="formPregunta" method="post" enctype="multipart/form-data" class="card card-body">
+                <div class="container">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-label">Pregunta:</label>
+                                <textarea name="pregunta" required class="form-control">{{pregunta.pregunta}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 mb-4">
+                            <div class="form-group">
+                                <label class="form-label">Tipo:</label>
+                                <select class="form-select" name="id_tipo" readonly>
+                                    {{#tipos}}
+                                        <option value="{{id}}">{{name}}</option>
+                                    {{/tipos}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6  mb-4">
+                            <div class="form-group">
+                                <label class="form-label">Modulo:</label>
+                                <input class="form-control" type="text" name="modulo" required />
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <label class="form-label">Respuestas:</label>
+
+                        <div class="col-sm-12 col-md-6 mb-4">
+                            <div class="form-group">
+                                <label for="respuesta_correcta_1" class="form-label">Opcion 1:</label>
+                                <input type="text" name="respuesta" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label">Respuesta correcta:</label>
+                                <input id="respuesta_correcta_1" type="radio" name="repuesta_correcta" value="0">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 mb-4">
+                            <div class="form-group">
+                                <label for="respuesta_correcta_2" class="form-label">Opcion 2:</label>
+                                <input type="text" name="respuesta" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label">Respuesta correcta:</label>
+                                <input for="respuesta_correcta_2" type="radio" name="repuesta_correcta" value="1">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 mb-4">
+                            <div class="form-group">
+                                <label for="respuesta_correcta_3" class="form-label">Opcion 3:</label>
+
+                                <input  type="text" name="respuesta" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label">Respuesta correcta:</label>
+                                <input for="respuesta_correcta_3" type="radio" name="repuesta_correcta" value="2">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 mb-4">
+                            <div class="form-group">
+                                <label for="respuesta_correcta_4" class="form-label">Opcion 4:</label>
+                                <input type="text" name="respuesta" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label">Respuesta correcta:</label>
+                                <input for="respuesta_correcta_4" type="radio" name="repuesta_correcta" value="3">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="my-3">
+                    <button type="submit" class="btn btn-success btn-lg">Sugerir</button>
+                </div>
+            </form>
+            <script>
+                const formElement = document.getElementById("formPregunta");
+                const isEditPregunta = formElement.action.includes("editarPregunta");
+                const checkEstado = formElement[1];
+                const checkAccesible = formElement[2];
+
+                const selectType = formElement[3].children;
+                const selectModule = formElement[4].children;
+                const selectDifficult = formElement[5].children;
+
+                const options = document.querySelectorAll("input[name='respuesta']");
+
+                // Form submit
+                formElement.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(event.target);
+
+                    // Crear un objeto con los valores del formulario
+                    const formValues = {};
+                    let respuestas = [];
+
+                    for(let op of options){
+                        respuestas.push(op.value);
+                    }
+
+                    formData.forEach((value, key) => {
+                        formValues[key] = value;
+                    });
+
+                    formValues.estado = 'NO ACTIVA'
+                    formValues.respuestas = respuestas
+
+                    const apiEndpoint = "/api/sugerirPregunta"
+
+                    fetch(apiEndpoint,{ method: 'POST',headers: {
+                            'Content-Type': 'application/json'
+                        }, body: JSON.stringify(formValues)})
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log({data})
+                                window.location.href = "/"
+                            })
+                            .catch(err => console.error({err}))
+                })
+
+            </script>
+        </div>
+    </div>
+</main>

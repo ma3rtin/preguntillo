@@ -1,21 +1,23 @@
-<html>
-<body>
-{{#partidas}}
-
-  <form method="post" action="/partida/isCorrect">
-      <h1>Partida</h1>
-      <div class="question-container">
-          <div class="question">{{pregunta_desc}}</div>
-          {{#opciones}}
-              <button class="option" value="{{id}}" name="option" type="submit">{{opcion_desc}}</button>
-          {{/opciones}}
-          <input type = "hidden" value = "{{pregunta_id}}" name = "pregunta_id">
-      </div>
-
-  </form>
-{{/partidas}}
- <div>{{message}}</div>
-
-</body>
-</html>
-
+<main class="container mt-5">
+    <section class="row">
+        <article class="col-12">
+            <h1>Historial de Partidas</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID Partida</th>
+                    <th>Puntaje</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#partidas}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{puntaje}}</td>
+                    </tr>
+                {{/partidas}}
+                </tbody>
+            </table>
+        </article>
+    </section>
+</main>
