@@ -15,6 +15,12 @@ class OpcionModel
         return $this->database->query($sql);
     }
 
+    public function getOpcionCorrecta($idPregunta)
+    {
+        $sql = "SELECT * FROM opcion WHERE opcion_correcta = 'SI' AND pregunta_id = ".$idPregunta;
+        return $this->database->query($sql);
+    }
+
     public function deleteOpciones($idPregunta)
     {
         $sql = "DELETE FROM opcion WHERE pregunta_id = '$idPregunta'";

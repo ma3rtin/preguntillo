@@ -11,19 +11,20 @@ class PartidaModel {
         return $this->database->query($sql);
     }
 
-    public function createPartida($id){
-        $sql = "INSERT INTO partida (usuario_id, puntaje) VALUES ($id, 0)";
+    public function createPartida($id, $fecha){
+        $fechaInicio = date('Y-m-d H:i:s', strtotime($fecha));
+        $sql = "INSERT INTO partida (usuario_id, puntaje,fecha) VALUES ('$id',0, '$fechaInicio')";
         $this->database->execute($sql);
     }
 
-    public function actualizarPartida($usuario_id, $puntaje){
-        $sql = "SELECT id FROM partida WHERE usuario_id = $usuario_id ORDER BY id DESC LIMIT 1";
+    public function actualizarPartida($partida_id){
+        $sql = "SELECT id FROM partida WHERE id = $partida_id";
         $resultado = $this->database->query($sql);
 
         if (isset($resultado[0]['id'])) {
             $id = $resultado[0]['id'];
-            $sqlUpdate = "UPDATE partida SET puntaje = $puntaje WHERE id = $id";
-            $this->database->query($sqlUpdate);
+            $sqlUpdate = "UPDATE partida SET puntaje = puntaje + 1  WHERE id = $id";
+            $this->database->execute($sqlUpdate);
         }
     }
 
@@ -52,9 +53,12 @@ class PartidaModel {
         return $this->getPartidas(true);
     }
 
-    public function getPartidasUser($id){
-        $sql = "SELECT * FROM partida WHERE usuario_id = $id";
-        return $this->database->query($sql);;
+    public function getPartidasUsuario($id){
+        $sql = "SELECT * FROM partida WHERE usuario_id = $id
+                      ORDER BY fecha DESC
+                      LIMIT 1";
+
+        return $this->database->query($sql);
     }
 
     public function getPuntajeUser($id){
@@ -83,9 +87,9 @@ class PartidaModel {
         return $partidas;
     }
 
-    public function preguntaContestada($id){
-        $sql = "UPDATE pregunta SET contestada = contestada + 1 WHERE id = $id";
-        $this->database->query($sql);
+    public function preguntaContestada($idPregunta, $idUsuario){
+        $sql = "INSERT INTO usuario_pregunta (usuario_id, pregunta_id) VALUES ($idUsuario, $idPregunta)";
+        $this->database->execute($sql);
     }
 
     public function getNivelUsuario($id){

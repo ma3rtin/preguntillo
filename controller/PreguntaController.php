@@ -28,15 +28,12 @@ class PreguntaController{
     }
 
     public function show(){
-        $data['nivel'] = $_SESSION['nivel'] ?? 0;
-        $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $data['id'] = $_SESSION['id'];
-        $data['puntaje'] = $this->partidaModel->getPartidaPuntaje($data['id']);
-
-        $idPregunta = $_GET['params'] ?? $this->preguntaModel->getRandomId();
-        $_SESSION['tiempo_inicio'] = time();
+//        $data['puntaje'] = $this->partidaModel->getPartidaPuntaje($data['id']);
+        $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
+//        $_SESSION['tiempo_inicio'] = time();
         $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
-//        $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);
+        $data['pregunta_id'] = $idPregunta;
+        $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);
 
         $this->presenter->show('pregunta', $data);
     }
@@ -44,52 +41,32 @@ class PreguntaController{
 
     public function validarOpcion(){
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $data['pregunta'] = $this->preguntaModel->getPregunta($_POST['id']);
 
-        $idPreguntaActual = $_POST['id'];
+        $pregunta_id=  $_POST['pregunta_id'];
+        $opcionSeleccionada = $_POST['opcion_id'];
 
+        $this->partidaModel->preguntaContestada($pregunta_id, $_SESSION['id'] );
 
+        $opcionCorrecta = $this->opcionModel->getOpcionCorrecta($pregunta_id)[0];
 
-        $data['pregunta'] = $this->preguntaModel->getPregunta($idPreguntaActual, true);
-
-        $opcionSeleccionada = $_POST['opcion'];
-
-        $opcionCorrecta = $data['pregunta']['opcion_correcta'];
-
-        $tiempoInicio = $_SESSION['tiempo_inicio'];
-
-        $tiempoTranscurrido = time() - $tiempoInicio;
-
-        $duracionMaxima = 30;
-        //logger::info(print_r([ 'opcioncorrecta' => $opcionCorrecta, 'opcionseleccionada' => $opcionSeleccionada,'data' => $data ],true));
-        if($tiempoTranscurrido > $duracionMaxima){
-            $data['opcionEsCorrecta']= "fin ";
-            $_SESSION['error'] = 'Expiro el tiempo';
-
-            $this->partidaModel->actualizarPartida($data['userSession']['user']['id'],$_POST['puntaje']);
-
-            Redirect::to('/juego/perdido');
-        }
-        if ($opcionSeleccionada == $opcionCorrecta){
+        if ($opcionSeleccionada == $opcionCorrecta['id']){
 
             $data['opcionEsCorrecta']= "La es opcion correcta ";
-            $this->partidaModel->preguntaContestada($_POST['id']);
-            $data['puntaje'] =  intval($_POST['puntaje']) + 1;
 
-            $this->partidaModel->actualizarPartida($data['userSession']['user']['id'],  $data['puntaje']);
-            if ( $data['puntaje'] >= 10) {
-                Redirect::to('/juego/ganado');
-            }
+            $partida = $this->partidaModel->getPartidasUsuario($_SESSION['id'])[0];
 
-            $preguntas = Sesion::getPreguntas();
-            $preguntasIds = array_column($preguntas, 'id');
-            $siguientePreguntaId = $this->preguntaModel->getRandomIdNotInArray($preguntasIds);
+            $this->partidaModel->actualizarPartida($partida['id']);
 
-            Redirect::to("/pregunta/show/$siguientePreguntaId");
+            $data['siguiente_id'] = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
+//            $siguientePreguntaId = $this->preguntaModel->getRandomIdNotInArray($pregunta_id);
+
+
+
+            Redirect::to("/pregunta/show/$pregunta_id");
 
         }else{
+            $partida = $this->partidaModel->getPartidasUsuario($_SESSION['id'])[0];
             $data['opcionEsCorrecta']= "fin ";
-            $this->partidaModel->actualizarPartida($data['userSession']['user']['id'],$_POST['puntaje']);
 
             Redirect::to('/juego/perdido');
         }

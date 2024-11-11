@@ -61,9 +61,9 @@ class PreguntaModel
 
     public function getPreguntaById($id)
     {
-        $sql = "SELECT pregunta FROM pregunta WHERE id = ".$id;
+        $sql = "SELECT * FROM pregunta WHERE id = ".$id;
         $preguntaObtenida = $this->database->query($sql);
-        return $preguntaObtenida[0]['pregunta'];
+        return $preguntaObtenida[0];
     }
 
 
@@ -87,10 +87,29 @@ class PreguntaModel
         return $preguntaPorId[0]['nivel'];
     }
 
-    public function getRandomId()
-    {
-        $result = $this->database->query("SELECT COUNT(pregunta) AS total FROM pregunta");
-        return rand(1, intval($result[0]['total']));
+    public function getPreguntaRandom($usuarioId) {
+        $sql = "SELECT p.id 
+            FROM pregunta p
+            WHERE NOT EXISTS (
+                SELECT 1 
+                FROM usuario_pregunta up
+                WHERE up.pregunta_id = p.id AND up.usuario_id = $usuarioId
+            )
+            ORDER BY RAND() 
+            LIMIT 1;";
+
+        $preguntas = $this->database->query($sql);
+
+        if (!empty($preguntas)) {
+            return $preguntas[0]['id'];
+        }
+        else{
+           $sql = "DELETE FROM usuario_pregunta WHERE usuario_id = $usuarioId";
+           $this->database->execute($sql);
+           $this->getPreguntaRandom($usuarioId);
+        }
+
+        return null;
     }
 
     public function update($data)
