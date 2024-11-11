@@ -3,9 +3,9 @@
 
         {{#pregunta}}
             <div class="col mb-3">
-                <div class="progress my-2">
+                <!--<div class="progress my-2">
                     <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                </div>-->
 
                 <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
 
@@ -14,7 +14,7 @@
 
                     <div class="card card-body mb-5">
                         <div class="card-section mb-3">
-                            <h5 class="card-title">Mi puntaje es: {{puntaje}}</h5>
+                            <!--<h5 class="card-title">Mi puntaje es: {{puntaje}}</h5>-->
                             <h5 class="card-title">La dificultad de la pregunta es: {{dificultad}}</h5>
                             <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
                         </div>
@@ -49,7 +49,7 @@
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Validar Respuestas</button>
+                    <button type="submit" class="btn btn-success">Validar Respuestas</button>
                 </form>
                 {{#partidaSesion}}
                     <pre>{{.}}</pre>
@@ -57,17 +57,16 @@
             </div>
         {{/pregunta}}
 
-        <div class="modal" id="reportingModal">
+       <!-- <div class="modal" id="reportingModal">
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Reportar Pregunta</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <form id="reportingModalForm">
-                        <!-- Modal body -->
+
                         <div class="modal-body">
                             <label for="">Caso:</label>
                             <select class="form-select mb-3" name="caso" required >
@@ -78,7 +77,6 @@
                             <textarea class="form-control"  name="comentario" cols="20" rows="10" placeholder="Escriba brevemente el problema que experimenta" required></textarea>
                         </div>
 
-                        <!-- Modal footer -->
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Reportar</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -87,6 +85,6 @@
 
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </main>
