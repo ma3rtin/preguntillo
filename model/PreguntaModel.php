@@ -183,6 +183,8 @@ class PreguntaModel
         }
     }
 
+
+
     public function reportar($data)
     {
         try {
@@ -193,6 +195,13 @@ class PreguntaModel
             echo "Error: " . $e->getMessage();
             return false;
         }
+    }
+
+    public function crearReporte($user, $pregunta, $caso, $mensaje)
+    {
+        $sql = "INSERT INTO reporte_pregunta (usuario_id, pregunta_id, caso, mensaje)
+                VALUES ($user, $pregunta, '$caso', '$mensaje')";
+        return $this->database->execute($sql);
     }
 
     public function preguntasSugeridas($sql)

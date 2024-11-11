@@ -1,0 +1,30 @@
+<div class="container my-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Reportar Pregunta</h4>
+            <a href="/pregunta/show/{{pregunta_id}}" class="btn btn-danger">Cerrar</a>
+        </div>
+
+        <form id="reportingForm" action="/pregunta/reportar" method="POST" class="p-4">
+            <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
+
+            <div class="mb-3">
+                <label for="caso" class="form-label">Caso:</label>
+                <select class="form-select" name="caso" required>
+                    <option value="pregunta mal escrita">Pregunta mal escrita</option>
+                    <option value="La respuesta no es la correcta">La respuesta no es la correcta</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="comentario" class="form-label">Comentario:</label>
+                <textarea class="form-control" name="mensaje" cols="20" rows="5" placeholder="Escriba brevemente el problema que experimenta" required></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Reportar</button>
+                <a href="/pregunta/show/{{pregunta_id}}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
