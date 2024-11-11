@@ -19,15 +19,12 @@ class JuegoController{
         $this->presenter->authView($data['userSession'],'juego', $data);
     }
 
-    public function ganado() {
-        $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $this->presenter->authView($data['userSession'],'juegoGanado', $data);
-    }
-
     public function perdido() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
         $data['error'] = $_SESSION['error'];
         unset($_SESSION['error']);
+        $nuevoPuntaje = $this->partidaModel->getPuntajeUser($_SESSION['id']);
+        $this->partidaModel->actualizarRanking($_SESSION['id'],$nuevoPuntaje);
         $this->presenter->authView($data['userSession'],'juegoPerdido', $data);
     }
 
@@ -42,5 +39,11 @@ class JuegoController{
         $idRandom = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
 
         Redirect::to("/pregunta/show/$idRandom");
+    }
+
+    public function verRanking() {
+        $data['ranking'] = $this->partidaModel->obtenerRankingConUsuarios();
+
+        $this->presenter->show('ranking', $data);
     }
 }
