@@ -32,6 +32,9 @@ class PreguntaController{
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
         $this->usuarioModel->registrarPreguntaEntregada($_SESSION['id']);
 //        $_SESSION['tiempo_inicio'] = time();
+        if($idPregunta == null){
+            Redirect::to('/juego/perdido');
+        }
         $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
         $data['pregunta_id'] = $idPregunta;
         $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);

@@ -87,34 +87,56 @@ class PreguntaModel
         return $preguntaPorId[0]['nivel'];
     }
 
-    public function getPreguntaRandom($usuarioId) {
+    public function getPreguntaRandom($usuarioId)
+    {
         $sqlNivelUsuario = "SELECT nivel FROM usuario WHERE id = $usuarioId";
         $nivelUsuario = $this->database->query($sqlNivelUsuario)[0]['nivel'];
 
-        $sqlPregunta = "SELECT p.id 
+        $sqlPreguntasNoContestadas = "
+        SELECT p.id 
         FROM pregunta p
         WHERE NOT EXISTS (
             SELECT 1 
             FROM usuario_pregunta up
             WHERE up.pregunta_id = p.id AND up.usuario_id = $usuarioId
-        )
-        AND p.dificultad BETWEEN ($nivelUsuario - 0.1) AND ($nivelUsuario + 0.1)
-        ORDER BY RAND() 
-        LIMIT 1;";
+        )";
 
-        $preguntas = $this->database->query($sqlPregunta);
+        $sqlNivelExacto = $sqlPreguntasNoContestadas . "
+        AND p.dificultad BETWEEN ($nivelUsuario - 0.1) AND ($nivelUsuario + 0.1)
+        ORDER BY RAND()
+        LIMIT 1;";
+        $preguntas = $this->database->query($sqlNivelExacto);
 
         if (!empty($preguntas)) {
             $this->actualizarDificultad($preguntas[0]['id'], false);
             return $preguntas[0]['id'];
         } else {
-            $sql = "DELETE FROM usuario_pregunta WHERE usuario_id = $usuarioId";
-            $this->database->execute($sql);
+            $sqlNivelAlto = $sqlPreguntasNoContestadas . "
+            AND p.dificultad > ($nivelUsuario)
+            ORDER BY RAND()
+            LIMIT 1;";
+            $preguntas = $this->database->query($sqlNivelAlto);
 
-            return $this->getPreguntaRandom($usuarioId);
+            if (!empty($preguntas)) {
+                $this->actualizarDificultad($preguntas[0]['id'], false);
+                return $preguntas[0]['id'];
+            } else {
+                $sqlNivelBajo = $sqlPreguntasNoContestadas . "
+                AND p.dificultad < $nivelUsuario
+                ORDER BY RAND()
+                LIMIT 1;";
+                $preguntas = $this->database->query($sqlNivelBajo);
+
+                if (!empty($preguntas)) {
+                    $this->actualizarDificultad($preguntas[0]['id'], false);
+                    return $preguntas[0]['id'];
+                }
+
+                $this->database->execute("DELETE FROM usuario_pregunta WHERE usuario_id = $usuarioId");
+
+                return $this->getPreguntaRandom($usuarioId);
+            }
         }
-
-        return null;
     }
 
 
@@ -190,14 +212,16 @@ class PreguntaModel
         $sql = "SELECT * FROM pregunta WHERE id = $id";
         $pregunta = $this->database->query($sql)[0];
 
-        $vecesEntregada = $esCorrecta ? $pregunta['vecesEntregada'] : $pregunta['vecesEntregada'] + 1;
-        $vecesAcertada = $esCorrecta ? $pregunta['vecesAcertada'] + 1 : $pregunta['vecesAcertada'];
+        $vecesEntregada = $esCorrecta ? $pregunta['veces_entregada'] : $pregunta['veces_entregada'] + 1;
+        $vecesAcertada = $esCorrecta ? $pregunta['veces_acertada'] + 1 : $pregunta['veces_acertada'];
 
-        $margen = 2;
-        $dificultad = 1 - ($vecesAcertada / ($vecesEntregada + $margen));
+        if ($vecesEntregada < 10) {
+            $dificultad = 0.5;
+        } else {
+            $dificultad = 1 - ($vecesAcertada / ($vecesEntregada));
+        }
 
-        $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, vecesEntregada = $vecesEntregada, vecesAcertada = $vecesAcertada WHERE id = $id");
+        $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, veces_entregada = $vecesEntregada, veces_acertada = $vecesAcertada WHERE id = $id");
     }
-
 
 }
