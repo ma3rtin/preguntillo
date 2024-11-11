@@ -57,7 +57,8 @@ body {
     width: 300px;
     border-radius: 30px;
     border: none;
-    color: white;
+    color: #444444;
+    letter-spacing: 1px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
