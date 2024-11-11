@@ -40,7 +40,7 @@ CREATE TABLE pregunta (
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           pregunta TEXT NOT NULL,
                           estado VARCHAR(255) NOT NULL,
-                          dificultad DOUBLE,
+                          dificultad DOUBLE DEFAULT 0.5,
                           veces_entregada INT DEFAULT 0,
                           veces_acertada INT DEFAULT 0,
                           id_modulo INT,
@@ -113,13 +113,13 @@ INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo,
 INSERT INTO modulo(id,name) VALUES (1,'HISTORIA'), (2,'MATEMÁTICAS');
 INSERT INTO tipo(id,name) VALUES (1,'Opciones con respuesta única');
 
-INSERT INTO pregunta(pregunta,estado,id_modulo,veces_enviada,veces_acertada,id_tipo) VALUES
-                                                                                         ('¿Cuál era una de las ciudades-estado más importantes de la antigua Grecia?', 'ACTIVA', 1, 0, 0, 1),
-                                                                                         ('¿Cuál es la capital de Italia?', 'ACTIVA', 1, 0, 0, 1),
-                                                                                         ('¿Cuál es la capital de Perú?', 'ACTIVA', 1, 0, 0, 1),
-                                                                                         ('2 + 2 = ?', 'ACTIVA', 2, 0, 0, 1),
-                                                                                         ('1 + 1 = ?', 'ACTIVA', 2, 0, 0, 1),
-                                                                                         ('3 + 3 = ?', 'ACTIVA', 2, 0, 0, 1);
+INSERT INTO pregunta(pregunta,estado,id_modulo,veces_entregada,veces_acertada,id_tipo) VALUES
+                                                                                           ('¿Cuál era una de las ciudades-estado más importantes de la antigua Grecia?', 'ACTIVA', 1, 0, 0, 1),
+                                                                                           ('¿Cuál es la capital de Italia?', 'ACTIVA', 1, 0, 0, 1),
+                                                                                           ('¿Cuál es la capital de Perú?', 'ACTIVA', 1, 0, 0, 1),
+                                                                                           ('2 + 2 = ?', 'ACTIVA', 2, 0, 0, 1),
+                                                                                           ('1 + 1 = ?', 'ACTIVA', 2, 0, 0, 1),
+                                                                                           ('3 + 3 = ?', 'ACTIVA', 2, 0, 0, 1);
 
 INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (1, 'Roma', 'NO'),
