@@ -28,6 +28,32 @@ class PartidaModel {
         }
     }
 
+    public function actualizarRanking($usuario_id,$nuevoPuntaje)
+    {
+        $sql = "SELECT usuario_id FROM ranking WHERE usuario_id = $usuario_id";
+        $resultado = $this->database->query($sql);
+
+        if(!empty($resultado)){
+            $sql = "UPDATE ranking SET puntaje = $nuevoPuntaje";
+            $this->database->execute($sql);
+
+        }else{
+            $sql = "INSERT INTO ranking (usuario_id, puntaje) VALUES ($usuario_id,$nuevoPuntaje)";
+            $this->database->execute($sql);
+        }
+    }
+
+    public function obtenerRankingConUsuarios()
+    {
+        $sql = "SELECT ranking.id, ranking.puntaje, usuario.usuario, usuario.nivel
+            FROM ranking
+            JOIN usuario ON ranking.usuario_id = usuario.id
+            ORDER BY ranking.puntaje ASC"; // Opcional: ordena por puntaje
+        $resultado = $this->database->query($sql);
+
+        return $resultado;
+    }
+
     public function getPartidaPuntaje($usuario_id){
         $sql = "SELECT id, puntaje FROM partida WHERE usuario_id = $usuario_id ORDER BY id DESC LIMIT 1";
         $resultado = $this->database->query($sql);

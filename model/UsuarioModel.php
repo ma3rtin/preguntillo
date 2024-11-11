@@ -21,6 +21,13 @@ class UsuarioModel
         if (sizeof($user) == 0) {
             return false;
         }else{
+            if ($user[0]['activo'] == 0) {
+                $sqlUpdate = "UPDATE usuario 
+                          SET activo = 1 
+                          WHERE id = '" . $user[0]["id"] . "'";
+                $this->database->execute($sqlUpdate);
+            }
+
             return $user[0];
         }
     }
@@ -138,6 +145,14 @@ class UsuarioModel
         }
 
         $this->database->execute("UPDATE usuario SET preguntas_acertadas = $preguntasAcertadas WHERE id = $id");
+    }
+
+    public function getUsuarios()
+    {
+        $sql = "SELECT * FROM usuario";
+        $resultado = $this->database->query($sql);
+
+        return $resultado;
     }
 
 }
