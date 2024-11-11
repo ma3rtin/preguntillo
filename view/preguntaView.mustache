@@ -23,9 +23,6 @@
                                 <h5 class="card-title">Pregunta:</h5>
                                 <p class="card-text">{{pregunta}}</p>
                             </div>
-                            <div class="card-section mb-3 d-flex align-content-center">
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#reportingModal" onclick="stopTimer()">Reportar Pregunta</button>
-                            </div>
                         </div>
                         <div class="card-section mb-3">
                             <h5 class="card-title">Opciones:</h5>
@@ -57,34 +54,25 @@
             </div>
         {{/pregunta}}
 
-       <!-- <div class="modal" id="reportingModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h4 class="modal-title">Reportar Pregunta</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form id="reportingModalForm">
-
+        {{#correcta}}
+            <script>
+                $(document).ready(function() {
+                    $('#reportingModal').modal('show');
+                });
+            </script>
+            <div class="modal fade" id="reportingModal" tabindex="-1" aria-labelledby="reportingModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a class="btn btn-success" href="/pregunta/show/{{siguiente_id}}">Siguiente pregunta</a>
+                        </div>
                         <div class="modal-body">
-                            <label for="">Caso:</label>
-                            <select class="form-select mb-3" name="caso" required >
-                                <option value="pregunta mal escrita">Pregunta mal escrita</option>
-                                <option value="La respuesta no es la correcta">La respuesta no es la correcta</option>
-                            </select>
-                            <label for="">Comentario:</label>
-                            <textarea class="form-control"  name="comentario" cols="20" rows="10" placeholder="Escriba brevemente el problema que experimenta" required></textarea>
+                            <a class="btn btn-danger btn-sm" href="/pregunta/reporteForm/pregunta={{pregunta_id}}">Reportar pregunta</a>
                         </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Reportar</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-
+                    </div>
                 </div>
             </div>
-        </div>-->
+        {{/correcta}}
+
     </div>
 </main>
