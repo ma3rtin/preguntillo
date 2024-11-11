@@ -1,4 +1,5 @@
 {{#user}}
+    <a href="/usuario/home">Volver</a>
     <div class="profile-info">
         <img src="/public/users/{{foto}}" alt="{{name}}">
         <h1>@{{usuario}}</h1>
@@ -11,17 +12,20 @@
             <p class="info-amount">Cantidad</p>
             <p class="info-title">Partidas</p>
         </div>
+        <div class="divider"></div>
         <div class="card-info">
             <i class="fa-solid fa-trophy"></i>
             <p class="info-amount">Cantidad</p>
             <p class="info-title">Ranking</p>
         </div>
+        <div class="divider"></div>
         <div class="card-info">
             <i class="fa-solid fa-star"></i>
             <p class="info-amount">Cantidad</p>
             <p class="info-title">Experiencia</p>
         </div>
     </div>
+
     <div class="qr-map">
         <img class="qr" src="{{qr}}" alt="QR del usuario">
         <img class="map" src="{{mapa}}" alt="Hogar del usuario">
