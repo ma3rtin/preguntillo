@@ -39,7 +39,6 @@ CREATE TABLE pregunta (
                           verificada VARCHAR(2) DEFAULT 'NO',
                           accesible VARCHAR(2) DEFAULT 'NO',
                           entregada INT(10) DEFAULT 0,
-                          contestada INT(10) DEFAULT 0,
                           id_modulo INT,
                           id_tipo INT,
                           FOREIGN KEY (id_modulo) REFERENCES modulo(id),
@@ -58,6 +57,7 @@ CREATE TABLE partida (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          usuario_id INT NOT NULL,
                          puntaje VARCHAR(255) NOT NULL,
+                         fecha DATETIME,
                          FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
@@ -95,6 +95,13 @@ CREATE TABLE opcion_sugerida (
                                  opcion_correcta VARCHAR(2) DEFAULT 'NO',
                                  FOREIGN KEY (pregunta_id) REFERENCES pregunta_sugerida(id) ON DELETE CASCADE
 );
+
+create table usuario_pregunta(
+                                 usuario_id int,
+                                 pregunta_id int,
+                                 constraint usuario_pregunta_fk primary key(pregunta_id,usuario_id),
+                                 foreign key(pregunta_id) references pregunta(id),
+                                 foreign key(usuario_id) references usuario(id));
 
 INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) values
     ('LiraDTA', 'Lira', 'lira@gmail.com', '123', 2003, 'lira.jpg', 1, -34.609801928878525, -58.39413128051759);
