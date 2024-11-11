@@ -1,0 +1,25 @@
+<div class="container">
+    <h2 class="text-center mb-4">Ranking de Jugadores</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Posición</th>
+                <th>Jugador</th>
+                <th>Puntaje</th>
+                <th>Nivel</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#ranking}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{usuario}}</td>
+                    <td>{{puntaje}}</td>
+                    <td>{{nivel}}</td>
+                </tr>
+            {{/ranking}}
+            </tbody>
+        </table>
+    </div>
+</div>
