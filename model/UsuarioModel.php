@@ -112,7 +112,17 @@ class UsuarioModel
         $user = $this->database->query($sql)[0];
 
         $preguntasRecibidas = $user['preguntas_recibidas'] + 1;
+
         $this->database->execute("UPDATE usuario SET preguntas_recibidas = $preguntasRecibidas WHERE id = $id");
+
+        if ($preguntasRecibidas < 10) {
+            $this->database->execute("UPDATE usuario SET nivel = 0.5 WHERE id = $id");
+        }else{
+            $preguntasAcertadas = $user['preguntas_acertadas'];
+            $porcentajeAciertos = $preguntasAcertadas / $preguntasRecibidas;
+
+            $this->database->execute("UPDATE usuario SET nivel = $porcentajeAciertos WHERE id = $id");
+        }
     }
 
     public function actualizarNivelPorRespuestaCorrecta($id) {
@@ -122,14 +132,12 @@ class UsuarioModel
         $preguntasRecibidas = $user['preguntas_recibidas'];
         $preguntasAcertadas = $user['preguntas_acertadas'] + 1;
 
-        $margen = 2;
-        $porcentajeAciertos = ($preguntasAcertadas / ($preguntasRecibidas + $margen));
+        if ($preguntasRecibidas >= 10) {
+            $porcentajeAciertos = $preguntasAcertadas / $preguntasRecibidas;
+            $this->database->execute("UPDATE usuario SET nivel = $porcentajeAciertos WHERE id = $id");
+        }
 
-        // Aumentar estabilidad del nivel para usuarios con más de 20 preguntas respondidas
-        $ponderacion = min(1, $preguntasRecibidas / 20);
-
-        $nivelActualizado = $porcentajeAciertos * $ponderacion;
-
-        $this->database->execute("UPDATE usuario SET nivel = $nivelActualizado, preguntas_acertadas = $preguntasAcertadas WHERE id = $id");
+        $this->database->execute("UPDATE usuario SET preguntas_acertadas = $preguntasAcertadas WHERE id = $id");
     }
+
 }
