@@ -78,7 +78,6 @@ class UsuarioModel
         return [$user['mail'], $user['id'], $token];
     }
 
-
     public function validateToken($token, $userId)
     {
         $sql = "SELECT 1 
@@ -106,5 +105,31 @@ class UsuarioModel
         $data['nivel'] = $this->partidaModel->getNivelUsuario($data['id']);
 
         return $data;
+    }
+
+    public function registrarPreguntaEntregada($id) {
+        $sql = "SELECT * FROM usuario WHERE id = $id";
+        $user = $this->database->query($sql)[0];
+
+        $preguntasRecibidas = $user['preguntas_recibidas'] + 1;
+        $this->database->execute("UPDATE usuario SET preguntas_recibidas = $preguntasRecibidas WHERE id = $id");
+    }
+
+    public function actualizarNivelPorRespuestaCorrecta($id) {
+        $sql = "SELECT * FROM usuario WHERE id = $id";
+        $user = $this->database->query($sql)[0];
+
+        $preguntasRecibidas = $user['preguntas_recibidas'];
+        $preguntasAcertadas = $user['preguntas_acertadas'] + 1;
+
+        $margen = 2;
+        $porcentajeAciertos = ($preguntasAcertadas / ($preguntasRecibidas + $margen));
+
+        // Aumentar estabilidad del nivel para usuarios con más de 20 preguntas respondidas
+        $ponderacion = min(1, $preguntasRecibidas / 20);
+
+        $nivelActualizado = $porcentajeAciertos * $ponderacion;
+
+        $this->database->execute("UPDATE usuario SET nivel = $nivelActualizado, preguntas_acertadas = $preguntasAcertadas WHERE id = $id");
     }
 }

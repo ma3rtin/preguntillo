@@ -88,29 +88,35 @@ class PreguntaModel
     }
 
     public function getPreguntaRandom($usuarioId) {
-        $sql = "SELECT p.id 
-            FROM pregunta p
-            WHERE NOT EXISTS (
-                SELECT 1 
-                FROM usuario_pregunta up
-                WHERE up.pregunta_id = p.id AND up.usuario_id = $usuarioId
-            )
-            ORDER BY RAND() 
-            LIMIT 1;";
+        $sqlNivelUsuario = "SELECT nivel FROM usuario WHERE id = $usuarioId";
+        $nivelUsuario = $this->database->query($sqlNivelUsuario)[0]['nivel'];
 
-        $preguntas = $this->database->query($sql);
+        $sqlPregunta = "SELECT p.id 
+        FROM pregunta p
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM usuario_pregunta up
+            WHERE up.pregunta_id = p.id AND up.usuario_id = $usuarioId
+        )
+        AND p.dificultad BETWEEN ($nivelUsuario - 0.1) AND ($nivelUsuario + 0.1)
+        ORDER BY RAND() 
+        LIMIT 1;";
+
+        $preguntas = $this->database->query($sqlPregunta);
 
         if (!empty($preguntas)) {
+            $this->actualizarDificultad($preguntas[0]['id'], false);
             return $preguntas[0]['id'];
-        }
-        else{
-           $sql = "DELETE FROM usuario_pregunta WHERE usuario_id = $usuarioId";
-           $this->database->execute($sql);
-           $this->getPreguntaRandom($usuarioId);
+        } else {
+            $sql = "DELETE FROM usuario_pregunta WHERE usuario_id = $usuarioId";
+            $this->database->execute($sql);
+
+            return $this->getPreguntaRandom($usuarioId);
         }
 
         return null;
     }
+
 
     public function update($data)
     {
@@ -179,4 +185,19 @@ class PreguntaModel
 
         return $resultado;
     }
+
+    public function actualizarDificultad($id, $esCorrecta) {
+        $sql = "SELECT * FROM pregunta WHERE id = $id";
+        $pregunta = $this->database->query($sql)[0];
+
+        $vecesEntregada = $esCorrecta ? $pregunta['vecesEntregada'] : $pregunta['vecesEntregada'] + 1;
+        $vecesAcertada = $esCorrecta ? $pregunta['vecesAcertada'] + 1 : $pregunta['vecesAcertada'];
+
+        $margen = 2;
+        $dificultad = 1 - ($vecesAcertada / ($vecesEntregada + $margen));
+
+        $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, vecesEntregada = $vecesEntregada, vecesAcertada = $vecesAcertada WHERE id = $id");
+    }
+
+
 }

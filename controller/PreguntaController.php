@@ -30,6 +30,7 @@ class PreguntaController{
     public function show(){
 //        $data['puntaje'] = $this->partidaModel->getPartidaPuntaje($data['id']);
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
+        $this->usuarioModel->registrarPreguntaEntregada($_SESSION['id']);
 //        $_SESSION['tiempo_inicio'] = time();
         $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
         $data['pregunta_id'] = $idPregunta;
@@ -50,8 +51,10 @@ class PreguntaController{
         $opcionCorrecta = $this->opcionModel->getOpcionCorrecta($pregunta_id)[0];
 
         if ($opcionSeleccionada == $opcionCorrecta['id']){
-
             $data['opcionEsCorrecta']= "La es opcion correcta ";
+
+            $this->preguntaModel->actualizarDificultad($pregunta_id, true);
+            $this->usuarioModel->actualizarNivelPorRespuestaCorrecta($_SESSION['id']);
 
             $partida = $this->partidaModel->getPartidasUsuario($_SESSION['id'])[0];
 
@@ -60,12 +63,8 @@ class PreguntaController{
             $data['siguiente_id'] = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
 //            $siguientePreguntaId = $this->preguntaModel->getRandomIdNotInArray($pregunta_id);
 
-
-
             Redirect::to("/pregunta/show/$pregunta_id");
-
         }else{
-            $partida = $this->partidaModel->getPartidasUsuario($_SESSION['id'])[0];
             $data['opcionEsCorrecta']= "fin ";
 
             Redirect::to('/juego/perdido');
