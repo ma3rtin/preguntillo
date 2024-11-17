@@ -46,6 +46,7 @@ class UsuarioController
         else{
             $_SESSION['username'] = $user['usuario'];
             $_SESSION['id'] = $user['id'];
+            $_SESSION['admin'] = $user['rol'] == 'ADMIN';
             $this->redirectHome();
         }
     }
@@ -126,7 +127,7 @@ class UsuarioController
         if (isset($_SESSION['id'])){
             $data['css'] = "/public/css/home.css";
             $data['user'] = $this->model->getUserData($_SESSION['username']);
-            $data['userSession'] = $_SESSION;
+            $data['admin'] = $_SESSION['admin'];
             $this->presenter->show('home', $data);
         }
         else{
