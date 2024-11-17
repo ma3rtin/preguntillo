@@ -12,7 +12,7 @@ class UsuarioModel
 
     public function validate($user, $pass)
     {
-        $sql = "SELECT u.id, u.usuario, u.activo
+        $sql = "SELECT u.id, u.usuario, u.activo, u.rol
                 FROM usuario u
                 WHERE usuario = '" . $user . "' 
                 AND contraseña = '" . $pass . "'";
@@ -153,6 +153,31 @@ class UsuarioModel
         $resultado = $this->database->query($sql);
 
         return $resultado;
+    }
+
+    public function getCantJugadores(){
+        $sql = "SELECT COUNT(id) AS cant_jugadores FROM usuario WHERE activo = 1 AND rol = 'USER'";
+        $resultado = $this->database->query($sql)[0];
+        return $resultado['cant_jugadores'];
+    }
+
+    public function getCantPartidas(){
+        $sql = "SELECT COUNT(id) AS cant_partidas FROM partida";
+        $resultado = $this->database->query($sql)[0];
+        return $resultado['cant_partidas'];
+    }
+
+    public function getCantPreguntas(){
+        $sql = "SELECT COUNT(id) AS cant_preguntas FROM pregunta";
+        $resultado = $this->database->query($sql)[0];
+        return $resultado['cant_preguntas'];
+    }
+
+    public function getEstadisticasDeUsuarios()
+    {
+        $sql = "SELECT u.usuario, u.nombre, COUNT(p.usuario_id) AS cant_partidas, CASE WHEN u.preguntas_recibidas = 0 THEN 0 ELSE ROUND((u.preguntas_acertadas * 100 / u.preguntas_recibidas), 0) END AS porcentaje_aciertos FROM usuario u JOIN partida p ON p.usuario_id = u.id WHERE u.activo = 1 AND u.rol = 'USER' GROUP BY u.usuario, u.nombre, u.preguntas_acertadas, u.preguntas_recibidas;";
+
+        return $this->database->query($sql);
     }
 
 }
