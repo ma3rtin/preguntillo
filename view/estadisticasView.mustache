@@ -1,0 +1,31 @@
+<ul>
+    <li>Cantidad de jugadores: {{cantJugadores}}</li>
+    <li>Cantidad de partidas: {{cantPartidas}}</li>
+    <li>Cantidad de preguntas: {{cantPreguntas}}</li>
+</ul>
+
+<table>
+    <thead>
+    <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Cantidad de partidas</th>
+        <th>Porcentaje de aciertos</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#usuarios}}
+        <tr>
+            <td>{{usuario}}</td>
+            <td>{{nombre}}</td>
+            <td>{{cant_partidas}}</td>
+            <td>{{porcentaje_aciertos}}%</td>
+        </tr>
+    {{/usuarios}}
+    {{^usuarios}}
+        <tr>
+            <td colspan="4">No hay datos disponibles.</td>
+        </tr>
+    {{/usuarios}}
+    </tbody>
+</table>
