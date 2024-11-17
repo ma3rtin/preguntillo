@@ -19,6 +19,7 @@ class AdminController
         $data['cantPreguntas'] = $this->model->getCantPreguntas();
 
         $data['usuarios'] = $this->model->getEstadisticasDeUsuarios();
+        $data['css'] = '/public/css/estadisticas.css';
 
         $this->presenter->show('estadisticas', $data);
     }

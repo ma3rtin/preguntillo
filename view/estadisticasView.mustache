@@ -1,16 +1,19 @@
-<ul>
-    <li>Cantidad de jugadores: {{cantJugadores}}</li>
-    <li>Cantidad de partidas: {{cantPartidas}}</li>
-    <li>Cantidad de preguntas: {{cantPreguntas}}</li>
-</ul>
+<div class="list-container">
+    <ul class="list-group list-group-horizontal-lg">
+        <li class="list-group-item"><span class="descripcion">Cantidad de jugadores</span> <br> <span class="cantidad">{{cantJugadores}}</span></li>
+        <li class="list-group-item"><span class="descripcion">Cantidad de partidas</span> <br> <span class="cantidad"> {{cantPartidas}}</span></li>
+        <li class="list-group-item"><span class="descripcion">Cantidad de preguntas</span> <br> <span class="cantidad"> {{cantPreguntas}}</span></li>
+    </ul>
+</div>
 
-<table>
-    <thead>
+<div class="table-responsive">
+<table class="table table-bordered">
+    <thead class="thead-light">
     <tr>
-        <th>Usuario</th>
-        <th>Nombre</th>
-        <th>Cantidad de partidas</th>
-        <th>Porcentaje de aciertos</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cantidad de partidas jugadas</th>
+        <th scope="col">Porcentaje de aciertos</th>
     </tr>
     </thead>
     <tbody>
@@ -29,3 +32,4 @@
     {{/usuarios}}
     </tbody>
 </table>
+</div>
