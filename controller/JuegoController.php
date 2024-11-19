@@ -21,8 +21,8 @@ class JuegoController{
 
     public function perdido() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $data['error'] = $_SESSION['error'];
-        unset($_SESSION['error']);
+//        $data['error'] = $_SESSION['error'];
+//        unset($_SESSION['error']);
         $nuevoPuntaje = $this->partidaModel->getPuntajeUser($_SESSION['id']);
         $this->partidaModel->actualizarRanking($_SESSION['id'],$nuevoPuntaje);
         $this->presenter->authView($data['userSession'],'juegoPerdido', $data);
