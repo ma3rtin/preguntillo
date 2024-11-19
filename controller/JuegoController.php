@@ -42,6 +42,7 @@ class JuegoController{
     }
 
     public function verRanking() {
+        $data['css'] = "/public/css/ranking.css";
         $data['ranking'] = $this->partidaModel->obtenerRankingConUsuarios();
 
         $this->presenter->show('ranking', $data);
