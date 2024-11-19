@@ -1,29 +1,57 @@
 {{#user}}
-    <h1>Bienvenido <a href="/usuario/profile/username={{usuario}}">{{nombre}}</a></h1>
-        <div class="card card-body mb-3">
-            <div class="d-flex align-items-center">
-                <div class="flex-grow-1 ms-3">
-                    <p>Nombre: {{usuario}}</p>
-                    <p>Mail: {{mail}}</p>
-                    <p>Nivel de jugador: {{userSession.nivel}}</p>
-                    <p>Puntaje: {{userSession.puntaje}}</p>
-                </div>
-                <div class="flex-grow-1  d-flex flex-column align-items-center justify-content-center mb-3">
-                    <div class="mb-3">
-                        {{#userSession.isAdmin}}
-                            <a href="/admin" class="btn btn-dark">Panel Administrativo</a>
-                        {{/userSession.isAdmin}}
-                        <a href="?page=juego&action=crear" class="btn btn-success">Jugar partida</a>
-                    </div>
-                    <div>
-                        <a href="?page=juego&action=verRanking" class="btn btn-secondary">Ranking</a>
-                        <a href="/partida" class="btn btn-info">Partidas</a>
-                        {{^userSession.isAdmin}}
-                            <a href="/pregunta/sugerir" class="btn btn-warning">Sugerir una pregunta</a>
-                        {{/userSession.isAdmin}}
-                    </div>
-
-                </div>
-            </div>
+<main class="container">
+    <section class="user-info">
+        <img src="/public/img/{{foto}}" alt="Avatar del usuario" class="avatar">
+        <div class="info">
+            <a href="/usuario/profile/username={{usuario}}" class="usuario-link">{{usuario}}</a>
+            <p>Nombre: {{nombre}}</p>
+            <a href="?page=juego&action=verRanking" class="ranking-link">Ver ranking</a>
         </div>
+    </section>
+    <section class="actions">
+         <button class="btn"><a href="?page=juego&action=crear"> Nueva partida</a></button>
+        <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
+    </section>
+    <section class="game-history">
+        <h3>Últimas partidas</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Puntaje</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
 {{/user}}
