@@ -8,6 +8,13 @@
             <a href="?page=juego&action=verRanking" class="ranking-link">Ver ranking</a>
         </div>
     </section>
+{{#admin}}
+    <section class="actions">
+        <button class="btn"><a href="/admin/showStadistics">Ver estadísticas</a></button>
+    </section>
+    </main>
+{{/admin}}
+{{^admin}}
     <section class="actions">
          <button class="btn"><a href="?page=juego&action=crear"> Nueva partida</a></button>
         <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
@@ -52,6 +59,5 @@
         </table>
     </section>
 </main>
-</body>
-</html>
+{{/admin}}
 {{/user}}
