@@ -1,7 +1,7 @@
 {{#user}}
     <a href="/usuario/home">Volver</a>
     <div class="profile-info">
-        <img src="/public/users/{{foto}}" alt="{{name}}">
+        <img src="/public/img/{{foto}}" alt="{{name}}">
         <h1>@{{usuario}}</h1>
         <p>{{nombre}}</p>
     </div>
@@ -9,20 +9,20 @@
     <div class="profile-card">
         <div class="card-info">
             <i class="fa-solid fa-gamepad"></i>
-            <p class="info-amount">Cantidad</p>
-            <p class="info-title">Partidas</p>
+            <p class="info-amount">Partidas jugadas</p>
+            <p class="info-title">{{partidas}}</p>
         </div>
         <div class="divider"></div>
         <div class="card-info">
             <i class="fa-solid fa-trophy"></i>
-            <p class="info-amount">Cantidad</p>
-            <p class="info-title">Ranking</p>
+            <p class="info-amount">Puntaje</p>
+            <p class="info-title">{{puntaje}}</p>
         </div>
         <div class="divider"></div>
         <div class="card-info">
             <i class="fa-solid fa-star"></i>
-            <p class="info-amount">Cantidad</p>
-            <p class="info-title">Experiencia</p>
+            <p class="info-amount">Nivel</p>
+            <p class="info-title">{{nivel}}</p>
         </div>
     </div>
 

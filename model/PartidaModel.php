@@ -87,6 +87,12 @@ class PartidaModel {
         return $this->database->query($sql);
     }
 
+    public function getCantidadPartidasUsuario($id){
+        $sql = "SELECT COUNT(*) as cantidad FROM partida WHERE usuario_id = $id";
+        $result = $this->database->query($sql);
+        return $result[0]['cantidad'] ?? 0;
+    }
+
     public function getPuntajeUser($id){
         $sql = "SELECT SUM(puntaje) AS puntaje_total FROM partida WHERE usuario_id = $id";
         $resultado = $this->database->query($sql);
