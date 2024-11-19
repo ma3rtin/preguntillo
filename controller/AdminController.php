@@ -14,13 +14,18 @@ class AdminController
 
     public function showStadistics()
     {
-        $data['cantJugadores'] = $this->model->getCantJugadores();
-        $data['cantPartidas'] = $this->model->getCantPartidas();
-        $data['cantPreguntas'] = $this->model->getCantPreguntas();
+        if($_SESSION['admin']){
+            $data['cantJugadores'] = $this->model->getCantJugadores();
+            $data['cantPartidas'] = $this->model->getCantPartidas();
+            $data['cantPreguntas'] = $this->model->getCantPreguntas();
 
-        $data['usuarios'] = $this->model->getEstadisticasDeUsuarios();
-        $data['css'] = '/public/css/estadisticas.css';
+            $data['usuarios'] = $this->model->getEstadisticasDeUsuarios();
+            $data['css'] = '/public/css/estadisticas.css';
 
-        $this->presenter->show('estadisticas', $data);
+            $this->presenter->show('estadisticas', $data);
+        }else{
+            header('location: /loginForm');
+            exit();
+        }
     }
 }
