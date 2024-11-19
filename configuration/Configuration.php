@@ -35,7 +35,7 @@ class Configuration
 
     public function getUsuarioController()
     {
-        return new UsuarioController($this->getUsuarioModel(), $this->getQRMaker(), $this->getEmailSender(), $this->getPresenter());
+        return new UsuarioController($this->getUsuarioModel(), $this->getQRMaker(), $this->getEmailSender(), $this->getPartidaModel(), $this->getPresenter());
     }
 
     private function getQRMaker()

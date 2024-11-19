@@ -44,7 +44,7 @@ class UsuarioModel
         if(!$this->checkUserExists($user) && !$this->checkEmailExists($email)){
             $photoType = explode('/', $photo['type'])[1];
             $photoValue = $user . "." . $photoType;
-            $path = "public/users/" . $photoValue;
+            $path = "public/img/" . $photoValue;
             move_uploaded_file($photo['tmp_name'], $path);
 
             $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) 

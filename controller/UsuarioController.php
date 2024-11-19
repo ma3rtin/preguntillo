@@ -5,12 +5,14 @@ class UsuarioController
     private $emailSender;
     private $presenter;
     private $qrMaker;
+    private $partidaModel;
 
-    public function  __construct($model, $qrMaker,$emailSender, $presenter)
+    public function  __construct($model, $qrMaker,$emailSender, $partidaModel, $presenter)
     {
         $this->model = $model;
         $this->qrMaker = $qrMaker;
         $this->emailSender = $emailSender;
+        $this->partidaModel = $partidaModel;
         $this->presenter = $presenter;
     }
 
@@ -112,6 +114,9 @@ class UsuarioController
         $username = isset($_GET['username']) ? $_GET['username'] : null;
         $data['css'] = "/public/css/profile.css";
         $data['user'] = $this->model->getUserData($username);
+        $data['partidas'] = $this->partidaModel->getCantidadPartidasUsuario($data['user']['id']);
+        $data['puntaje'] = $this->partidaModel->getPuntajeUser($data['user']['id']);
+        $data['nivel'] = $this->partidaModel->getNivelUsuario($data['user']['id']);
         $latitud = $data['user']['latitud'];
         $longitud = $data['user']['longitud'];
         $apiKey = 'AIzaSyCUkdndYG9gSK35o6qXfqaG1w8i5oj1TGA';

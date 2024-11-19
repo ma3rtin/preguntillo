@@ -3,9 +3,14 @@
 
         {{#pregunta}}
             <div class="col mb-3">
-                <!--<div class="progress my-2">
-                    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>-->
+                <div class="card card-body mb-5">
+                    <div class="card-section mb-3">
+                        <h5 class="card-title">Tiempo restante:</h5>
+                        <div id="timer" class="progress my-2">
+                            <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p id="tiempoRestante" class="text-danger"></p>
+                    </div>
 
                 <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
 
@@ -68,5 +73,57 @@
             </div>
         {{/correcta}}
 
+        <div class="modal fade" id="timeOutModal" tabindex="-1" aria-labelledby="timeOutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger" id="timeOutModalLabel">¡Tiempo agotado!</h5>
+                    </div>
+                    <div class="modal-body">
+                        Se acabó el tiempo para responder a esta pregunta.
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/juego/perdido" class="btn btn-danger">Continuar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let tiempoTotal = 20;
+        let tiempoRestante = tiempoTotal;
+
+        const barraProgreso = document.getElementById('barraProgreso');
+        const textoTiempo = document.getElementById('tiempoRestante');
+        let interval;
+
+        function iniciarTemporizador() {
+            interval = setInterval(() => {
+                tiempoRestante--;
+
+                barraProgreso.style.width = ((tiempoRestante / tiempoTotal) * 100) + '%';
+                textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
+
+                if (tiempoRestante <= 0) {
+                    clearInterval(interval);
+                    const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
+                    timeOutModal.show();
+                }
+            }, 1000);
+        }
+
+        iniciarTemporizador();
+
+        const reportingModal = document.getElementById('reportingModal');
+        if (reportingModal) {
+            const bootstrapModal = new bootstrap.Modal(reportingModal);
+            reportingModal.addEventListener('shown.bs.modal', () => {
+                clearInterval(interval);
+            });
+        }
+    });
+</script>
