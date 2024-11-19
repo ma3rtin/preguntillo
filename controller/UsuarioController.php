@@ -129,15 +129,9 @@ class UsuarioController
 
     public function home()
     {
-        if (isset($_SESSION['id'])){
-            $data['css'] = "/public/css/home.css";
-            $data['user'] = $this->model->getUserData($_SESSION['username']);
-            $data['admin'] = $_SESSION['admin'];
-            $this->presenter->show('home', $data);
-        }
-        else{
-            $this->redirectLoginForm();
-        }
+        $data = $this->verificarSesion();
+        $data['css'] = "/public/css/home.css";
+        $this->presenter->show('home', $data);
     }
 
     public function logOut()
@@ -158,5 +152,16 @@ class UsuarioController
     {
         header('location: /loginForm');
         exit();
+    }
+
+    public function verificarSesion(){
+        if(isset($_SESSION['id'])){
+            $data['user'] = $this->model->getUserData($_SESSION['username']);
+            $data['admin'] = $_SESSION['admin'];
+            return $data;
+        }else{
+            $this->redirectLoginForm();
+            return null;
+        }
     }
 }

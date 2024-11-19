@@ -20,3 +20,8 @@
     color: #673eb8;
     font-size: 35px;
 }
+
+.table-responsive{
+    width: 60%;
+    margin: auto;
+}
