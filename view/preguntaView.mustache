@@ -1,9 +1,5 @@
-<main class="container my-3">
-    <div class="row">
-
+<main class="container-supremo">
         {{#pregunta}}
-            <div class="col mb-3">
-                <div class="card card-body mb-5">
                     <div class="card-section mb-3">
                         <h5 class="card-title">Tiempo restante:</h5>
                         <div id="timer" class="progress my-2">
@@ -17,40 +13,32 @@
 
                     <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
 
-                    <div class="card card-body mb-5">
+                    <div class="card-pregunta">
                         <div class="card-section mb-3">
                             <!--<h5 class="card-title">Mi puntaje es: {{puntaje}}</h5>-->
-                            <h5 class="card-title">La dificultad de la pregunta es: {{dificultad}}</h5>
+                            <h5 class="card-title">Dificultad: {{dificultad}}</h5>
                             <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
                         </div>
-                        <div class="d-flex justify-content-between ">
-                            <div class="card-section mb-3">
-                                <h5 class="card-title">Pregunta:</h5>
-                                <p class="card-text">{{pregunta}}</p>
+                            <div class="pregunta">
+                                <p>{{pregunta}}</p>
                             </div>
-                        </div>
                         <div class="card-section mb-3">
-                            <h5 class="card-title">Opciones:</h5>
-                            <ul class="list-group">
+                            <ul class="opciones">
                                 {{#opciones}}
-
-                                    <li class="list-group-item">
-                                        <label>
-                                            <input type="radio" name="opcion_id" value=" {{id}}" required> {{opcion}}
-                                        </label>
+                                    <li class="opciones-item">
+                                        <input type="radio" id="opcion_{{id}}" name="opcion_id" value="{{id}}" required>
+                                        <label for="opcion_{{id}}">{{opcion}}</label>
                                     </li>
                                 {{/opciones}}
                             </ul>
                         </div>
 
                     </div>
-
-                    <button type="submit" class="btn btn-success">Validar Respuestas</button>
+                    <button type="submit">Validar Respuestas</button>
                 </form>
                 {{#partidaSesion}}
                     <pre>{{.}}</pre>
                 {{/partidaSesion}}
-            </div>
         {{/pregunta}}
 
         {{#correcta}}
@@ -89,7 +77,6 @@
             </div>
         </div>
 
-    </div>
 </main>
 
 <script>

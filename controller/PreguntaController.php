@@ -28,6 +28,7 @@ class PreguntaController{
     }
 
     public function show(){
+        $data['css'] = "/public/css/pregunta.css";
 //        $data['puntaje'] = $this->partidaModel->getPartidaPuntaje($data['id']);
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
         $this->usuarioModel->registrarPreguntaEntregada($_SESSION['id']);
@@ -45,6 +46,7 @@ class PreguntaController{
 
     public function validarOpcion(){
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
+        $data['css'] = "/public/css/pregunta.css";
 
         $pregunta_id=  $_POST['pregunta_id'];
         $opcionSeleccionada = $_POST['opcion_id'];

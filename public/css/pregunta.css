@@ -1,0 +1,129 @@
+body {
+    background-color: #e1e3ff;
+    font-family: "Lilita One", sans-serif;
+    color: #444444;
+}
+
+main {
+    margin: 0 auto;
+}
+
+.container-supremo {
+    margin-top: 50px;
+    background-color: #ffd10b;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+    height: 800px;
+}
+
+.progress {
+    background-color: #f2f2f2;
+    height: 20px;
+    border-radius: 50px;
+    overflow: hidden;
+    width: 900px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background-color: #8c52ff;
+    transition: width 0.3s ease-in-out;
+}
+
+#formulario-pregunta{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 50px;
+    width: 800px;
+    align-items: center;
+    padding: 30px;
+}
+
+.pregunta{
+    text-align: center;
+    font-size: 40px;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0 auto;
+    list-style: none;
+}
+
+.opciones-titulo{
+    align-items: center;
+    text-align: center;
+}
+
+.opciones-item input[type="radio"] {
+    display: none;
+}
+
+.opciones-item label {
+    display: block;
+    background-color: #8c52ff;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 4px 4px 0 #5300f7;
+    width: 500px;
+}
+
+.opciones-item input[type="radio"]:checked + label {
+    background-color: #00bf63;
+    box-shadow: 4px 4px 0 #007b40;
+}
+
+.opciones-item label:hover {
+    background-color: #673eb8;
+    transform: translateY(2px);
+}
+
+button[type="submit"] {
+    margin-top: 20px;
+    background-color: #00bf63;
+    box-shadow: 4px 4px 0 #007b40;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 #007b40;
+}
+
+
+.text-danger {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-footer .btn {
+    border-radius: 10px;
+}
