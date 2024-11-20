@@ -1,63 +1,52 @@
 {{#user}}
-<main class="container">
-    <section class="user-info">
-        <img src="/public/img/{{foto}}" alt="Avatar del usuario" class="avatar">
-        <div class="info">
-            <a href="/usuario/profile/username={{usuario}}" class="usuario-link">{{usuario}}</a>
-            <p>Nombre: {{nombre}}</p>
-            <a href="?page=juego&action=verRanking" class="ranking-link">Ver ranking</a>
-        </div>
-    </section>
-{{#admin}}
-    <section class="actions">
-        <button class="btn"><a href="/admin/showStadistics">Ver estadísticas</a></button>
-    </section>
-    </main>
-{{/admin}}
-{{^admin}}
-    <section class="actions">
-         <button class="btn"><a href="?page=juego&action=crear"> Nueva partida</a></button>
-        <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
-    </section>
-    <section class="game-history">
-        <h3>Últimas partidas</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Puntaje</th>
-                <th>Estado</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-</main>
-{{/admin}}
+    <main class="container">
+        <section class="user-info">
+            <img src="/public/img/{{foto}}" alt="Avatar del usuario" class="avatar">
+            <div class="info">
+                <a href="/usuario/profile/username={{usuario}}" class="usuario-link">{{usuario}}</a>
+                <p>Nombre: {{nombre}}</p>
+                <a href="?page=juego&action=verRanking" class="ranking-link">Ver ranking</a>
+            </div>
+        </section>
+
+    {{#admin}}
+            <section class="actions">
+                <button class="btn"><a href="/admin/showStadistics">Ver estadísticas</a></button>
+            </section>
+        </main>
+    {{/admin}}
+
+    {{^admin}}
+        <section class="actions">
+            <button class="btn"><a href="?page=juego&action=crear">Nueva partida</a></button>
+            <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
+        </section>
+
+        <section class="game-history">
+            <h3>Últimas partidas</h3>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Puntaje</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#partidas}}
+                        <tr>
+                            <td>{{fecha}}</td>
+                            <td>{{puntaje}}</td>
+                        </tr>
+                    {{/partidas}}
+                    </tbody>
+                </table>
+
+            {{^partidas}}
+                <p>No tienes partidas registradas aún.</p>
+            {{/partidas}}
+        </section>
+
+        </main>
+    {{/admin}}
 {{/user}}

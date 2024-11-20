@@ -131,6 +131,7 @@ class UsuarioController
     {
         $data = $this->verificarSesion();
         $data['css'] = "/public/css/home.css";
+        $data['partidas'] = $this->partidaModel->getPartidasUsuario($data['user']['id']);
         $this->presenter->show('home', $data);
     }
 

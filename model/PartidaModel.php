@@ -81,8 +81,7 @@ class PartidaModel {
 
     public function getPartidasUsuario($id){
         $sql = "SELECT * FROM partida WHERE usuario_id = $id
-                      ORDER BY fecha DESC
-                      LIMIT 1";
+                      ORDER BY fecha DESC LIMIT 5";
 
         return $this->database->query($sql);
     }
@@ -124,15 +123,20 @@ class PartidaModel {
         $this->database->execute($sql);
     }
 
-    public function getNivelUsuario($id){
+    public function getNivelUsuario($id) {
         if (!$id) {
             return null;
         }
 
-        $sql = "SELECT AVG(puntaje) AS promedio FROM partida WHERE usuario_id = '$id'";
-        $modelResponse = $this->database->query($sql);
+        $sql = "SELECT nivel FROM usuario WHERE id = '$id'";
+        $resultado = $this->database->query($sql);
 
-        return isset($modelResponse[0]['promedio']) ? number_format($modelResponse[0]['promedio'] / 10, 2) : 0;
+        if (isset($resultado[0]['nivel'])) {
+            return $resultado[0]['nivel'];
+        }
+
+        return 0;
     }
+
 
 }
