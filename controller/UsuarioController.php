@@ -48,7 +48,17 @@ class UsuarioController
         else{
             $_SESSION['username'] = $user['usuario'];
             $_SESSION['id'] = $user['id'];
-            $_SESSION['admin'] = $user['rol'] == 'ADMIN';
+            switch($user['rol']){
+                case 'ADMIN':
+                    $_SESSION['admin'] = true;
+                    break;
+                case 'USER':
+                    $_SESSION['jugador'] = true;
+                    break;
+                case 'EDITOR':
+                    $_SESSION['editor'] = true;
+                    break;
+            }
             $this->redirectHome();
         }
     }
@@ -67,14 +77,14 @@ class UsuarioController
         $pass = isset($_POST['pass']) ? $_POST['pass'] : null;
         $pass2 = isset($_POST['pass2']) ? $_POST['pass2'] : null;
         $birthyear = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
+        $gender = isset($_POST['gender']) ? $_POST['gender'] : null;
+        $country = isset($_POST['country']) ? $_POST['country'] : null;
         $photo = ($_FILES['photo']['size'] > 0) ? $_FILES['photo'] : null;
-        $sexo = isset($_POST['sexo']) ? $_POST['sexo'] : null;
-        $pais = isset($_POST['pais']) ? $_POST['pais'] : null;
         $latitude = isset($_POST['latitude']) ? $_POST['latitude'] : null;
         $longitude = isset($_POST['longitude']) ? $_POST['longitude'] : null;
 
         if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($pass2) || is_null($birthyear)
-         || is_null($photo || $sexo) || is_null($pais)) {
+            || is_null($gender) || is_null($country) || is_null($photo)) {
             $data['css'] = "/public/css/registerForm.css";
             $data['error'] = "Todos los campos son obligatorios";
             $this->presenter->show('register', $data);
@@ -88,13 +98,14 @@ class UsuarioController
             return;
         }
 
-        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo, $sexo, $pais, $latitude, $longitude);
+        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $gender, $country, $photo, $latitude, $longitude);
 
         $this->emailSender->sendValidationMail($data[0], $data[1], $data[2]);
 
         header("location: /usuario/loginForm");
         exit();
     }
+
 
     public function validateEmail()
     {
@@ -160,7 +171,14 @@ class UsuarioController
     public function verificarSesion(){
         if(isset($_SESSION['id'])){
             $data['user'] = $this->model->getUserData($_SESSION['username']);
-            $data['admin'] = $_SESSION['admin'];
+
+            if(isset($_SESSION['admin']) && $_SESSION['admin'])
+                $data['admin'] = true;
+            if(isset($_SESSION['jugador']) && $_SESSION['jugador'])
+                $data['jugador'] = true;
+            if(isset($_SESSION['editor']) && $_SESSION['editor'])
+                $data['editor'] = true;
+
             return $data;
         }else{
             $this->redirectLoginForm();
