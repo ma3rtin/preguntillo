@@ -1,3 +1,10 @@
+a{
+    text-decoration: none;
+    color: #673eb8;
+    font-size: 32px;
+    margin-left: 5px;
+}
+
 .list-container{
     display: flex;
     flex-direction: column;
@@ -6,8 +13,6 @@
 }
 
 .list-group-item{
-    padding: 20px;
-    margin: 20px 0;
     text-align: center;
 }
 
@@ -22,6 +27,40 @@
 }
 
 .table-responsive{
-    width: 60%;
+    width: 53.5%;
     margin: auto;
+}
+
+
+.chart-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.chart-container div{
+    display: flex;
+    justify-content: center;
+}
+
+.button-container button{
+    margin: 0 10px;
+    padding: 6px 13px;
+    border: none;
+    border-radius: 5px;
+    background-color: #673eb8;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#line_chart_div{
+    width: 100%;
+    height: 400px;
+}
+
+h1{
+    text-align: center;
 }

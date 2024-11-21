@@ -1,38 +1,59 @@
-<a href="/usuario/home">Volver</a>
+<a href="/usuario/home"><i class="fa-solid fa-arrow-left"></i></a>
 
+<h1>Estadísticas del Juego</h1>
+<div class="chart-container">
+    <div class="button-container">
+        <button onclick="actualizarGrafico(7)">Última semana</button>
+        <button onclick="actualizarGrafico(30)">Último mes</button>
+        <button onclick="actualizarGrafico(365)">Último año</button>
+    </div>
+    <div id="line_chart_div"></div>
+</div>
 <div class="list-container">
     <ul class="list-group list-group-horizontal-lg">
-        <li class="list-group-item"><span class="descripcion">Cantidad de jugadores</span> <br> <span class="cantidad">{{cantJugadores}}</span></li>
-        <li class="list-group-item"><span class="descripcion">Cantidad de partidas</span> <br> <span class="cantidad"> {{cantPartidas}}</span></li>
-        <li class="list-group-item"><span class="descripcion">Cantidad de preguntas</span> <br> <span class="cantidad"> {{cantPreguntas}}</span></li>
+        <li class="list-group-item">
+            <span class="descripcion">Cantidad de jugadores</span> <br>
+            <span class="cantidad">{{cantJugadores}}</span>
+        </li>
+        <li class="list-group-item">
+            <span class="descripcion">Cantidad de partidas</span> <br>
+            <span class="cantidad">{{cantPartidas}}</span>
+        </li>
+        <li class="list-group-item">
+            <span class="descripcion">Cantidad de preguntas</span> <br>
+            <span class="cantidad">{{cantPreguntas}}</span>
+        </li>
     </ul>
 </div>
 
 <div class="table-responsive">
-<table class="table table-bordered">
-    <thead class="thead-light">
-    <tr>
-        <th scope="col">Usuario</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Cantidad de partidas jugadas</th>
-        <th scope="col">Porcentaje de aciertos</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#usuarios}}
+    <table class="table table-bordered">
+        <thead class="thead-light">
         <tr>
-            <td>{{usuario}}</td>
-            <td>{{nombre}}</td>
-            <td>{{cant_partidas}}</td>
-            <td>{{porcentaje_aciertos}}%</td>
+            <th scope="col">Usuario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Cantidad de partidas jugadas</th>
+            <th scope="col">Porcentaje de aciertos</th>
         </tr>
-    {{/usuarios}}
-    {{^usuarios}}
-        <tr>
-            <td colspan="4">No hay datos disponibles.</td>
-        </tr>
-    {{/usuarios}}
-    </tbody>
-</table>
-    <a href="/admin/imprimirReporte" class="btn btn-primary">Imprimir reporte en PDF</a>
+        </thead>
+        <tbody>
+        {{#usuarios}}
+            <tr>
+                <td>{{usuario}}</td>
+                <td>{{nombre}}</td>
+                <td>{{cant_partidas}}</td>
+                <td>{{porcentaje_aciertos}}%</td>
+            </tr>
+        {{/usuarios}}
+        {{^usuarios}}
+            <tr>
+                <td colspan="4">No hay datos disponibles.</td>
+            </tr>
+        {{/usuarios}}
+        </tbody>
+    </table>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{{js}}"></script>
+
+
