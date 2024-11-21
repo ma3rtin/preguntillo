@@ -11,10 +11,20 @@
 {{#admin}}
     <section class="actions">
         <button class="btn"><a href="/admin/showStadistics">Ver estadísticas</a></button>
+        <button class="btn"><a href="/admin/showGraphs?fecha=7">Ver gráficos</a></button>
     </section>
     </main>
 {{/admin}}
-{{^admin}}
+{{#editor}}
+    <section class="actions">
+        <button class="btn"><a href="/editor/verPreguntasReportadas">Ver preguntas reportadas</a></button>
+        <button class="btn"><a href="/editor/verPreguntasSugeridas">Ver preguntas sugeridas</a></button>
+        <button class="btn"><a href="/editor/crearPreguntas">Crear preguntas</a></button>
+        <button class="btn"><a href="/editor/editarPreguntas">Editar preguntas</a></button>
+    </section>
+    </main>
+{{/editor}}
+{{#jugador}}
     <section class="actions">
          <button class="btn"><a href="?page=juego&action=crear"> Nueva partida</a></button>
         <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
@@ -59,5 +69,5 @@
         </table>
     </section>
 </main>
-{{/admin}}
+{{/jugador}}
 {{/user}}
