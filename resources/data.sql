@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS pw2;
 
 USE pw2;
 
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          usuario VARCHAR(100) NOT NULL,
                          nombre VARCHAR(150),
@@ -11,13 +11,16 @@ CREATE TABLE Usuario (
                          contraseña VARCHAR(100) NOT NULL,
                          año_nac INT,
                          foto VARCHAR(100),
+                         pais VARCHAR(100),
+                         genero VARCHAR(100),
                          activo BOOL,
                          latitud DOUBLE NOT NULL,
                          longitud DOUBLE NOT NULL,
                          nivel DOUBLE DEFAULT 0.5,
                          preguntas_recibidas INT(10) DEFAULT 0,
                          preguntas_acertadas INT(10) DEFAULT 0,
-                         rol varchar(10) DEFAULT 'USER'
+                         rol varchar(10) DEFAULT 'USER',
+                         fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 create table token(
@@ -107,8 +110,6 @@ create table usuario_pregunta(
                                  foreign key(pregunta_id) references pregunta(id),
                                  foreign key(usuario_id) references usuario(id));
 
-INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) values
-    ('LiraDTA', 'Lira', 'lira@gmail.com', '123', 2003, 'lira.jpg', 1, -34.609801928878525, -58.39413128051759);
 
 INSERT INTO modulo(id,name) VALUES (1,'HISTORIA'), (2,'MATEMÁTICAS');
 INSERT INTO tipo(id,name) VALUES (1,'Opciones con respuesta única');
@@ -151,3 +152,17 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (6, '6', 'si'),
                                                               (6, '12', 'no'),
                                                               (6, '9', 'NO');
+
+
+INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, pais, genero, activo, latitud, longitud, fecha_creacion) values
+                                                                                                                                    ('LiraDTA', 'Lira', 'lira@gmail.com', '123', 2003, 'lira.jpg', 'Uruguay', 'MUJER', 1, -34.609801928878525, -58.39413128051759, '2024-11-19'),
+                                                                                                                                    ('Carlos123', 'Carlos', 'carlos123@gmail.com', '456', 1988, 'carlos.jpg', 'Argentina', 'HOMBRE', 1, -34.603722, -58.381592, '2024-11-18'),
+                                                                                                                                    ('Ana_Rocha', 'Ana Rocha', 'ana.rocha@gmail.com', '789', 1995, 'ana.jpg', 'Brasil', 'MUJER', 1, -23.55052, -46.633308, '2024-11-17'),
+                                                                                                                                    ('Julio_Fer', 'Julio Fernández', 'julio.fer@gmail.com', '321', 1990, 'julio.jpg', 'Chile', 'HOMBRE', 1, -33.44889, -70.669265, '2024-11-15'),
+                                                                                                                                    ('Sofia2024', 'Sofia', 'sofia2024@gmail.com', '555', 2000, 'sofia.jpg', 'Perú', 'MUJER', 1, -12.046374, -77.042793, '2024-11-14'),
+                                                                                                                                    ('JuanP1989', 'Juan Pablo', 'juanp1989@gmail.com', '1234', 1989, 'juanp.jpg', 'Colombia', 'HOMBRE', 1, 4.60971, -74.08175, '2024-11-13'),
+                                                                                                                                    ('MartinezNoa', 'Noa Martínez', 'noa.martinez@gmail.com', '9876', 2005, 'noa.jpg', 'Argentina', 'NO ESPECIFICA', 1, -34.601806, -58.380378, '2024-11-12'),
+                                                                                                                                    ('LuisAlva', 'Luis Alvarez', 'luis.alvarez@gmail.com', '1122', 1992, 'luis.jpg', 'Chile', 'HOMBRE', 1, -33.44889, -70.669265, '2024-11-11'),
+                                                                                                                                    ('Mara.Lopez', 'Mara López', 'mara.lopez@gmail.com', '3344', 1998, 'mara.jpg', 'México', 'MUJER', 1, 19.432608, -99.133209, '2024-11-10'),
+                                                                                                                                    ('Emma_93', 'Emma Rodríguez', 'emma.rodriguez@gmail.com', '4455', 1993, 'emma.jpg', 'España', 'MUJER', 1, 40.416775, -3.70379, '2023-11-09'),
+                                                                                                                                    ('CarlosM_2022', 'Carlos Morales', 'carlos.morales@gmail.com', '8899', 1994, 'carlosm.jpg', 'México', 'HOMBRE', 1, 19.432608, -99.133209, '2022-11-19');
