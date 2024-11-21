@@ -6,7 +6,6 @@
 <h2 class="body-title">Registro de Usuario</h2>
 
 <div class="container-form">
-
 <form class="register-form" action="/usuario/register" method="POST" enctype="multipart/form-data">
     <div class="field-container">
         <div class="input-container">
@@ -26,6 +25,13 @@
             <input type="password" id="pass2" name="pass2" required><br><br>
         </div>
         <div class="input-container">
+            <label for="gender">Género:</label><br>
+            <select id="gender" name="gender" required>
+                <option value="">Selecciona tu género</option>
+                <option value="HOMBRE">Hombre</option>
+                <option value="MUJER">Mujer</option>
+                <option value="NO ESPECIFICA">Prefiero no decirlo</option>
+            </select><br><br>
 
         <label for="birthyear">Año de nacimiento:</label><br>
         <input type="number" id="birthyear" name="birthyear" min="1900" max="2024" required><br><br>
@@ -33,8 +39,12 @@
         <label for="photo">Subir foto:</label><br>
         <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
 
+            <label for="country">País:</label><br>
+            <select id="country" name="country" required>
+                <option value="">Selecciona un país</option>
+            </select><br><br>
         <label for="latitude">Ubicación:</label><br>
-        <div id="map" style="width: 100%; height: 250px;"></div>
+        <div id="map" style="width: 100%; height: 200px;"></div>
         <input type="hidden" id="latitude" name="latitude">
         <input type="hidden" id="longitude" name="longitude">
         </div>
@@ -46,8 +56,33 @@
 </form>
 </div>
 <script>
-    let map, marker;
+    function loadCountries() {
+        const apiUrl = 'https://restcountries.com/v3.1/all?languages=es';
 
+        fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const countrySelect = document.getElementById("country");
+
+                    data.forEach(country => {
+                        const option = document.createElement("option");
+
+                        const countryNameInSpanish = country.translations && country.translations.spa ? country.translations.spa.common : country.name.common;
+
+                        option.value = countryNameInSpanish;
+                        option.textContent = countryNameInSpanish;
+
+                        countrySelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al cargar los países:", error);
+                });
+    }
+
+    window.onload = loadCountries;
+
+    let map, marker;
     function initMap() {
         const initialLocation = { lat: -34.6037, lng: -58.3816 };
 
