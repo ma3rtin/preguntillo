@@ -40,15 +40,15 @@ class UsuarioModel
         return $user[0];
     }
 
-    public function register($user, $name, $email, $pass, $birthyear, $photo, $lat, $lon){
+    public function register($user, $name, $email, $pass, $birthyear,$gender, $country, $photo, $lat, $lon){
         if(!$this->checkUserExists($user) && !$this->checkEmailExists($email)){
             $photoType = explode('/', $photo['type'])[1];
             $photoValue = $user . "." . $photoType;
             $path = "public/img/" . $photoValue;
             move_uploaded_file($photo['tmp_name'], $path);
 
-            $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) 
-            VALUES ('" . $user . "', '" . $name . "', '" . $email . "', '" . $pass . "', '" . $birthyear . "', '" . $photoValue . "', 0, '" . $lat . "', '" . $lon . "')";
+            $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, pais, genero, activo, latitud, longitud) 
+            VALUES ('" . $user . "', '" . $name . "', '" . $email . "', '" . $pass . "', '" . $birthyear . "', '" . $photoValue . "','" . $country . "', '" . $gender ."', 0, '" . $lat . "', '" . $lon . "')";
             $this->database->execute($sql);
         }
         return $this->createToken($user);
@@ -161,6 +161,11 @@ class UsuarioModel
         return $resultado['cant_jugadores'];
     }
 
+    public function getCantJugadoresNuevos($cantDias){
+        $sql = "SELECT DATE(fecha_creacion) AS fecha, COUNT(id) AS cant_jugadores FROM usuario WHERE fecha_creacion > DATE_SUB(NOW(), INTERVAL " . $cantDias . " DAY) AND rol = 'USER' GROUP BY DATE(fecha_creacion) ORDER BY fecha ASC";
+        return $this->database->query($sql);
+    }
+
     public function getCantPartidas(){
         $sql = "SELECT COUNT(id) AS cant_partidas FROM partida";
         $resultado = $this->database->query($sql)[0];
@@ -178,6 +183,58 @@ class UsuarioModel
         $sql = "SELECT u.usuario, u.nombre, COUNT(p.usuario_id) AS cant_partidas, CASE WHEN u.preguntas_recibidas = 0 THEN 0 ELSE ROUND((u.preguntas_acertadas * 100 / u.preguntas_recibidas), 0) END AS porcentaje_aciertos FROM usuario u JOIN partida p ON p.usuario_id = u.id WHERE u.activo = 1 AND u.rol = 'USER' GROUP BY u.usuario, u.nombre, u.preguntas_acertadas, u.preguntas_recibidas;";
 
         return $this->database->query($sql);
+    }
+
+    public function getCantUsuariosNuevos($dias)
+    {
+        $sql = "SELECT COUNT(id) AS cant_nuevos FROM usuario WHERE fecha_creacion > DATE_SUB(NOW(), INTERVAL " . $dias . " DAY)";
+
+        return $this->database->query($sql)[0]['cant_nuevos'];
+    }
+
+    public function getCantPorGenero($dias = null)
+    {
+        if ($dias) {
+            $fecha = date('Y-m-d', strtotime("-$dias days"));
+            $sql = "SELECT genero, COUNT(*) AS cantidad_usuarios FROM usuario WHERE fecha_creacion >= '$fecha' GROUP BY genero ORDER BY cantidad_usuarios DESC;";
+        } else {
+            $sql = "SELECT genero, COUNT(*) AS cantidad_usuarios FROM usuario GROUP BY genero ORDER BY cantidad_usuarios DESC;";
+        }
+        $cantidades = $this->database->query($sql);
+        return $cantidades;
+    }
+
+    public function getCantPorPais($dias = null)
+    {
+        if ($dias) {
+            $fecha = date('Y-m-d', strtotime("-$dias days"));
+            $sql = "SELECT pais, COUNT(*) AS cantidad_usuarios FROM usuario WHERE fecha_creacion >= '$fecha' GROUP BY pais ORDER BY cantidad_usuarios DESC;";
+        } else {
+            $sql = "SELECT pais, COUNT(*) AS cantidad_usuarios FROM usuario GROUP BY pais ORDER BY cantidad_usuarios DESC;";
+        }
+        $cantidades = $this->database->query($sql);
+        return $cantidades;
+    }
+
+    public function getCantPorEdad($dias = null)
+    {
+        if ($dias) {
+            $fecha = date('Y-m-d', strtotime("-$dias days"));
+            $condicionFecha = " AND fecha_creacion >= '$fecha'";
+        } else {
+            $condicionFecha = '';
+        }
+
+        $sql = "SELECT COUNT(*) AS cantidad_usuarios FROM usuario WHERE año_nac >= YEAR(CURDATE()) - 18" . $condicionFecha;
+        $cantidades['menores'] = $this->database->query($sql)[0]['cantidad_usuarios'];
+
+        $sql = "SELECT COUNT(*) AS cantidad_usuarios FROM usuario WHERE año_nac < YEAR(CURDATE()) - 18 AND año_nac >= YEAR(CURDATE()) - 65" . $condicionFecha;
+        $cantidades['medios'] = $this->database->query($sql)[0]['cantidad_usuarios'];
+
+        $sql = "SELECT COUNT(*) AS cantidad_usuarios FROM usuario WHERE año_nac < YEAR(CURDATE()) - 65" . $condicionFecha;
+        $cantidades['jubilados'] = $this->database->query($sql)[0]['cantidad_usuarios'];
+
+        return $cantidades;
     }
 
 }
