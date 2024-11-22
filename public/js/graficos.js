@@ -1,13 +1,31 @@
 let filtroDias = null;
 
-// Función para actualizar todos los gráficos
+document.querySelectorAll('.button-container button').forEach(button => {
+    button.addEventListener('click', (e) => {
+        switch (e.target.innerText) {
+            case 'Todos':
+                filtroDias = null;
+                break;
+            case 'Última semana':
+                filtroDias = 7;
+                break;
+            case 'Último mes':
+                filtroDias = 30;
+                break;
+            case 'Último año':
+                filtroDias = 365;
+                break;
+        }
+        actualizarGraficos();
+    });
+});
+
 function actualizarGraficos() {
     actualizarGraficoPais();
     actualizarGraficoGenero();
     actualizarGraficoEdad();
 }
 
-// País
 google.charts.load('current', { 'packages': ['corechart', 'bar'] });
 google.charts.setOnLoadCallback(() => actualizarGraficoPais());
 
@@ -141,26 +159,4 @@ function actualizarGraficoEdad() {
     };
 }
 
-// Evento para los botones de filtrado
-document.querySelectorAll('.button-container button').forEach(button => {
-    button.addEventListener('click', (e) => {
-        // Asignar el filtro en función del botón que se presionó
-        switch (e.target.innerText) {
-            case 'Todos':
-                filtroDias = null;
-                break;
-            case 'Última semana':
-                filtroDias = 7;
-                break;
-            case 'Último mes':
-                filtroDias = 30;
-                break;
-            case 'Último año':
-                filtroDias = 365;
-                break;
-        }
 
-        // Actualiza todos los gráficos al mismo tiempo
-        actualizarGraficos();
-    });
-});
