@@ -10,6 +10,7 @@ include_once("controller/PartidaController.php");
 include_once("controller/JuegoController.php");
 include_once("controller/PreguntaController.php");
 include_once("controller/AdminController.php");
+include_once("controller/EditorController.php");
 
 include_once("model/PartidaModel.php");
 include_once("model/UsuarioModel.php");
@@ -48,6 +49,10 @@ class Configuration
 
     public function getAdminController(){
         return new AdminController($this->getUsuarioModel(), $this->getPresenter());
+    }
+
+    public function getEditorController(){
+        return new EditorController($this->getPartidaModel(), $this->getPresenter());
     }
 
     public function getJuegoController(){
