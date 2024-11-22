@@ -168,8 +168,6 @@ class PreguntaModel
         }
     }
 
-
-
     public function reportar($data)
     {
         try {
@@ -217,5 +215,36 @@ class PreguntaModel
 
         $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, veces_entregada = $vecesEntregada, veces_acertada = $vecesAcertada WHERE id = $id");
     }
+
+    public function getPreguntasReportadas()
+    {
+        $sql = "SELECT DISTINCT(r.pregunta_id) AS id, p.pregunta AS pregunta, COUNT(r.pregunta_id) AS cant_reportes FROM reporte r JOIN pregunta p ON p.id = r.pregunta_id GROUP BY r.pregunta_id, p.pregunta ORDER BY cant_reportes DESC";
+
+        return $this->database->query($sql);
+    }
+
+    public function getPreguntasSugeridas(){
+        $sql = "SELECT ps.pregunta_id AS id, ps.pregunta AS pregunta, ps.modulo AS modulo, os.opcion AS opcion FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id;";
+
+        return $this->database->query($sql);
+    }
+
+    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo)
+    {
+        $sql = "INSERT INTO pregunta (pregunta, estado, id_modulo, id_tipo) VALUES ('$pregunta', ACTIVA, '$modulo', '$tipo')";
+
+        $this->database->execute($sql);
+        $preguntaId = $this->obtenerIdDePregunta($pregunta);
+
+        $sql = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES ($preguntaId, '$opcion1', SI), ($preguntaId, '$opcion2', NO), ($preguntaId, '$opcion3', NO)";
+        return $this->database->execute($sql);
+    }
+
+    public function obtenerIdDePregunta($pregunta)
+    {
+        $sql = "SELECT id FROM pregunta WHERE pregunta = '$pregunta'";
+        return $this->database->query($sql)[0]['id'];
+    }
+
 
 }
