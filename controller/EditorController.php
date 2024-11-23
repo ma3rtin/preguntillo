@@ -2,31 +2,38 @@
 
 class EditorController
 {
-
-    private $model;
+    private $preguntaModel;
     private $presenter;
+    private $usuarioModel;
 
-    public function __construct($model, $presenter)
+    public function __construct($preguntaModel, $usuarioModel, $presenter)
     {
-        $this->model = $model;
+        $this->preguntaModel = $preguntaModel;
+        $this->usuarioModel = $usuarioModel;
         $this->presenter = $presenter;
     }
 
     public function verPreguntasReportadas()
     {
         if($this->verificarRol()){
-           $preguntas = $this->model->getPreguntasReportadas();
-           $data['preguntas'] = $preguntas;
-
-           //$data['css'] = '/public/css/preguntas.css';
+            $data['preguntasReportadas'] = $this->preguntaModel->getPreguntasReportadas();
+            $data['reportes'] = true;
+            $data['css'] = '/public/css/preguntas.css';
+            $data['js'] = '/public/js/preguntas.js';
            $this->presenter->show('listaPreguntas', $data);
         }
     }
 
+    public function deshabilitar()
+    {
+        $preguntaId = $_GET['pregunta'] ?? null;
+        echo $preguntaId;
+        if($preguntaId) $this->preguntaModel->deshabilitarPregunta($preguntaId);
+    }
+
     public function verPreguntasSugeridas(){
         if($this->verificarRol()){
-            $preguntas = $this->model->getPreguntasSugeridas();
-            $data['preguntas'] = $preguntas;
+            $data['preguntas']  = $this->preguntaModel->getPreguntasSugeridas();
 
             //$data['css'] = '/public/css/preguntas.css';
             $this->presenter->show('listaPreguntas', $data);
@@ -48,7 +55,7 @@ class EditorController
             $modulo = $_POST['modulo'] ?? null;
             $tipo = $_POST['tipo'] ?? null;
             if($pregunta && $opcion1 && $opcion2 && $opcion3 && $modulo && $tipo){
-                $this->model->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo);
+                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo);
                 $data['exito'] = "Se ha creado la pregunta";
             }else{
                 $data['error'] = "Todos los campos son obligatorios";
@@ -62,7 +69,7 @@ class EditorController
             $preguntaId = $_POST['pregunta'] ?? null;
 
             if($preguntaId){
-                $pregunta = $this->model->getPreguntaById($preguntaId);
+                $pregunta = $this->preguntaModel->getPreguntaById($preguntaId);
                 $data['pregunta'] = $pregunta;
 
                 //$data['css'] = '/public/css/preguntas.css';
@@ -97,7 +104,7 @@ class EditorController
     public function verificarRol()
     {
         if(isset($_SESSION['id'])){
-            $user = $this->model->getUserById($_SESSION['id']);
+            $user = $this->usuarioModel->getUserById($_SESSION['id']);
             if($user['rol'] == 'EDITOR'){
                 return true;
             }
