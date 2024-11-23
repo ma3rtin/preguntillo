@@ -28,4 +28,24 @@ class AdminController
             exit();
         }
     }
+    public function imprimirReporte()
+    {
+        if ($_SESSION['admin']) {
+            require_once __DIR__ . '/../helper/PDF.php';
+
+            $cantJugadores = $this->model->getCantJugadores();
+            $cantPartidas = $this->model->getCantPartidas();
+            $cantPreguntas = $this->model->getCantPreguntas();
+            $data['usuarios'] = $this->model->getEstadisticasDeUsuarios();
+
+            $pdf = new PDF();
+            $pdf->agregarTitulo('Reporte de estadísticas');
+            $pdf->agregarEstadisticasGenerales($cantJugadores, $cantPartidas, $cantPreguntas);
+            $pdf->agregarTablaUsuarios($data);
+            $pdf->generarReporte();
+        } else {
+            header('location: /loginForm');
+            exit();
+        }
+    }
 }

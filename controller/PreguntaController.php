@@ -84,7 +84,7 @@ class PreguntaController{
         $data['modulos'] = $this->preguntaModel->getAllModules();
         $data['tipos'] = $this->preguntaModel->getAllTypes();
 
-        $this->presenter->authView('sugerirPregunta', $data);
+        $this->presenter->show('sugerirPregunta', $data);
     }
 
     public function reporteForm()
