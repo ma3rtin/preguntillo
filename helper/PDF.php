@@ -34,7 +34,7 @@ class PDF extends FPDF {
             $this->Cell(30, 10, $usuario['usuario'], 1,0,'C');
             $this->Cell(30, 10, $usuario['nombre'], 1,0,'C');
             $this->Cell(70, 10, $usuario['cant_partidas'], 1,0,'C');
-            $this->Cell(60, 10, $usuario['porcentaje_aciertos'], 1,0,'C');
+            $this->Cell(60, 10, $usuario['porcentaje_aciertos'].'%', 1,0,'C');
             $this->Ln();
         }
     }
