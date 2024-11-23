@@ -115,8 +115,7 @@ class UsuarioModel
     }
 
     public function registrarPreguntaEntregada($id) {
-        $sql = "SELECT * FROM usuario WHERE id = $id";
-        $user = $this->database->query($sql)[0];
+        $user = $this->getUserById($id);
 
         $preguntasRecibidas = $user['preguntas_recibidas'] + 1;
 
@@ -133,8 +132,7 @@ class UsuarioModel
     }
 
     public function actualizarNivelPorRespuestaCorrecta($id) {
-        $sql = "SELECT * FROM usuario WHERE id = $id";
-        $user = $this->database->query($sql)[0];
+        $user = $this->getUserById($id);
 
         $preguntasRecibidas = $user['preguntas_recibidas'];
         $preguntasAcertadas = $user['preguntas_acertadas'] + 1;
@@ -237,5 +235,10 @@ class UsuarioModel
         return $cantidades;
     }
 
+    public function getUserById($id)
+    {
+        $sql = "SELECT * FROM usuario WHERE id = $id";
+        return $this->database->query($sql)[0];
+    }
 
 }
