@@ -233,7 +233,7 @@ class PreguntaModel
 
     public function getPreguntasReportadas()
     {
-        $sql = "SELECT DISTINCT(r.pregunta_id) AS id, p.pregunta AS pregunta, COUNT(r.pregunta_id) AS cant_reportes FROM reporte r JOIN pregunta p ON p.id = r.pregunta_id GROUP BY r.pregunta_id, p.pregunta ORDER BY cant_reportes DESC";
+        $sql = "SELECT DISTINCT(r.pregunta_id) AS id, p.pregunta AS pregunta, COUNT(r.pregunta_id) AS cant_reportes FROM reporte_pregunta r JOIN pregunta p ON p.id = r.pregunta_id WHERE p.estado = 'ACTIVA' GROUP BY r.pregunta_id, p.pregunta ORDER BY cant_reportes DESC";
 
         return $this->database->query($sql);
     }
@@ -261,5 +261,8 @@ class PreguntaModel
         return $this->database->query($sql)[0]['id'];
     }
 
-
+    public function deshabilitarPregunta($id){
+        $sql = "UPDATE pregunta SET estado = 'INACTIVA' WHERE id = $id";
+        return $this->database->execute($sql);
+    }
 }
