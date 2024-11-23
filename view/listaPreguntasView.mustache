@@ -1,0 +1,43 @@
+<main>
+    <a href="/usuario/home">Volver</a>
+<div class="container">
+        <h2 class="text-center mb-4">Lista de preguntas</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            {{#reportes}}
+            <tr>
+                <th>Id</th>
+                <th>Pregunta</th>
+                <th>Cantidad de reportes</th>
+                <th>Acciones</th>
+            </tr>
+            {{/reportes}}
+            {{#sugerencias}}
+            <tr>
+                <th>Id</th>
+                <th>Pregunta</th>
+                <th>Cantidad de reportes</th>
+                <th>Acciones</th>
+            </tr>
+            {{/sugerencias}}
+            </thead>
+            <tbody>
+            {{#preguntasReportadas}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{pregunta}}</td>
+                    <td>{{cant_reportes}}</td>
+                    <td>
+                            <button class="btn btn-danger" id="{{id}}" onclick="deshabilitarPregunta({{id}})">
+                                Deshabilitar
+                            </button>
+                    </td>
+                </tr>
+            </tbody>
+            {{/preguntasReportadas}}
+        </table>
+    </div>
+</div>
+</main>
+<script src="{{js}}"></script>
