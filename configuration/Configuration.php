@@ -52,7 +52,7 @@ class Configuration
     }
 
     public function getEditorController(){
-        return new EditorController($this->getPartidaModel(), $this->getPresenter());
+        return new EditorController($this->getPreguntaModel(), $this->getUsuarioModel(), $this->getPresenter());
     }
 
     public function getJuegoController(){
