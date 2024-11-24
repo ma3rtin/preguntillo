@@ -66,6 +66,10 @@ class PreguntaModel
         return $preguntaObtenida[0];
     }
 
+    public function getOpcionesByPreguntaId($preguntaId){
+        $sql = "SELECT * FROM opcion WHERE pregunta_id = ".$preguntaId;
+        return $this->database->query($sql);
+    }
 
     public function getNivelPreguntaById($id, $forUser = false)
     {
@@ -282,14 +286,19 @@ class PreguntaModel
         return $this->database->execute($sql);
     }
 
-    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo)
+    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $modulo, $tipo)
     {
-        $sql = "INSERT INTO pregunta (pregunta, estado, id_modulo, id_tipo) VALUES ('$pregunta', ACTIVA, '$modulo', '$tipo')";
-
+        $sql = "INSERT INTO pregunta (pregunta, estado, id_modulo, id_tipo) VALUES ('$pregunta', 'ACTIVA', $modulo, $tipo);";
         $this->database->execute($sql);
+
         $preguntaId = $this->obtenerIdDePregunta($pregunta);
 
-        $sql = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES ($preguntaId, '$opcion1', SI), ($preguntaId, '$opcion2', NO), ($preguntaId, '$opcion3', NO)";
+        $sql = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) 
+        VALUES ($preguntaId, '$opcion1', 'SI'),
+               ($preguntaId, '$opcion2', 'NO'),
+               ($preguntaId, '$opcion3', 'NO'),
+               ($preguntaId, '$opcion4', 'NO')";
+
         return $this->database->execute($sql);
     }
 
@@ -302,5 +311,37 @@ class PreguntaModel
     public function deshabilitarPregunta($id){
         $sql = "UPDATE pregunta SET estado = 'INACTIVA' WHERE id = $id";
         return $this->database->execute($sql);
+    }
+
+    public function habilitarPregunta($id){
+        $sql = "UPDATE pregunta SET estado = 'ACTIVA' WHERE id = $id";
+        return $this->database->execute($sql);
+    }
+
+    public function getTipos(){
+        $sql = "SELECT id, name FROM tipo";
+        return $this->database->query($sql);
+    }
+
+    public function getAllModulos(){
+        $sql = "SELECT id, name FROM modulo";
+        return $this->database->query($sql);
+    }
+
+    public function getPreguntas() {
+        $sql = "SELECT p.id AS id, p.pregunta AS pregunta, p.estado AS estado, m.name AS modulo, GROUP_CONCAT(o.opcion ORDER BY o.opcion ASC) AS opciones FROM pregunta p JOIN opcion o ON o.pregunta_id = p.id JOIN modulo m ON m.id = p.id_modulo GROUP BY p.id, p.pregunta, m.name;";
+        return $this->database->query($sql);
+    }
+
+    public function editarPregunta($preguntaId, $texto, $moduloId, $tipoId)
+    {
+        $sql = "UPDATE pregunta SET pregunta = '$texto', id_modulo = $moduloId, id_tipo = $tipoId WHERE id = $preguntaId";
+        $this->database->execute($sql);
+    }
+
+    public function editarOpcion($opcionId, $texto)
+    {
+        $sql = "UPDATE opcion SET opcion = '$texto' WHERE id = '$opcionId'";
+        $this->database->execute($sql);
     }
 }

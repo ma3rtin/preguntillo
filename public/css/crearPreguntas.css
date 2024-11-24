@@ -1,0 +1,33 @@
+body{
+    background-color: #e1e3ff;
+    font-family: "Lilita One", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #444444;
+}
+
+label{
+    display: block;
+    font-size: 20px;
+}
+
+.mb-5{
+    text-align: center;
+    margin: 0;
+}
+
+form{
+    max-width: 60%;
+    margin: auto;
+}
+
+.my-3{
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+    color: #673eb8;
+    font-size: 32px;
+    margin-left: 5px;
+}

@@ -32,6 +32,14 @@ class EditorController
         }
     }
 
+    public function habilitar()
+    {
+        if($this->verificarRol()){
+            $preguntaId = $_GET['pregunta'] ?? null;
+            if($preguntaId) $this->preguntaModel->habilitarPregunta($preguntaId);
+        }
+    }
+
     public function verPreguntasSugeridas(){
         if($this->verificarRol()){
 
@@ -63,63 +71,109 @@ class EditorController
 
     public function crearPreguntas(){
         if($this->verificarRol()){
-            $this->presenter->show('crearPreguntas');
+            $data['tipos'] = $this->preguntaModel->getTipos();
+            $data['modulos'] = $this->preguntaModel->getAllModulos();
+            $data['js'] = '/public/js/crearPreguntas.js';
+            $data['css'] = '/public/css/crearPreguntas.css';
+            $this->presenter->show('crearPreguntas', $data);
         }
     }
 
-    public function crearPregunta(){
+    public function agregarPregunta(){
         if($this->verificarRol()){
             $pregunta = $_POST['pregunta'] ?? null;
             $opcion1 = $_POST['opcion1'] ?? null;
             $opcion2 = $_POST['opcion2'] ?? null;
             $opcion3 = $_POST['opcion3'] ?? null;
-            $modulo = $_POST['modulo'] ?? null;
-            $tipo = $_POST['tipo'] ?? null;
-            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $modulo && $tipo){
-                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo);
-                $data['exito'] = "Se ha creado la pregunta";
+            $opcion4 = $_POST['opcion4'] ?? null;
+            $modulo = $_POST['id_modulo'] ?? null;
+            $tipo = $_POST['id_tipo'] ?? null;
+
+            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $opcion4 && $modulo && $tipo) {
+                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $modulo, $tipo);
             }else{
                 $data['error'] = "Todos los campos son obligatorios";
+                $this->presenter->show('crearPreguntas', $data);
             }
-            $this->presenter->show('crearPreguntas', $data);
         }
     }
 
-    public function editarPreguntaForm(){
+    public function verPreguntasActivas(){
         if($this->verificarRol()){
-            $preguntaId = $_POST['pregunta'] ?? null;
+            $data['preguntasEditables'] = $this->preguntaModel->getPreguntas();
+            $data['editar'] = true;
 
-            if($preguntaId){
+            foreach ($data['preguntasEditables'] as &$pregunta) {
+                $pregunta['opciones'] = explode(',', $pregunta['opciones']);
+                $pregunta['estado'] = $pregunta['estado'] == "ACTIVA";
+            }
+
+            $data['js'] = '/public/js/preguntas.js';
+            $data['css'] = '/public/css/listaPreguntas.css';
+            $this->presenter->show('listaPreguntas', $data);
+        }
+    }
+
+    public function editarPreguntaForm() {
+        if ($this->verificarRol()) {
+            $preguntaId = $_GET['id'] ?? null;
+
+            if ($preguntaId) {
                 $pregunta = $this->preguntaModel->getPreguntaById($preguntaId);
-                $data['pregunta'] = $pregunta;
+                $opciones = $this->preguntaModel->getOpcionesByPreguntaId($preguntaId);
 
-                //$data['css'] = '/public/css/listaPreguntas.css';
+                foreach($opciones as &$opcion) {
+                    $opcion['opcion_correcta'] = $opcion['opcion_correcta'] == "SI";
+                }
+
+                $tipos = $this->preguntaModel->getTipos();
+                foreach ($tipos as &$tipo) {
+                    $tipo['tipo_elegido'] = $tipo['id'] == $pregunta['id_tipo'];
+                }
+
+                $modulos = $this->preguntaModel->getAllModulos();
+                foreach ($modulos as &$modulo) {
+                    $modulo['modulo_elegido'] = $modulo['id'] == $pregunta['id_modulo'];
+                }
+
+                $data = [
+                    'pregunta' => $pregunta,
+                    'tipos' => $tipos,
+                    'modulos' => $modulos,
+                    'opciones' => $opciones,
+                    'js' => '/public/js/crearPreguntas.js',
+                    'css' => '/public/css/crearPreguntas.css'
+                ];
+
                 $this->presenter->show('crearPreguntas', $data);
-            }else{
-                $data['error'] = "Se requiere el id de la pregunta";
-                $this->presenter->show('crearPreguntas', $data);
+            } else {
+                $this->verPreguntasActivas();
             }
         }
     }
 
     public function editarPregunta()
     {
-        if($this->verificarRol()){
-            $pregunta = $_POST['pregunta'] ?? null;
-            $opcion1 = $_POST['opcion1'] ?? null;
-            $opcion2 = $_POST['opcion2'] ?? null;
-            $opcion3 = $_POST['opcion3'] ?? null;
-            $modulo = $_POST['modulo'] ?? null;
-            $tipo = $_POST['tipo'] ?? null;
-            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $modulo && $tipo){
-                $this->model->editarPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo);
-                $data['exito'] = "Se ha editado la pregunta";
-            }else{
-                $data['error'] = "Todos los campos son obligatorios";
-            }
-            $this->presenter->show('crearPreguntas', $data);
-        }
+        if ($this->verificarRol()) {
 
+            $preguntaId = $_POST['id'] ?? null;
+            $preguntaTexto = $_POST['pregunta'] ?? null;
+            $modulo = $_POST['id_modulo'] ?? null;
+            $tipo = $_POST['id_tipo'] ?? null;
+            $opciones = $_POST['opciones'] ?? [];
+
+            //echo json_encode($_POST);
+
+            if ($preguntaId && $preguntaTexto && $modulo && $tipo && !empty($opciones)) {
+                $this->preguntaModel->editarPregunta($preguntaId, $preguntaTexto, $modulo, $tipo);
+
+                foreach ($opciones as $id => $texto) {
+                    if (!empty($texto)) {
+                        $this->preguntaModel->editarOpcion($id, $texto);
+                    }
+                }
+            }
+        }
     }
 
     public function verificarRol()
