@@ -55,6 +55,10 @@ class Configuration
         return new EditorController($this->getPreguntaModel(), $this->getUsuarioModel(), $this->getPresenter());
     }
 
+    public function getEditorController(){
+        return new EditorController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPresenter());
+    }
+
     public function getJuegoController(){
         return new JuegoController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getPresenter());
     }
