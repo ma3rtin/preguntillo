@@ -54,11 +54,11 @@
 
                         <div class="form-holder">
                             <span class="fas fa-solid fa-venus-mars"></span>
-                            <select id="sexo" name="sexo"required>
-                                <option value="" disabled selected>Sexo</option>
-                                <option value="Femenino">Femenino</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
+                            <select id="gender" name="gender" required>
+                                <option value="">Selecciona tu género</option>
+                                <option value="MUJER">Mujer</option>
+                                <option value="HOMBRE">Hombre</option>
+                                <option value="NO ESPECIFICA">Prefiero no decirlo</option>
                             </select>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
 
                         <div class="form-holder">
                             <span class="fa-solid fa-earth-americas"></span>
-                            <select id="pais" name="pais">
+                            <select id="country" name="country" required>
                                 <option value="" disabled selected>País</option>
                                 <option value="">Cargando países...</option>
                             </select>
@@ -131,7 +131,7 @@
     fetch('https://restcountries.com/v3.1/all')
             .then(response => response.json())
             .then(data => {
-                const countriesDropdown = document.getElementById('pais');
+                const countriesDropdown = document.getElementById('country');
                 const sortedData = data.sort((a, b) => {
                     return a.name.common.localeCompare(b.name.common);
                 });

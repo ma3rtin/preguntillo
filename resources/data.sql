@@ -103,8 +103,8 @@ create table usuario_pregunta(
                                  foreign key(pregunta_id) references pregunta(id),
                                  foreign key(usuario_id) references usuario(id));
 
-INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, sexo, pais, latitud, longitud) values
-    ('LiraDTA', 'Lira', 'lira@gmail.com', '123', 2003, 'lira.jpg', 1, 'Femenino', 'AR', -34.609801928878525, -58.39413128051759);
+INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) values
+    ('LiraDTA', 'Lira', 'lira@gmail.com', '123', 2003, 'lira.jpg', 1, -34.609801928878525, -58.39413128051759);
 
 INSERT INTO categoria(id,nombre,color) VALUES
                                            (1, 'HISTORIA', '#ffd700'),

@@ -26,48 +26,36 @@
 {{/editor}}
 {{#jugador}}
     <section class="actions">
-         <button class="btn"><a href="?page=juego&action=crear"> Nueva partida</a></button>
+        <button class="btn"><a href="?page=juego&action=crear">Nueva partida</a></button>
         <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
     </section>
+
     <section class="game-history">
         <h3>Últimas partidas</h3>
+
         <table>
             <thead>
             <tr>
                 <th>Fecha</th>
+                <th>Hora</th>
                 <th>Puntaje</th>
-                <th>Estado</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            {{#partidas}}
+                <tr>
+                    <td>{{fecha}}</td>
+                    <td>{{hora}}</td>
+                    <td>{{puntaje}}</td>
+                </tr>
+            {{/partidas}}
             </tbody>
         </table>
+
+        {{^partidas}}
+            <p>No tienes partidas registradas aún.</p>
+        {{/partidas}}
     </section>
-</main>
+    </main>
 {{/jugador}}
 {{/user}}
