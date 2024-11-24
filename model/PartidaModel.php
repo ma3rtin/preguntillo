@@ -11,11 +11,15 @@ class PartidaModel {
         return $this->database->query($sql);
     }
 
-    public function createPartida($id, $fecha){
-        $fechaInicio = date('Y-m-d H:i:s', strtotime($fecha));
-        $sql = "INSERT INTO partida (usuario_id, puntaje,fecha) VALUES ('$id',0, '$fechaInicio')";
+    public function createPartida($id, $fecha, $hora) {
+        $fechaInicio = date('Y-m-d', strtotime($fecha));
+        $horaInicio = date('H:i:s', strtotime($hora));
+
+        $sql = "INSERT INTO partida (usuario_id, puntaje, fecha, hora) VALUES ('$id', 0, '$fechaInicio', '$horaInicio')";
+
         $this->database->execute($sql);
     }
+
 
     public function actualizarPartida($partida_id){
         $sql = "SELECT id FROM partida WHERE id = $partida_id";
@@ -80,9 +84,7 @@ class PartidaModel {
     }
 
     public function getPartidasUsuario($id){
-        $sql = "SELECT * FROM partida WHERE usuario_id = $id
-                      ORDER BY fecha DESC LIMIT 5";
-
+        $sql = "SELECT * FROM partida WHERE usuario_id = $id ORDER BY fecha DESC, hora DESC LIMIT 5";
         return $this->database->query($sql);
     }
 

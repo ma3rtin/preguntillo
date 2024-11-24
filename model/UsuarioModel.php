@@ -33,22 +33,23 @@ class UsuarioModel
     }
 
     public function getUserData($username){
-        $sql = "SELECT u.id, u.usuario, u.nombre, u.mail, u.año_nac, u.foto, u.longitud, u.latitud 
+        $sql = "SELECT u.id, u.usuario, u.nombre, u.mail, u.año_nac, u.foto, u.sexo, u.pais, u.longitud, u.latitud 
                 FROM usuario u
                 WHERE usuario = '" . $username . "'";
         $user = $this->database->query($sql);
         return $user[0];
     }
 
-    public function register($user, $name, $email, $pass, $birthyear, $photo, $lat, $lon){
+    public function register($user, $name, $email, $pass, $birthyear, $photo, $sexo, $pais, $lat, $lon){
         if(!$this->checkUserExists($user) && !$this->checkEmailExists($email)){
             $photoType = explode('/', $photo['type'])[1];
             $photoValue = $user . "." . $photoType;
             $path = "public/img/" . $photoValue;
             move_uploaded_file($photo['tmp_name'], $path);
 
-            $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, latitud, longitud) 
-            VALUES ('" . $user . "', '" . $name . "', '" . $email . "', '" . $pass . "', '" . $birthyear . "', '" . $photoValue . "', 0, '" . $lat . "', '" . $lon . "')";
+            $sql = "INSERT INTO usuario (usuario, nombre, mail, contraseña, año_nac, foto, activo, sexo, pais, latitud, longitud) 
+            VALUES ('$user', '$name', '$email', '$pass', '$birthyear', '$photoValue', 0, '$sexo', '$pais', '$lat', '$lon')";
+
             $this->database->execute($sql);
         }
         return $this->createToken($user);

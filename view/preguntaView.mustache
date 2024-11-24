@@ -99,39 +99,30 @@
 
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let tiempoTotal = 20;
-            let tiempoRestante = tiempoTotal;
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let tiempoRestante = {{tiempoRestante}};
 
-            const barraProgreso = document.getElementById('barraProgreso');
-            const textoTiempo = document.getElementById('tiempoRestante');
-            let interval;
+        const barraProgreso = document.getElementById('barraProgreso');
+        const textoTiempo = document.getElementById('tiempoRestante');
+        let interval;
 
-            function iniciarTemporizador() {
-                interval = setInterval(() => {
-                    tiempoRestante--;
+        function iniciarTemporizador() {
+            interval = setInterval(() => {
+                tiempoRestante--;
 
-                    barraProgreso.style.width = ((tiempoRestante / tiempoTotal) * 100) + '%';
-                    textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
+                barraProgreso.style.width = ((tiempoRestante / 20) * 100) + '%';
+                textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
 
-                    if (tiempoRestante <= 0) {
-                        clearInterval(interval);
-                        const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
-                        timeOutModal.show();
-                    }
-                }, 1000);
-            }
-
-            iniciarTemporizador();
-
-            const reportingModal = document.getElementById('reportingModal');
-            if (reportingModal) {
-                const bootstrapModal = new bootstrap.Modal(reportingModal);
-                reportingModal.addEventListener('shown.bs.modal', () => {
+                if (tiempoRestante <= 0) {
                     clearInterval(interval);
-                });
-            }
-        });
-    </script>
+                    const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
+                    timeOutModal.show();
+                }
+            }, 1000);
+        }
+
+        iniciarTemporizador();
+    });
+</script>
 {{/categoria}}

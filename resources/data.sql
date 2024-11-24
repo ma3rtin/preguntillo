@@ -12,6 +12,8 @@ CREATE TABLE Usuario (
                          año_nac INT,
                          foto VARCHAR(100),
                          activo BOOL,
+                         sexo VARCHAR(100) NOT NULL,
+                         pais VARCHAR(100) NOT NULL,
                          latitud DOUBLE NOT NULL,
                          longitud DOUBLE NOT NULL,
                          nivel DOUBLE DEFAULT 0.5,
@@ -55,7 +57,8 @@ CREATE TABLE partida (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          usuario_id INT NOT NULL,
                          puntaje VARCHAR(255) NOT NULL,
-                         fecha DATETIME,
+                         fecha DATE,
+                         hora TIME,
                          FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
