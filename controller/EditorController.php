@@ -26,17 +26,38 @@ class EditorController
 
     public function deshabilitar()
     {
-        $preguntaId = $_GET['pregunta'] ?? null;
-        echo $preguntaId;
-        if($preguntaId) $this->preguntaModel->deshabilitarPregunta($preguntaId);
+        if($this->verificarRol()){
+            $preguntaId = $_GET['pregunta'] ?? null;
+            if($preguntaId) $this->preguntaModel->deshabilitarPregunta($preguntaId);
+        }
     }
 
     public function verPreguntasSugeridas(){
         if($this->verificarRol()){
-            $data['preguntas']  = $this->preguntaModel->getPreguntasSugeridas();
 
-            //$data['css'] = '/public/css/preguntas.css';
+            $data['preguntasSugeridas']  = $this->preguntaModel->getPreguntasSugeridas();
+            $data['sugerencias'] = true;
+            foreach ($data['preguntasSugeridas'] as &$pregunta) {
+                $pregunta['opciones'] = explode(',', $pregunta['opciones']);
+            }
+
+            $data['css'] = '/public/css/preguntas.css';
+            $data['js'] = '/public/js/preguntas.js';
             $this->presenter->show('listaPreguntas', $data);
+        }
+    }
+
+    public function aceptarPregunta(){
+        if($this->verificarRol()){
+            $preguntaId = $_GET['pregunta'] ?? null;
+            if($preguntaId) $this->preguntaModel->aceptarPregunta($preguntaId);
+        }
+    }
+
+    public function rechazarPregunta(){
+        if($this->verificarRol()){
+            $preguntaId = $_GET['pregunta'] ?? null;
+            if($preguntaId) $this->preguntaModel->rechazarPregunta($preguntaId);
         }
     }
 
