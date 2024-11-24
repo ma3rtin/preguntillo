@@ -1,10 +1,41 @@
 <a href="/usuario/home">Volver</a>
 
-<div class="report-container">
-    <h2>Reportes de preguntas</h2>
-    {{#pregunta_reporte}}
-         <p>{{pregunta}}</p>
-         <p>{{caso}}</p>
-         <p>{{mensaje}}</p>
-    {{/pregunta_reporte}}
+<section>
+        <article class="report-container">
+           <div class="data-row">
+               {{#pregunta_reporte}}
+                   <div class="data-column" id="pregunta">
+                       <h5>Pregunta</h5>
+                       <p>{{pregunta}}</p>
+                   </div>
+
+                   <div class="data-column" id="caso">
+                       <h5>Caso</h5>
+                       <p>{{caso}}</p>
+                   </div>
+
+                   <div class="data-column" id="mensaje">
+                       <h5>Mensaje</h5>
+                       <p>{{mensaje}}</p>
+                   </div>
+
+                   <div class="data-column" id="usuario">
+                       <h5>Usuario</h5>
+                       <p>{{usuario}}</p>
+                   </div>
+                   <a><button class="btn-report">Editar</button></a>
+               {{/pregunta_reporte}}
+           </div>
+        </article>
+</section>
+
+<div class="algo">
+    {{#preguntas}}
+        <p><strong>Pregunta:</strong> {{pregunta}}</p>
+        <ul>
+            <li>{{opcion}}</li>
+            <li>{{opcion_correcta}}</li>
+        </ul>
+    {{/preguntas}}
 </div>
+

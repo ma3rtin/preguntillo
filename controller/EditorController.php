@@ -12,20 +12,41 @@
 //			  ID: 4 - DESC: PENDIENTE
 //			  ID: 5 - DESC: BORRADO/DESACTIVADO
 class EditorController{
+
+    private $opcionModel;
     private $preguntaModel;
     private $presenter;
 
-    public function __construct($preguntaModel ,$presenter){
+    public function __construct($opcionModel,$preguntaModel ,$presenter){
+        $this->opcionModel = $opcionModel;
         $this->preguntaModel = $preguntaModel;
         $this->presenter = $presenter;
     }
+
     public function showReports(){
         if($_SESSION['editor']){
           $data['pregunta_reporte'] = $this->preguntaModel->obtenerPreguntasReportadasNoResueltas();
+          $data['css'] = '/public/css/reporte.css';
           $this->presenter->show("reportes",$data);
         }else{
             Redirect::to('login');
         }
     }
+
+    public function editarPreguntasReportadas() {
+        if ($_SESSION['editor']) {
+            $preguntas = $this->preguntaModel->all();
+
+            $data['preguntas'] = $preguntas;
+            $data['css'] = '/public/css/reporte.css';
+
+            $this->presenter->show("reportes", $data);
+        } else {
+            Redirect::to('login');
+        }
+    }
+
+
+
 
 }

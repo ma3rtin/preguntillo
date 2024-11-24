@@ -48,7 +48,17 @@ class UsuarioController
         else{
             $_SESSION['username'] = $user['usuario'];
             $_SESSION['id'] = $user['id'];
-            $_SESSION['admin'] = $user['rol'] == 'ADMIN';
+            switch($user['rol']){
+                case 'ADMIN':
+                    $_SESSION['admin'] = true;
+                    break;
+                case 'USER':
+                    $_SESSION['jugador'] = true;
+                    break;
+                case 'EDITOR':
+                    $_SESSION['editor'] = true;
+                    break;
+            }
             $this->redirectHome();
         }
     }

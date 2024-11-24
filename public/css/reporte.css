@@ -1,0 +1,24 @@
+.reporte-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.data-column{
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid lightgray;
+}
+
+.report-container{
+    display: flex;
+    flex-direction: column;
+}
+
+h5{
+    background-color: #ffd10b;
+}
+
+.btn-report{
+    border: none;
+    color:#762e91;
+}

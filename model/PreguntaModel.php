@@ -237,7 +237,6 @@ class PreguntaModel
                 join pregunta p on p.id = rp.pregunta_id
                 join usuario us on us.id = rp.usuario_id
                 where rp.resuelto = 'NO'";
-
         return $this->database->query($sql);
     }
 
