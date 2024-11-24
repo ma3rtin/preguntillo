@@ -21,6 +21,10 @@ class MysqlObjectDatabase
         return $this->conn->affected_rows;
     }
 
+    public function lastInsertId() {
+        return mysqli_insert_id($this->conn);
+    }
+
     public function __destruct()
     {
         mysqli_close($this->conn);

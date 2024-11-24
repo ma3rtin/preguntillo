@@ -17,7 +17,8 @@
             <tr>
                 <th>Id</th>
                 <th>Pregunta</th>
-                <th>Cantidad de reportes</th>
+                <th>Módulo</th>
+                <th>Opciones</th>
                 <th>Acciones</th>
             </tr>
             {{/sugerencias}}
@@ -34,8 +35,31 @@
                             </button>
                     </td>
                 </tr>
-            </tbody>
+                </tbody>
             {{/preguntasReportadas}}
+            {{#preguntasSugeridas}}
+                <tr>
+                <td>{{id}}</td>
+                <td>{{pregunta}}</td>
+                <td>{{modulo}}</td>
+                <td>
+                    <ul>
+                    {{#opciones}}
+                        <li>{{.}}</li>
+                    {{/opciones}}
+                    </ul>
+                </td>
+                <td>
+                    <button class="btn btn-success" id="aceptar-{{id}}" onclick="aceptarPregunta({{id}})">
+                        Aceptar
+                    </button>
+                    <button class="btn btn-danger" id="rechazar-{{id}}" onclick="rechazarPregunta({{id}})">
+                        Rechazar
+                    </button>
+                </td>
+                </tr>
+                </tbody>
+            {{/preguntasSugeridas}}
         </table>
     </div>
 </div>

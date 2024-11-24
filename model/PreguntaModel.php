@@ -238,10 +238,48 @@ class PreguntaModel
         return $this->database->query($sql);
     }
 
-    public function getPreguntasSugeridas(){
-        $sql = "SELECT ps.pregunta_id AS id, ps.pregunta AS pregunta, ps.modulo AS modulo, os.opcion AS opcion FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id;";
-
+    public function getPreguntasSugeridas() {
+        $sql = "SELECT ps.id AS id, ps.pregunta AS pregunta, m.name AS modulo, GROUP_CONCAT(os.opcion ORDER BY os.opcion ASC) AS opciones FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id JOIN modulo m ON m.id = ps.modulo GROUP BY ps.id, ps.pregunta, m.name;";
         return $this->database->query($sql);
+    }
+
+    public function aceptarPregunta($id) {
+        $sqlObtenerPregunta = "SELECT pregunta, modulo 
+                           FROM pregunta_sugerida 
+                           WHERE id = $id";
+        $pregunta = $this->database->query($sqlObtenerPregunta);
+
+        $sqlInsertPregunta = "INSERT INTO pregunta (pregunta, modulo, estado, tipo) 
+                              VALUES ('{$pregunta[0]['pregunta']}', '{$pregunta[0]['modulo']}', 'ACTIVA', 1)";
+        $this->database->execute($sqlInsertPregunta);
+
+        $ultimoId = $this->database->lastInsertId();
+
+        $sqlObtenerOpciones = "SELECT opcion, opcion_correcta 
+                           FROM opcion_sugerida 
+                           WHERE pregunta_id = $id";
+        $opciones = $this->database->query($sqlObtenerOpciones);
+
+        foreach ($opciones as $opcion) {
+            $sqlInsertOpcion = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) 
+                            VALUES ($ultimoId, '{$opcion['opcion']}', '{$opcion['opcion_correcta']}')";
+            $this->database->execute($sqlInsertOpcion);
+        }
+
+        $sqlEliminarOpcionesSugeridas = "DELETE FROM opcion_sugerida WHERE pregunta_id = $id";
+        $this->database->execute($sqlEliminarOpcionesSugeridas);
+
+        $sqlEliminarPreguntaSugerida = "DELETE FROM pregunta_sugerida WHERE id = $id";
+        return $this->database->execute($sqlEliminarPreguntaSugerida);
+    }
+
+
+
+    public function rechazarPregunta($id) {
+        $sql = "DELETE FROM opcion_sugerida WHERE pregunta_id = $id";
+        $this->database->execute($sql);
+        $sql = "DELETE FROM pregunta_sugerida WHERE id = $id";
+        return $this->database->execute($sql);
     }
 
     public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $modulo, $tipo)
