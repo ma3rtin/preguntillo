@@ -15,7 +15,7 @@ class JuegoController{
 
     public function list() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $data['modulos'] = $this->preguntaModel->getModules();
+        $data['categoria'] = $this->preguntaModel->getCategoria();
         $this->presenter->authView($data['userSession'],'juego', $data);
     }
 
@@ -30,12 +30,10 @@ class JuegoController{
 
     public function crear() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
-        $data['modulo'] = $this->preguntaModel->getModulos();
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
 
         $fechaInicio = date('Y-m-d H:i:s');
         $this->partidaModel->createPartida($_SESSION['id'], $fechaInicio);
-//        echo '<script>localStorage.removeItem("tiempoRestante");</script>';
         $idRandom = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
 
         Redirect::to("/pregunta/show/$idRandom");

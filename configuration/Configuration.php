@@ -16,6 +16,7 @@ include_once("model/UsuarioModel.php");
 include_once("model/JuegoModel.php");
 include_once("model/PreguntaModel.php");
 include_once("model/OpcionModel.php");
+include_once ("model/TrampitaModel.php");
 
 include_once('vendor/PHPMailer/src/PHPMailer.php');
 include_once('vendor/PHPMailer/src/SMTP.php');
@@ -55,7 +56,7 @@ class Configuration
     }
 
     public function getPreguntaController(){
-        return new PreguntaController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getOpcionModel(), $this->getPresenter());
+        return new PreguntaController($this->getUsuarioModel(),$this->getPreguntaModel(),$this->getPartidaModel(), $this->getOpcionModel(), $this->getPresenter(), $this->getTrampitaModel());
     }
 
     private function getEmailSender()
@@ -103,5 +104,10 @@ class Configuration
     private function getOpcionModel()
     {
         return new OpcionModel($this->getDatabase());
+    }
+
+    private function getTrampitaModel()
+    {
+        return new TrampitaModel($this->getDatabase());
     }
 }

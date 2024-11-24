@@ -1,44 +1,46 @@
-<main class="container-supremo">
+{{#categoria}}
+    <main class="container-supremo" style="background-color: {{color}}">
+
+        <a href="#" class="cerrar-btn" aria-label="Cerrar" data-bs-toggle="modal" data-bs-target="#confirmarSalirModal">
+            <i class="fas fa-times"></i>
+        </a>
+
+        <h2 class="categoria-titulo">{{nombre}}</h2>
+
         {{#pregunta}}
+            <div class="card-section mb-3">
+                <h5 class="card-title">Tiempo restante:</h5>
+                <div id="timer" class="progress my-2">
+                    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p id="tiempoRestante" class="text-danger"></p>
+            </div>
+            <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
+                <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
+                <div class="card-pregunta">
                     <div class="card-section mb-3">
-                        <h5 class="card-title">Tiempo restante:</h5>
-                        <div id="timer" class="progress my-2">
-                            <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <p id="tiempoRestante" class="text-danger"></p>
+                        <h5 class="card-title">Dificultad: {{dificultad}}</h5>
+                        <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
                     </div>
-
-                <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
-
-
-                    <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
-
-                    <div class="card-pregunta">
-                        <div class="card-section mb-3">
-                            <!--<h5 class="card-title">Mi puntaje es: {{puntaje}}</h5>-->
-                            <h5 class="card-title">Dificultad: {{dificultad}}</h5>
-                            <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
-                        </div>
-                            <div class="pregunta">
-                                <p>{{pregunta}}</p>
-                            </div>
-                        <div class="card-section mb-3">
-                            <ul class="opciones">
-                                {{#opciones}}
-                                    <li class="opciones-item">
-                                        <input type="radio" id="opcion_{{id}}" name="opcion_id" value="{{id}}" required>
-                                        <label for="opcion_{{id}}">{{opcion}}</label>
-                                    </li>
-                                {{/opciones}}
-                            </ul>
-                        </div>
-
+                    <div class="pregunta">
+                        <p>{{pregunta}}</p>
                     </div>
-                    <button type="submit">Validar Respuestas</button>
-                </form>
-                {{#partidaSesion}}
-                    <pre>{{.}}</pre>
-                {{/partidaSesion}}
+                    <div class="card-section mb-3">
+                        <ul class="opciones">
+                            {{#opciones}}
+                                <li class="opciones-item">
+                                    <input type="radio" id="opcion_{{id}}" name="opcion_id" value="{{id}}" required>
+                                    <label for="opcion_{{id}}">{{opcion}}</label>
+                                </li>
+                            {{/opciones}}
+                        </ul>
+                    </div>
+                </div>
+                <button type="submit">Enviar respuesta</button>
+            </form>
+            {{#partidaSesion}}
+                <pre>{{.}}</pre>
+            {{/partidaSesion}}
         {{/pregunta}}
 
         {{#correcta}}
@@ -48,21 +50,46 @@
                 });
             </script>
             <div class="modal fade" id="reportingModal" tabindex="-1" aria-labelledby="reportingModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <a class="btn btn-success" href="/pregunta/show/{{siguiente_id}}">Siguiente pregunta</a>
-                        </div>
-                        <div class="modal-body">
-                            <a class="btn btn-danger btn-sm" href="/pregunta/reporteForm/pregunta={{pregunta_id}}">Reportar pregunta</a>
+                        <div class="modal-body text-center">
+                            <div class="circle-container">
+                                <div class="circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                                        <circle class="background" cx="25" cy="25" r="22" />
+                                        <circle class="progress-check" cx="25" cy="25" r="22" />
+                                        <path class="check" d="M15 25l7 7 13-13" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <h5 class="modal-title text-success mt-3">¡Correcto!</h5>
+                            <div class="botones-centrados">
+                                <a class="btn btn-danger btn-lg" href="/pregunta/reporteForm/pregunta={{pregunta_id}}">
+                                <i class="fas fa-exclamation-circle"></i> Reportar pregunta </a>
+                                <a class="btn btn-success btn-lg" href="/pregunta/show/{{siguiente_id}}">Siguiente</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         {{/correcta}}
 
+        <div class="modal fade" id="confirmarSalirModal" tabindex="-1" aria-labelledby="confirmarSalirModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger" id="confirmarSalirModalLabel">¿Seguro desea salir?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <a href="/usuario/home" class="btn btn-danger">Sí</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="timeOutModal" tabindex="-1" aria-labelledby="timeOutModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-danger" id="timeOutModalLabel">¡Tiempo agotado!</h5>
@@ -77,40 +104,41 @@
             </div>
         </div>
 
-</main>
+    </main>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let tiempoTotal = 20;
-        let tiempoRestante = tiempoTotal;
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let tiempoTotal = 20;
+            let tiempoRestante = tiempoTotal;
 
-        const barraProgreso = document.getElementById('barraProgreso');
-        const textoTiempo = document.getElementById('tiempoRestante');
-        let interval;
+            const barraProgreso = document.getElementById('barraProgreso');
+            const textoTiempo = document.getElementById('tiempoRestante');
+            let interval;
 
-        function iniciarTemporizador() {
-            interval = setInterval(() => {
-                tiempoRestante--;
+            function iniciarTemporizador() {
+                interval = setInterval(() => {
+                    tiempoRestante--;
 
-                barraProgreso.style.width = ((tiempoRestante / tiempoTotal) * 100) + '%';
-                textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
+                    barraProgreso.style.width = ((tiempoRestante / tiempoTotal) * 100) + '%';
+                    textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
 
-                if (tiempoRestante <= 0) {
+                    if (tiempoRestante <= 0) {
+                        clearInterval(interval);
+                        const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
+                        timeOutModal.show();
+                    }
+                }, 1000);
+            }
+
+            iniciarTemporizador();
+
+            const reportingModal = document.getElementById('reportingModal');
+            if (reportingModal) {
+                const bootstrapModal = new bootstrap.Modal(reportingModal);
+                reportingModal.addEventListener('shown.bs.modal', () => {
                     clearInterval(interval);
-                    const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
-                    timeOutModal.show();
-                }
-            }, 1000);
-        }
-
-        iniciarTemporizador();
-
-        const reportingModal = document.getElementById('reportingModal');
-        if (reportingModal) {
-            const bootstrapModal = new bootstrap.Modal(reportingModal);
-            reportingModal.addEventListener('shown.bs.modal', () => {
-                clearInterval(interval);
-            });
-        }
-    });
-</script>
+                });
+            }
+        });
+    </script>
+{{/categoria}}

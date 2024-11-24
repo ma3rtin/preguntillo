@@ -10,15 +10,70 @@ main {
 
 .container-supremo {
     margin-top: 50px;
-    background-color: #ffd10b;
     border-radius: 20px;
-    padding: 20px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 1000px;
-    height: 800px;
+    max-width: 900px;
+    position: relative;
+}
+
+.cerrar-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: red;
+    font-size: 30px;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.cerrar-btn:hover {
+    background-color: red;
+    color: white;
+}
+
+.cerrar-btn i {
+    pointer-events: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+.modal-footer .btn {
+    width: 100px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+.card-title{
+    font-size: 15px;
+}
+
+.categoria-titulo {
+    color: white;
+    text-transform: uppercase;
 }
 
 .progress {
@@ -26,7 +81,7 @@ main {
     height: 20px;
     border-radius: 50px;
     overflow: hidden;
-    width: 900px;
+    width: 700px;
     margin-bottom: 20px;
 }
 
@@ -40,14 +95,14 @@ main {
     flex-direction: column;
     background-color: white;
     border-radius: 50px;
-    width: 800px;
+    width: 700px;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
 }
 
 .pregunta{
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .opciones {
@@ -120,10 +175,74 @@ button[type="submit"]:hover {
     font-weight: bold;
 }
 
-.modal-content {
-    border-radius: 15px;
+.btn i {
+    margin-right: 8px;
 }
 
-.modal-footer .btn {
-    border-radius: 10px;
+.botones-centrados {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.botones-centrados .btn {
+    width: 200px;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+circle {
+    fill: none;
+    stroke-width: 5;
+}
+
+.background {
+    stroke: #e6e6e6;
+}
+
+.progress-check {
+    stroke: #4caf50;
+    stroke-dasharray: 138;
+    stroke-dashoffset: 138;
+    animation: load 0.7s ease-in-out forwards;
+}
+
+.check {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 28;
+    stroke-dashoffset: 28;
+    animation: load 0.7s ease-in-out forwards;
+}
+
+.text-success{
+    margin-bottom: 10px;
+}
+
+@keyframes load {
+    to {
+        stroke-dashoffset: 0;
+    }
 }
