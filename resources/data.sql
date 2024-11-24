@@ -157,8 +157,8 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (5, '2', 'SI'),
 
                                                               (6, '3', 'NO'),
-                                                              (6, '6', 'si'),
-                                                              (6, '12', 'no'),
+                                                              (6, '6', 'SI'),
+                                                              (6, '12', 'NO'),
                                                               (6, '9', 'NO'),
 
                                                               (7, 'Cillian Murphy', 'SI'),
@@ -177,9 +177,9 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (9, 'Han Solo', 'NO'),
 
                                                               (10, 'Oxígeno', 'NO'),
-                                                              (10, 'Nitrógeno', 'SI'),
                                                               (10, 'Dióxido de carbono', 'NO'),
                                                               (10, 'Hidrógeno', 'NO'),
+                                                              (10, 'Nitrógeno', 'SI'),
 
                                                               (11, 'Júpiter', 'SI'),
                                                               (11, 'Saturno', 'NO'),
@@ -187,9 +187,9 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (11, 'Neptuno', 'NO'),
 
                                                               (12, 'Hígado', 'NO'),
-                                                              (12, 'Corazón', 'SI'),
                                                               (12, 'Riñón', 'NO'),
                                                               (12, 'Pulmones', 'NO'),
+                                                              (12, 'Corazón', 'SI'),
 
                                                               (13, 'Leonardo da Vinci', 'SI'),
                                                               (13, 'Pablo Picasso', 'NO'),
@@ -197,8 +197,8 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (13, 'Claude Monet', 'NO'),
 
                                                               (14, 'Cubismo', 'NO'),
-                                                              (14, 'Surrealismo', 'SI'),
                                                               (14, 'Impresionismo', 'NO'),
+                                                              (14, 'Surrealismo', 'SI'),
                                                               (14, 'Futurismo', 'NO'),
 
                                                               (15, 'Italia', 'NO'),
@@ -217,6 +217,6 @@ INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES
                                                               (17, '15', 'NO'),
 
                                                               (18, 'Alemania', 'NO'),
-                                                              (18, 'Brasil', 'SI'),
                                                               (18, 'Argentina', 'NO'),
+                                                              (18, 'Brasil', 'SI'),
                                                               (18, 'Italia', 'NO');
