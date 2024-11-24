@@ -68,11 +68,13 @@ class UsuarioController
         $pass2 = isset($_POST['pass2']) ? $_POST['pass2'] : null;
         $birthyear = isset($_POST['birthyear']) ? $_POST['birthyear'] : null;
         $photo = ($_FILES['photo']['size'] > 0) ? $_FILES['photo'] : null;
+        $sexo = isset($_POST['sexo']) ? $_POST['sexo'] : null;
+        $pais = isset($_POST['pais']) ? $_POST['pais'] : null;
         $latitude = isset($_POST['latitude']) ? $_POST['latitude'] : null;
         $longitude = isset($_POST['longitude']) ? $_POST['longitude'] : null;
 
         if (is_null($user) || is_null($name) || is_null($email) || is_null($pass) || is_null($pass2) || is_null($birthyear)
-         || is_null($photo)) {
+         || is_null($photo || $sexo) || is_null($pais)) {
             $data['css'] = "/public/css/registerForm.css";
             $data['error'] = "Todos los campos son obligatorios";
             $this->presenter->show('register', $data);
@@ -86,7 +88,7 @@ class UsuarioController
             return;
         }
 
-        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo, $latitude, $longitude);
+        $data = $this->model->register($user, $name, $email, $pass, $birthyear, $photo, $sexo, $pais, $latitude, $longitude);
 
         $this->emailSender->sendValidationMail($data[0], $data[1], $data[2]);
 

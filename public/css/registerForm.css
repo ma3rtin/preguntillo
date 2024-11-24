@@ -20,7 +20,7 @@ body {
     text-align: center;
     background-color: #ffffff;
     border-radius: 30px;
-    padding: 20px;
+    padding: 60px 20px 20px 20px;
     max-width: 100%;
 }
 
@@ -34,16 +34,29 @@ body {
 }
 
 .register-form label {
-    width: 100px;
+    width: 100%;
     margin-right: 10px;
     margin-bottom: 10px;
     font-size: 20px;
 }
 
+.register-form select {
+    border-radius: 6px;
+    width: 85%;
+    height: 50px;
+    border: none;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .register-form input {
     border-radius: 6px;
-    width: 80%;
-    height: 40px;
+    width: 85%;
+    height: 50px;
     border: none;
     margin-bottom: 20px;
     padding: 10px;

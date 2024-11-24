@@ -12,6 +12,8 @@ CREATE TABLE Usuario (
                          año_nac INT,
                          foto VARCHAR(100),
                          activo BOOL,
+                         sexo VARCHAR(100) NOT NULL,
+                         pais VARCHAR(100) NOT NULL,
                          latitud DOUBLE NOT NULL,
                          longitud DOUBLE NOT NULL,
                          nivel DOUBLE DEFAULT 0.5,
