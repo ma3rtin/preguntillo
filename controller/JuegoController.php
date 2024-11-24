@@ -33,13 +33,16 @@ class JuegoController{
         $data['modulo'] = $this->preguntaModel->getModulos();
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
 
-        $fechaInicio = date('Y-m-d H:i:s');
-        $this->partidaModel->createPartida($_SESSION['id'], $fechaInicio);
-//        echo '<script>localStorage.removeItem("tiempoRestante");</script>';
+        $fechaInicio = date('Y-m-d');
+        $horaInicio = date('H:i:s');
+
+        $this->partidaModel->createPartida($_SESSION['id'], $fechaInicio, $horaInicio);
+
         $idRandom = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
 
         Redirect::to("/pregunta/show/$idRandom");
     }
+
 
     public function verRanking() {
         $data['css'] = "/public/css/ranking.css";
