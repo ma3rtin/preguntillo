@@ -231,13 +231,13 @@ class PreguntaModel
         $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, veces_entregada = $vecesEntregada, veces_acertada = $vecesAcertada WHERE id = $id");
     }
 
-    public function obtenerPreguntasReportadasNoResueltas($usuarioId){
-        $sql = "SELECT * FROM reporte_pregunta 
-                WHERE usuario_id = $usuarioId
-                AND resuelto = 'NO'";
+    public function obtenerPreguntasReportadasNoResueltas(){
+        $sql = "select p.pregunta, rp.caso, rp.mensaje
+                from reporte_pregunta rp 
+                join pregunta p on p.id = rp.pregunta_id
+                where rp.resuelto = 'NO'";
 
         return $this->database->query($sql);
-
     }
 
 }

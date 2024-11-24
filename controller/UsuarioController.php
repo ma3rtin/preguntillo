@@ -159,6 +159,10 @@ class UsuarioController
         if(isset($_SESSION['id'])){
             $data['user'] = $this->model->getUserData($_SESSION['username']);
             $data['admin'] = $_SESSION['admin'];
+
+            if(isset($_SESSION['editor'])){
+                $data['editor'] = true;
+            }
             return $data;
         }else{
             $this->redirectLoginForm();

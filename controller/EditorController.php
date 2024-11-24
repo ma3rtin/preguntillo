@@ -12,30 +12,17 @@
 //			  ID: 4 - DESC: PENDIENTE
 //			  ID: 5 - DESC: BORRADO/DESACTIVADO
 class EditorController{
-
-    private $usuarioModel;
     private $preguntaModel;
     private $presenter;
 
-    public function __construct($usuarioModel,$preguntaModel ,$presenter){
-        $this->usuarioModel = $usuarioModel;
+    public function __construct($preguntaModel ,$presenter){
         $this->preguntaModel = $preguntaModel;
         $this->presenter = $presenter;
     }
     public function showReports(){
         if($_SESSION['editor']){
-          $usuarios = $this->usuarioModel->getUsuarios();
-          $reportes = $this->preguntaModel->obtenerPreguntasReportadasNoResueltas($usuarios['id']);
-          $preguntas = $this->preguntaModel->all();
-
-          $data['usuario'] = $usuarios['usuario'];
-          $data['pregunta'] = $preguntas['pregunta'];
-          $data['caso'] = $reportes['caso'];
-          $data['mensaje'] = $reportes['mensaje'];
-
-          $data['css'] = '/public/css/reportes.css';
-
-          $this->presenter->show('reportes',$data);
+          $data['pregunta_reporte'] = $this->preguntaModel->obtenerPreguntasReportadasNoResueltas();
+          $this->presenter->show("reportes",$data);
         }else{
             Redirect::to('login');
         }
