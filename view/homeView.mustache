@@ -16,7 +16,14 @@
         </main>
     {{/admin}}
 
+    {{#editor}}
+       <section class="report-container">
+           <a href="/editor/showReports"><button class="btn">Ver Reportes</button></a>
+       </section>
+    {{/editor}}
+
     {{^admin}}
+        {{^editor}}
         <section class="actions">
             <button class="btn"><a href="?page=juego&action=crear">Nueva partida</a></button>
             <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
@@ -48,5 +55,6 @@
         </section>
 
         </main>
+        {{/editor}}
     {{/admin}}
 {{/user}}

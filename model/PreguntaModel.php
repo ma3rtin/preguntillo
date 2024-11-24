@@ -183,8 +183,6 @@ class PreguntaModel
         }
     }
 
-
-
     public function reportar($data)
     {
         try {
@@ -231,6 +229,15 @@ class PreguntaModel
         }
 
         $this->database->execute("UPDATE pregunta SET dificultad = $dificultad, veces_entregada = $vecesEntregada, veces_acertada = $vecesAcertada WHERE id = $id");
+    }
+
+    public function obtenerPreguntasReportadasNoResueltas($usuarioId){
+        $sql = "SELECT * FROM reporte_pregunta 
+                WHERE usuario_id = $usuarioId
+                AND resuelto = 'NO'";
+
+        return $this->database->query($sql);
+
     }
 
 }
