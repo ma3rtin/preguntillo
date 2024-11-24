@@ -232,7 +232,8 @@ class PreguntaModel
     }
 
     public function obtenerPreguntasReportadasNoResueltas(){
-        $sql = "select p.pregunta, rp.caso, rp.mensaje, us.usuario
+        $sql = "select p.pregunta, p.id as pregunta_id, 
+                rp.caso, rp.mensaje, us.usuario
                 from reporte_pregunta rp 
                 join pregunta p on p.id = rp.pregunta_id
                 join usuario us on us.id = rp.usuario_id

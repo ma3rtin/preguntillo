@@ -1,41 +1,38 @@
 <a href="/usuario/home">Volver</a>
 
 <section>
-        <article class="report-container">
-           <div class="data-row">
-               {{#pregunta_reporte}}
-                   <div class="data-column" id="pregunta">
-                       <h5>Pregunta</h5>
-                       <p>{{pregunta}}</p>
-                   </div>
+    <article class="report-container">
+        <div class="data-row">
+            {{#pregunta_reporte}}
+                <form action="/editor/editarPregunta" method="post">
+                    <div class="data-column" id="pregunta">
+                        <h5>Pregunta</h5>
+                        <p>{{pregunta}}</p>
+                    </div>
 
-                   <div class="data-column" id="caso">
-                       <h5>Caso</h5>
-                       <p>{{caso}}</p>
-                   </div>
+                    <div class="data-column" id="caso">
+                        <h5>Caso</h5>
+                        <p>{{caso}}</p>
+                    </div>
 
-                   <div class="data-column" id="mensaje">
-                       <h5>Mensaje</h5>
-                       <p>{{mensaje}}</p>
-                   </div>
+                    <div class="data-column" id="mensaje">
+                        <h5>Mensaje</h5>
+                        <p>{{mensaje}}</p>
+                    </div>
 
-                   <div class="data-column" id="usuario">
-                       <h5>Usuario</h5>
-                       <p>{{usuario}}</p>
-                   </div>
-                   <a><button class="btn-report">Editar</button></a>
-               {{/pregunta_reporte}}
-           </div>
-        </article>
+                    <div class="data-column" id="usuario">
+                        <h5>Usuario</h5>
+                        <p>{{usuario}}</p>
+                    </div>
+
+                    <button type="submit" class="btn-report" name="id" value="{{pregunta_id}}">
+                        Editar
+                    </button>
+                </form>
+            {{/pregunta_reporte}}
+        </div>
+    </article>
 </section>
 
-<div class="algo">
-    {{#preguntas}}
-        <p><strong>Pregunta:</strong> {{pregunta}}</p>
-        <ul>
-            <li>{{opcion}}</li>
-            <li>{{opcion_correcta}}</li>
-        </ul>
-    {{/preguntas}}
-</div>
+
 

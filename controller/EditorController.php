@@ -33,20 +33,29 @@ class EditorController{
         }
     }
 
-    public function editarPreguntasReportadas() {
+    public function editarPregunta() {
         if ($_SESSION['editor']) {
-            $preguntas = $this->preguntaModel->all();
+            $preguntaId = $_POST['id'] ?? null;
 
-            $data['preguntas'] = $preguntas;
-            $data['css'] = '/public/css/reporte.css';
+            if ($preguntaId) {
+                $pregunta = $this->preguntaModel->getPreguntaById($preguntaId);
+                $opciones = $this->opcionModel->getOpciones($preguntaId);
 
-            $this->presenter->show("reportes", $data);
+                $data['preguntas'] = $pregunta;
+                $data['opciones'] = $opciones;
+                $data['css'] = '/public/css/reporte.css';
+
+                $this->presenter->show("editar", $data);
+            }
+
         } else {
             Redirect::to('login');
         }
     }
 
+    public function guardarCambios() {
 
+    }
 
 
 }
