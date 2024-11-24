@@ -43,6 +43,7 @@ class JuegoController{
         Redirect::to("/pregunta/show/$idRandom");
     }
 
+
     public function verRanking() {
         $data['css'] = "/public/css/ranking.css";
         $data['ranking'] = $this->partidaModel->obtenerRankingConUsuarios();
