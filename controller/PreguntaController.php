@@ -21,6 +21,7 @@ class PreguntaController{
     }
 
     public function show(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $data['css'] = "/public/css/pregunta.css";
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
         $idPregunta = $_SESSION['pregunta_id'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
@@ -107,21 +108,21 @@ class PreguntaController{
 
 
     public function sugerir(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $data['modulos'] = $this->preguntaModel->getAllModules();
         $data['tipos'] = $this->preguntaModel->getAllTypes();
 
         $this->presenter->show('sugerirPregunta', $data);
     }
 
-    public function reporteForm()
-    {
+    public function reporteForm() {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $data['pregunta_id'] = $_GET['pregunta'];
 
         $this->presenter->show('reporte', $data);
     }
 
-    public function reportar()
-    {
+    public function reportar(){
         $pregunta_id = $_POST['pregunta_id'];
         $caso = $_POST['caso'];
         $mensaje = $_POST['mensaje'];

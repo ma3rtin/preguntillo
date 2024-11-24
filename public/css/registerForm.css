@@ -1,91 +1,113 @@
 body {
-    background-color: #e1e3ff;
     font-family: "Lilita One", sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #444444;
 }
 
-.body-title{
-    text-align: center;
-}
-
-.container-form{
+.wrapper {
+    margin-top: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    position: relative;
 }
 
-.register-form{
-    text-align: center;
-    background-color: #ffffff;
-    border-radius: 30px;
-    padding: 60px 20px 20px 20px;
-    max-width: 100%;
-}
-
-.field-container{
+.inner {
+    background-color: #ececec;
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
 }
 
-.input-container{
-    width: 80%;
+.register-form {
+    padding: 20px 40px;
+    max-width: 550px;
+
 }
 
-.register-form label {
+span{
+    color: #fd67c6;
+}
+
+.fa-map-marker-alt{
+    padding: 3px;
+}
+
+.ubi{
+    color: #545454;
+    font-style: italic;
+    padding: 10px;
+}
+
+h3 {
+    color: #545454;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-column {
+    width: 48%;
+    margin-bottom: 15px;
+}
+
+.form-holder {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.form-holder input, select {
     width: 100%;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-
-.register-form select {
-    border-radius: 6px;
-    width: 85%;
-    height: 50px;
-    border: none;
-    margin-bottom: 20px;
     padding: 10px;
-    box-sizing: border-box;
-    background-color: #f0f0f0;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
-    cursor: pointer;
+    font-style: italic;
+    color: #545454;
 }
 
-.register-form input {
-    border-radius: 6px;
-    width: 85%;
-    height: 50px;
-    border: none;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-sizing: border-box;
-    background-color: #f0f0f0;
-    font-size: 16px;
-}
-
-.button {
-    padding: 15px 100px;
-    width: 300px;
+.registrarse {
+    padding: 15px;
     border-radius: 30px;
     border: none;
-    color: #444444;
-    letter-spacing: 1px;
+    color: white;
     font-size: 18px;
-    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     box-shadow: 4px 4px 0 #5300f7;
     background-color: #8c52ff;
+    width: 100%;
 }
 
-.btn-register:hover {
+.registrarse:hover {
     background-color: #673eb8;
     transform: translateY(2px);
 }
 
-a {
+.links a {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #333;
     text-decoration: none;
-    color: inherit;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.form-image img {
+    padding: 40px;
 }

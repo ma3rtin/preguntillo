@@ -4,62 +4,101 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUkdndYG9gSK35o6qXfqaG1w8i5oj1TGA&callback=initMap&libraries=places"
         async defer></script>
 
-<h2 class="body-title">Registro de Usuario</h2>
-
-<div class="container-form">
-
-    <form class="register-form" action="/usuario/register" method="POST" enctype="multipart/form-data">
-        <div class="field-container">
-            <div class="input-container">
-                <label for="user">Nombre de usuario:</label><br>
-                <input type="text" id="user" name="user" required><br><br>
-
-                <label for="name">Nombre completo:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
-
-                <label for="email">Correo electrónico:</label><br>
-                <input type="email" id="email" name="email" required><br><br>
-
-                <label for="pass">Contraseña:</label><br>
-                <input type="password" id="pass" name="pass" required><br><br>
-
-                <label for="pass2">Repetir contraseña:</label><br>
-                <input type="password" id="pass2" name="pass2" required><br><br>
+<main>
+    <div class="wrapper">
+        <div class="inner">
+            <div class="form-image">
+                <img src="../public/img/image-1.png" alt="Imagen derecha">
             </div>
-            <div class="input-container">
 
-                <label for="birthyear">Año de nacimiento:</label><br>
-                <input type="number" id="birthyear" name="birthyear" min="1900" max="2024" required><br><br>
+            <form class="register-form" action="/usuario/register" method="POST" enctype="multipart/form-data">
+                <h3>Nuevo Usuario</h3>
 
-                <label for="sexo">Sexo:</label><br>
-                <select id="sexo" name="sexo" required>
-                    <option value="" disabled selected>Seleccione una opción</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
-                </select><br><br>
+                <div class="form-container">
+                    <div class="form-column">
+                        <div class="form-holder">
+                            <span class="fas fa-user"></span>
+                            <input type="text" id="user" name="user" class="form-control"
+                                   placeholder="Nombre de usuario" required>
+                        </div>
 
-                <label for="photo">Subir foto:</label><br>
-                <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
+                        <div class="form-holder">
+                            <span class="fas fa-id-card"></span>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Nombre completo"
+                                   required>
+                        </div>
 
-                <label for="pais">Selecciona un país:</label>
-                <select id="pais" name="pais">
-                    <option value="">Cargando países...</option>
-                </select><br><br>
+                        <div class="form-holder">
+                            <span class="fas fa-envelope"></span>
+                            <input type="email" id="email" name="email" class="form-control"
+                                   placeholder="Correo electrónico" required>
+                        </div>
 
-                <label for="latitude">Ubicación:</label><br>
-                <div id="map" style="width: 100%; height: 250px;"></div>
-                <input type="hidden" id="latitude" name="latitude">
-                <input type="hidden" id="longitude" name="longitude"><br><br>
-            </div>
+                        <div class="form-holder">
+                            <span class="fas fa-lock"></span>
+                            <input type="password" id="pass" name="pass" class="form-control" placeholder="Contraseña"
+                                   required>
+                        </div>
+
+                        <div class="form-holder">
+                            <span class="fas fa-lock"></span>
+                            <input type="password" id="pass2" name="pass2" class="form-control"
+                                   placeholder="Repetir contraseña" required>
+                        </div>
+
+                        <div class="form-holder">
+                            <span class="fas fa-calendar-alt"></span>
+                            <input type="number" id="birthyear" name="birthyear" class="form-control" min="1900"
+                                   max="2024" placeholder="Año de nacimiento" required>
+                        </div>
+
+                        <div class="form-holder">
+                            <span class="fas fa-solid fa-venus-mars"></span>
+                            <select id="sexo" name="sexo"required>
+                                <option value="" disabled selected>Sexo</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-column">
+
+                        <div class="form-holder">
+                            <span class="fas fa-camera"></span>
+                            <input type="file" id="photo" name="photo" class="form-control" accept="image/*" required>
+                        </div>
+
+                        <div class="form-holder">
+                            <span class="fa-solid fa-earth-americas"></span>
+                            <select id="pais" name="pais">
+                                <option value="" disabled selected>País</option>
+                                <option value="">Cargando países...</option>
+                            </select>
+                        </div>
+
+                        <span class="fas fa-map-marker-alt"></span>
+                        <label class="ubi">Ubicación: </label>
+
+                        <div class="form-holder">
+                            <div id="map" style="width: 100%; height: 245px;"></div>
+                            <input type="hidden" id="latitude" name="latitude">
+                            <input type="hidden" id="longitude" name="longitude">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="registrarse" type="submit">Registrarse</button>
+
+                <div class="links">
+                    <a href="/usuario/loginForm">¿Ya tienes una cuenta? Inicia sesión</a>
+                </div>
+            </form>
         </div>
-        <div>
-            <button class="button btn-register" type="submit">Registrarse</button>
-            <br><br>
-            <a href="/usuario/loginForm">Iniciar sesión</a>
-        </div>
-    </form>
-</div>
+    </div>
+</main>
+
 <script>
     let map, marker;
 
@@ -93,7 +132,6 @@
             .then(response => response.json())
             .then(data => {
                 const countriesDropdown = document.getElementById('pais');
-                countriesDropdown.innerHTML = '';
                 const sortedData = data.sort((a, b) => {
                     return a.name.common.localeCompare(b.name.common);
                 });
@@ -106,4 +144,3 @@
             })
             .catch(error => console.error('Error al cargar los países:', error));
 </script>
-
