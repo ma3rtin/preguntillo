@@ -21,3 +21,14 @@ a{
     font-size: 36px;
     margin-left: 5px;
 }
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.botones button{
+    margin: 10px 0;
+}

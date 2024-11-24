@@ -14,6 +14,21 @@ function deshabilitarPregunta(id) {
     }
 }
 
+function habilitarPregunta(id) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/editor/habilitar?pregunta=" + id);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send();
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            alert("Pregunta habilitada");
+            document.getElementById(id).disabled = true;
+        }else{
+            alert("Error al deshabilitar la pregunta");
+        }
+    }
+}
+
 function aceptarPregunta(id){
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "/editor/aceptarPregunta?pregunta=" + id);

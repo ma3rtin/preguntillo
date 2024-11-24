@@ -1,0 +1,94 @@
+<a href="/usuario/home"><i class="fa-solid fa-arrow-left"></i></a>
+<h1 class="mb-5">{{#pregunta}}Editar pregunta{{/pregunta}}{{^pregunta}}Crear pregunta{{/pregunta}}</h1>
+<form id="formPregunta" data-action="{{#pregunta}}/editor/editarPregunta{{/pregunta}}{{^pregunta}}/editor/agregarPregunta{{/pregunta}}" enctype="application/x-www-form-urlencoded" class="card card-body">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-label">Pregunta</label>
+                    {{#pregunta}}
+                        <input type="hidden" name="id" value="{{id}}">
+                    {{/pregunta}}
+                    <textarea name="pregunta" required class="form-control" placeholder="Escriba su pregunta">{{pregunta.pregunta}}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6 mb-4">
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <select class="form-select" name="id_tipo" required>
+                        {{#tipos}}
+                            <option value="{{id}}" {{#tipo_elegido}}selected{{/tipo_elegido}}>{{name}}</option>
+                        {{/tipos}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+                <div class="form-group">
+                    <label class="form-label">Modulo</label>
+                    <select class="form-select" name="id_modulo" required>
+                        {{#modulos}}
+                            <option value="{{id}}" {{#modulo_elegido}}selected{{/modulo_elegido}}>{{name}}</option>
+                        {{/modulos}}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="form-label">Respuestas</label>
+
+            {{#opciones}}
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <div class="form-group">
+                        <label for="opcion{{id}}" class="form-label">{{#opcion_correcta}}Opción correcta{{/opcion_correcta}}{{^opcion_correcta}}Opción incorrecta{{/opcion_correcta}}</label>
+                        <input type="text" name="opciones[{{id}}]" value="{{opcion}}" required class="form-control">
+                    </div>
+                </div>
+            {{/opciones}}
+
+            {{^opciones}}
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <div class="form-group">
+                        <label for="opcion1" class="form-label">Opción correcta</label>
+                        <input type="text" name="opcion1" required class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <div class="form-group">
+                        <label for="opcion2" class="form-label">Opción incorrecta 1</label>
+                        <input type="text" name="opcion2" required class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <div class="form-group">
+                        <label for="opcion3" class="form-label">Opción incorrecta 2</label>
+                        <input type="text" name="opcion3" required class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 mb-4">
+                    <div class="form-group">
+                        <label for="opcion4" class="form-label">Opción incorrecta 3</label>
+                        <input type="text" name="opcion4" required class="form-control">
+                    </div>
+                </div>
+            {{/opciones}}
+        </div>
+    </div>
+    <div class="my-3">
+        <button type="submit" class="btn btn-success btn-lg">
+            {{#pregunta}}Guardar cambios{{/pregunta}}{{^pregunta}}Crear pregunta{{/pregunta}}
+        </button>
+    </div>
+</form>
+
+{{#error}}
+    <script>alert('{{error}}');</script>
+{{/error}}
+{{#exito}}
+    <script>alert('{{exito}}');</script>
+{{/exito}}
+
+<script src="{{js}}"></script>

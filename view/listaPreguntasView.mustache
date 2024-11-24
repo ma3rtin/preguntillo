@@ -13,7 +13,7 @@
                 <th>Acciones</th>
             </tr>
             {{/reportes}}
-            {{#sugerencias}}
+            {{^reportes}}
             <tr>
                 <th>Id</th>
                 <th>Pregunta</th>
@@ -21,7 +21,7 @@
                 <th>Opciones</th>
                 <th>Acciones</th>
             </tr>
-            {{/sugerencias}}
+            {{/reportes}}
             </thead>
             <tbody>
             {{#preguntasReportadas}}
@@ -60,6 +60,38 @@
                 </tr>
                 </tbody>
             {{/preguntasSugeridas}}
+            {{#preguntasEditables}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{pregunta}}</td>
+                <td>{{modulo}}</td>
+                <td>
+                    <ul>
+                        {{#opciones}}
+                            <li>{{.}}</li>
+                        {{/opciones}}
+                    </ul>
+                </td>
+                <td>
+                    <div class="botones">
+                    <a class="btn btn-primary" id="editar-{{id}}" href="/editor/editarPreguntaForm?id={{id}}">
+                        Editar
+                    </a>
+                    {{#estado}}
+                    <button class="btn btn-danger" id="{{id}}" onclick="deshabilitarPregunta({{id}})">
+                    Deshabilitar
+                    </button>
+                    {{/estado}}
+                    {{^estado}}
+                    <button class="btn btn-success" id="{{id}}" onclick="habilitarPregunta({{id}})">
+                        Habilitar
+                    </button>
+                    {{/estado}}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            {{/preguntasEditables}}
         </table>
     </div>
 </div>
