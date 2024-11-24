@@ -232,10 +232,12 @@ class PreguntaModel
         $sqlObtenerPregunta = "SELECT pregunta, modulo 
                            FROM pregunta_sugerida 
                            WHERE id = $id";
-        $pregunta = $this->database->query($sqlObtenerPregunta);
+        $preguntaAceptada= $this->database->query($sqlObtenerPregunta)[0];
+        $pregunta = $preguntaAceptada['pregunta'];
+        $modulo = $preguntaAceptada['modulo'];
 
-        $sqlInsertPregunta = "INSERT INTO pregunta (pregunta, modulo, estado, tipo) 
-                              VALUES ('{$pregunta[0]['pregunta']}', '{$pregunta[0]['modulo']}', 'ACTIVA', 1)";
+        $sqlInsertPregunta = "INSERT INTO pregunta (pregunta, id_modulo, estado, id_tipo) 
+                              VALUES ('$pregunta ', $modulo, 'ACTIVA', 1)";
         $this->database->execute($sqlInsertPregunta);
 
         $ultimoId = $this->database->lastInsertId();
@@ -257,8 +259,6 @@ class PreguntaModel
         $sqlEliminarPreguntaSugerida = "DELETE FROM pregunta_sugerida WHERE id = $id";
         return $this->database->execute($sqlEliminarPreguntaSugerida);
     }
-
-
 
     public function rechazarPregunta($id) {
         $sql = "DELETE FROM opcion_sugerida WHERE pregunta_id = $id";

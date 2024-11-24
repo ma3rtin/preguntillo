@@ -18,7 +18,7 @@ class EditorController
         if($this->verificarRol()){
             $data['preguntasReportadas'] = $this->preguntaModel->getPreguntasReportadas();
             $data['reportes'] = true;
-            $data['css'] = '/public/css/preguntas.css';
+            $data['css'] = '/public/css/listaPreguntas.css';
             $data['js'] = '/public/js/preguntas.js';
            $this->presenter->show('listaPreguntas', $data);
         }
@@ -41,7 +41,7 @@ class EditorController
                 $pregunta['opciones'] = explode(',', $pregunta['opciones']);
             }
 
-            $data['css'] = '/public/css/preguntas.css';
+            $data['css'] = '/public/css/listaPreguntas.css';
             $data['js'] = '/public/js/preguntas.js';
             $this->presenter->show('listaPreguntas', $data);
         }
@@ -93,7 +93,7 @@ class EditorController
                 $pregunta = $this->preguntaModel->getPreguntaById($preguntaId);
                 $data['pregunta'] = $pregunta;
 
-                //$data['css'] = '/public/css/preguntas.css';
+                //$data['css'] = '/public/css/listaPreguntas.css';
                 $this->presenter->show('crearPreguntas', $data);
             }else{
                 $data['error'] = "Se requiere el id de la pregunta";
