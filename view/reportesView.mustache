@@ -1,3 +1,10 @@
 <a href="/usuario/home">Volver</a>
 
-<h3>Reportes</h3>
+<div class="report-container">
+    <h2>Reportes de preguntas</h2>
+    {{#pregunta_reporte}}
+         <p>{{pregunta}}</p>
+         <p>{{caso}}</p>
+         <p>{{mensaje}}</p>
+    {{/pregunta_reporte}}
+</div>
