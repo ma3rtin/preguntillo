@@ -232,9 +232,10 @@ class PreguntaModel
     }
 
     public function obtenerPreguntasReportadasNoResueltas(){
-        $sql = "select p.pregunta, rp.caso, rp.mensaje
+        $sql = "select p.pregunta, rp.caso, rp.mensaje, us.usuario
                 from reporte_pregunta rp 
                 join pregunta p on p.id = rp.pregunta_id
+                join usuario us on us.id = rp.usuario_id
                 where rp.resuelto = 'NO'";
 
         return $this->database->query($sql);

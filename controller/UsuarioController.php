@@ -158,11 +158,14 @@ class UsuarioController
     public function verificarSesion(){
         if(isset($_SESSION['id'])){
             $data['user'] = $this->model->getUserData($_SESSION['username']);
-            $data['admin'] = $_SESSION['admin'];
 
-            if(isset($_SESSION['editor'])){
+            if(isset($_SESSION['admin']) && $_SESSION['admin'])
+                $data['admin'] = true;
+            if(isset($_SESSION['jugador']) && $_SESSION['jugador'])
+                $data['jugador'] = true;
+            if(isset($_SESSION['editor']) && $_SESSION['editor'])
                 $data['editor'] = true;
-            }
+
             return $data;
         }else{
             $this->redirectLoginForm();
