@@ -1,12 +1,4 @@
 <?php
-
-require_once 'C:\xampp\htdocs\PW2\preguntillo\vendor\sdk-php\src\MercadoPago\MercadoPagoConfig.php';
-
-
-use MercadoPago\Client\Common\RequestOptions;
-use MercadoPago\Client\Payment\PaymentClient;
-use MercadoPago\Exceptions\MPApiException;
-use MercadoPago\MercadoPagoConfig;
 class PreguntaController{
 
     private $usuarioModel;
@@ -14,14 +6,12 @@ class PreguntaController{
     private $partidaModel;
     private $opcionModel;
     private $presenter;
-    private $trampitaModel;
-    public function __construct($usuarioModel, $preguntaModel, $partidaModel, $opcionModel, $presenter, $trampitaModel) {
+    public function __construct($usuarioModel, $preguntaModel, $partidaModel, $opcionModel, $presenter) {
         $this->usuarioModel = $usuarioModel;
         $this->preguntaModel = $preguntaModel;
         $this->partidaModel = $partidaModel;
         $this->opcionModel = $opcionModel;
         $this->presenter = $presenter;
-        $this->trampitaModel = $trampitaModel;
     }
 
     public function list() {
@@ -105,46 +95,5 @@ class PreguntaController{
         $this->preguntaModel->crearReporte($user_id, $pregunta_id, $caso, $mensaje);
 
         Redirect::to('/usuario/home');
-    }
-
-        public function comprarTrampita() {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $cantidad = (int) $_POST['cantidad'];
-                if ($cantidad > 0) {
-                    $userId = $_SESSION['id'];
-                    $nuevasTrampitas = $this->trampitaModel->comprarTrampita($userId);
-                    echo json_encode(['success' => true, 'nuevasTrampitas' => $nuevasTrampitas]);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'Cantidad inválida de trampitas.']);
-                }
-            }
-        }
-
-        public function usarTrampita()
-        {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $cantidadUsar = (int) $_POST['cantidadUsar'];
-                $userId = $_SESSION['id'];
-                if ($this->trampitaModel->getTrampitas()>=$cantidadUsar) {
-                    $this->trampitaModel->usarTrampitas($userId);
-                    echo json_encode(['success' => true, 'mensaje' => 'Trampitas usadas correctamente.']);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'No tienes suficientes trampitas.']);
-                }
-            }
-        }
-
-    // Ver ventas totales de trampitas (solo para el administrador)
-    public function ventasTrampitas() {
-        // Solo el administrador puede acceder a esta vista
-        if ($_SESSION['role'] != 'admin') {
-            Redirect::to('/usuario/home');
-        }
-
-        // Obtener las ventas totales
-        $data['totalVentas'] = $this->trampitaModel->obtenerVentasTotales();
-
-        // Mostrar el reporte al administrador
-        $this->presenter->authView($data['userSession'], 'admin', $data);
     }
 }

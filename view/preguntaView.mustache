@@ -13,15 +13,11 @@
                 <div id="timer" class="progress my-2">
                     <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <p id="tiempoRestante" class="text-danger"></p>
+                <p id="tiempoRestante" class="text-progress"></p>
             </div>
             <form id="formulario-pregunta" method="post" action="/pregunta/validarOpcion">
                 <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
                 <div class="card-pregunta">
-                    <div class="card-section mb-3">
-                        <h5 class="card-title">Dificultad: {{dificultad}}</h5>
-                        <input type="hidden" id="puntaje" name="puntaje" value={{puntaje}} >
-                    </div>
                     <div class="pregunta">
                         <p>{{pregunta}}</p>
                     </div>
@@ -76,11 +72,11 @@
 
         <div class="modal fade" id="confirmarSalirModal" tabindex="-1" aria-labelledby="confirmarSalirModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
+                <div class="modal-salir">
+                    <div class="modal-body text-center">
                         <h5 class="modal-title text-danger" id="confirmarSalirModalLabel">¿Seguro desea salir?</h5>
                     </div>
-                    <div class="modal-footer">
+                    <div class="botones-salir">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                         <a href="/usuario/home" class="btn btn-danger">Sí</a>
                     </div>
@@ -90,14 +86,11 @@
 
         <div class="modal fade" id="timeOutModal" tabindex="-1" aria-labelledby="timeOutModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
+                <div class="modal-salir">
+                    <div class="modal-body text-center">
                         <h5 class="modal-title text-danger" id="timeOutModalLabel">¡Tiempo agotado!</h5>
                     </div>
-                    <div class="modal-body">
-                        Se acabó el tiempo para responder a esta pregunta.
-                    </div>
-                    <div class="modal-footer">
+                    <div class="botones-salir">
                         <a href="/juego/perdido" class="btn btn-danger">Continuar</a>
                     </div>
                 </div>
