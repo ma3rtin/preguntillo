@@ -32,8 +32,4 @@ class MustachePresenter{
         $session['rol'] == 'ADMIN' ? $this->show($viewName, $viewData) : Redirect::to($redirectTo);
     }
 
-    public function editorView($session, $viewName, $viewData, $redirectTo = '/login'){
-        $session['rol'] == 'EDITOR' ? $this->show($viewName, $viewData) : Redirect::to($redirectTo);
-    }
-
 }

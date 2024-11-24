@@ -22,3 +22,8 @@ h5{
     border: none;
     color:#762e91;
 }
+
+.form-edit{
+    display: flex;
+    flex-direction: column;
+}
