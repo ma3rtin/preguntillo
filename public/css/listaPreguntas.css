@@ -1,0 +1,23 @@
+thead{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 6px;
+    font-size: 18px;
+    border: 1px solid #333;
+}
+
+td{
+    text-align: center;
+    padding: 5px;
+    font-size: 22px;
+    border: 1px solid #333;
+    border-top: 0;
+}
+
+a{
+    text-decoration: none;
+    color: #673eb8;
+    font-size: 36px;
+    margin-left: 5px;
+}
