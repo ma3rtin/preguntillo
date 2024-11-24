@@ -52,7 +52,7 @@ class PartidaModel {
         $sql = "SELECT ranking.id, ranking.puntaje, usuario.usuario, usuario.nivel
             FROM ranking
             JOIN usuario ON ranking.usuario_id = usuario.id
-            ORDER BY ranking.puntaje ASC"; // Opcional: ordena por puntaje
+            ORDER BY ranking.puntaje ASC";
         $resultado = $this->database->query($sql);
 
         return $resultado;

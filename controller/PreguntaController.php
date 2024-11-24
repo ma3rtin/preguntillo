@@ -20,41 +20,31 @@ class PreguntaController{
         $this->presenter->authView($data['userSession'],'pregunta',$data);
     }
 
-    public function show(){
+    public function show() {
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $data['css'] = "/public/css/pregunta.css";
+
         $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
         $idPregunta = $_SESSION['pregunta_id'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
         $_SESSION['pregunta_id'] = $idPregunta;
 
-        $this->usuarioModel->registrarPreguntaEntregada($_SESSION['id']);
-        if($idPregunta == null){
+        if ($idPregunta == null) {
             Redirect::to('/juego/perdido');
         }
+
+        $_SESSION['pregunta_start_time'] = time();
+
+        $tiempoTotal = 20;
+        $data['tiempoRestante'] = $tiempoTotal;
+
         $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
         $data['pregunta_id'] = $idPregunta;
         $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);
         $data['categoria'] = $this->preguntaModel->getCategoria($idPregunta);
-        $_SESSION['hora_inicio'] = time();
-
-        $tiempoInicio = $_SESSION['pregunta_start_time'] ?? time();
-        $_SESSION['pregunta_start_time'] = $tiempoInicio;
-
-        $tiempoTotal = 20;
-        $tiempoTranscurrido = time() - $tiempoInicio;
-        $tiempoRestante = max(0, $tiempoTotal - $tiempoTranscurrido);
-
-        if($tiempoRestante <= 0){
-            unset($_SESSION['pregunta_id']);
-            unset($_SESSION['pregunta_start_time']);
-            Redirect::to('/juego/perdido');
-            return;
-        }
-
-        $data['tiempoRestante'] = $tiempoRestante;
 
         $this->presenter->show('pregunta', $data);
     }
+
 
 
     public function validarOpcion() {
@@ -64,7 +54,7 @@ class PreguntaController{
         $pregunta_id = $_POST['pregunta_id'];
         $opcionSeleccionada = $_POST['opcion_id'];
 
-        $horaInicio = $_SESSION['hora_inicio'] ?? time();
+        $horaInicio = $_SESSION['pregunta_start_time'];
         $tiempoTranscurrido = time() - $horaInicio;
 
         if ($tiempoTranscurrido > 20) {
