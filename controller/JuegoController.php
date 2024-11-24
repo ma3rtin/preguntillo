@@ -30,10 +30,14 @@ class JuegoController{
 
     public function crear() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
+        $data['modulo'] = $this->preguntaModel->getModulos();
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
 
-        $fechaInicio = date('Y-m-d H:i:s');
-        $this->partidaModel->createPartida($_SESSION['id'], $fechaInicio);
+        $fechaInicio = date('Y-m-d');
+        $horaInicio = date('H:i:s');
+
+        $this->partidaModel->createPartida($_SESSION['id'], $fechaInicio, $horaInicio);
+
         $idRandom = $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
 
         Redirect::to("/pregunta/show/$idRandom");

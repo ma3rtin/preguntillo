@@ -55,7 +55,8 @@ CREATE TABLE partida (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          usuario_id INT NOT NULL,
                          puntaje VARCHAR(255) NOT NULL,
-                         fecha DATETIME,
+                         fecha DATE,
+                         hora TIME,
                          FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
