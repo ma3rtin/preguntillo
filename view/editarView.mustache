@@ -6,17 +6,40 @@
             <label for="pregunta"><strong>Pregunta:</strong></label>
             <input type="text" name="pregunta" id="pregunta" class="input-bar" value="{{pregunta}}">
 
-            <h4>Opciones</h4>
-            {{#opciones}}
-                <label for="opciones"><strong>{{opcion}}</strong></label>
-                <input type="text" name="opcion" id="opcion" class="input-bar" value="{{opcion}}">
+            <div class="categoria-div">
+                <label for="pregunta"><strong>Categoria:</strong></label>
+                <select class="input-bar" id="estados" name="categoria_id">
+                    <option value="1">HISTORIA</option>
+                    <option value="2">MATEMÁTICAS</option>
+                    <option value="3">ENTRETENIMIENTO</option>
+                    <option value="4">CIENCIAS</option>
+                    <option value="5">ARTE</option>
+                    <option value="6">DEPORTE</option>
+                </select>
+            </div>
 
-                  <select class="input-bar" id="correcta">
-                    <option name="correcta" value="SI">SI</option>
-                    <option name="correcta" value="NO">NO</option>
-                  </select>
-           {{/opciones}}
+            <div class="estado-div">
+                <label for="pregunta"><strong>Estado:</strong></label>
+                <select class="input-bar" id="estados" name="estado">
+                    <option value="ACTIVA">ACTIVA</option>
+                    <option value="DESACTIVADA">DESACTIVADA</option>
+                    <option value="RECHAZADA">RECHAZADA</option>
+                    <option value="APROBADA">APROBADA</option>
+                </select>
+            </div>
 
+            <div class="opcion-div">
+                <p><strong>Opciones:</strong></p>
+                {{#opciones}}
+                    <label for="opciones"></label>
+                    <input type="text" name="opcion" id="opcion" class="input-bar" value="{{opcion}}">
+
+                    <select class="input-bar" id="correcta" name="opcion_correcta">
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
+                    </select>
+                {{/opciones}}
+            </div>
 
             <input type="hidden" name="id" value="{{id}}">
             <button type="submit" class="btn-save">Guardar Cambios</button>
