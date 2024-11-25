@@ -20,14 +20,22 @@ main {
     position: relative;
 }
 
-.cerrar-btn {
+.music-controls-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.cerrar-btn {
+    background-color: white;
+    color: red;
     top: 10px;
     right: 10px;
     width: 40px;
     height: 40px;
-    background-color: white;
-    color: red;
     font-size: 30px;
     border: none;
     text-decoration: none;
@@ -36,7 +44,6 @@ main {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    z-index: 10;
     transition: all 0.3s ease;
 }
 
@@ -45,8 +52,30 @@ main {
     color: white;
 }
 
-.cerrar-btn i {
-    pointer-events: none;
+.btn-volume {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#mute-icon {
+    color: gray;
+    font-size: 20px;
+}
+
+.btn-volume:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+.btn-volume.muted {
+    background-color: #e6e6e6;
 }
 
 .modal-title {

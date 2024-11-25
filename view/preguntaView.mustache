@@ -1,9 +1,22 @@
 {{#categoria}}
     <main class="container-supremo" style="background-color: {{color}}">
 
-        <a href="#" class="cerrar-btn" aria-label="Cerrar" data-bs-toggle="modal" data-bs-target="#confirmarSalirModal">
-            <i class="fas fa-times"></i>
-        </a>
+        <div class="music-controls-container">
+            <div class="music-controls">
+                <button id="mute-toggle" class="btn btn-volume">
+                    <i id="mute-icon" class="fa fa-volume-up"></i>
+                </button>
+            </div>
+
+            <a href="#" class="cerrar-btn" aria-label="Cerrar" data-bs-toggle="modal" data-bs-target="#confirmarSalirModal">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+
+        <audio id="timer-music" autoplay>
+            <source src="/public/music/timer.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
 
         <h2 class="categoria-titulo">{{nombre}}</h2>
 
@@ -11,7 +24,8 @@
             <div class="card-section mb-3">
                 <h5 class="card-title">Tiempo restante:</h5>
                 <div id="timer" class="progress my-2">
-                    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <p id="tiempoRestante" class="text-progress"></p>
             </div>
@@ -41,20 +55,21 @@
 
         {{#correcta}}
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
                     $('#reportingModal').modal('show');
                 });
             </script>
-            <div class="modal fade" id="reportingModal" tabindex="-1" aria-labelledby="reportingModalLabel" aria-hidden="true">
+            <div class="modal fade" id="reportingModal" tabindex="-1" aria-labelledby="reportingModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body text-center">
                             <div class="circle-container">
                                 <div class="circle">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-                                        <circle class="background" cx="25" cy="25" r="22" />
-                                        <circle class="progress-check" cx="25" cy="25" r="22" />
-                                        <path class="check" d="M15 25l7 7 13-13" />
+                                        <circle class="background" cx="25" cy="25" r="22"/>
+                                        <circle class="progress-check" cx="25" cy="25" r="22"/>
+                                        <path class="check" d="M15 25l7 7 13-13"/>
                                     </svg>
                                 </div>
                             </div>
@@ -70,7 +85,8 @@
             </div>
         {{/correcta}}
 
-        <div class="modal fade" id="confirmarSalirModal" tabindex="-1" aria-labelledby="confirmarSalirModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmarSalirModal" tabindex="-1" aria-labelledby="confirmarSalirModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-salir">
                     <div class="modal-body text-center">
@@ -99,30 +115,51 @@
 
     </main>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let tiempoRestante = {{tiempoRestante}};
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let tiempoRestante = {{tiempoRestante}};
 
-        const barraProgreso = document.getElementById('barraProgreso');
-        const textoTiempo = document.getElementById('tiempoRestante');
-        let interval;
+            const barraProgreso = document.getElementById('barraProgreso');
+            const textoTiempo = document.getElementById('tiempoRestante');
+            let interval;
 
-        function iniciarTemporizador() {
-            interval = setInterval(() => {
-                tiempoRestante--;
+            function iniciarTemporizador() {
+                interval = setInterval(() => {
+                    tiempoRestante--;
 
-                barraProgreso.style.width = ((tiempoRestante / 20) * 100) + '%';
-                textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
+                    barraProgreso.style.width = ((tiempoRestante / 20) * 100) + '%';
+                    textoTiempo.textContent = `Quedan ${tiempoRestante} segundos`;
 
-                if (tiempoRestante <= 0) {
-                    clearInterval(interval);
-                    const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
-                    timeOutModal.show();
+                    if (tiempoRestante <= 0) {
+                        clearInterval(interval);
+                        const timeOutModal = new bootstrap.Modal(document.getElementById('timeOutModal'));
+                        timeOutModal.show();
+                    }
+                }, 1000);
+            }
+
+            iniciarTemporizador();
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const backgroundMusic = document.getElementById("timer-music");
+            const muteToggleButton = document.getElementById("mute-toggle");
+            const muteIcon = document.getElementById("mute-icon");
+
+            muteToggleButton.addEventListener("click", function () {
+                if (backgroundMusic.muted) {
+                    backgroundMusic.muted = false;
+                    muteIcon.classList.remove("fa-volume-mute");
+                    muteIcon.classList.add("fa-volume-up");
+                } else {
+                    backgroundMusic.muted = true;
+                    muteIcon.classList.remove("fa-volume-up");
+                    muteIcon.classList.add("fa-volume-mute");
                 }
-            }, 1000);
-        }
+            });
+        });
+    </script>
 
-        iniciarTemporizador();
-    });
-</script>
 {{/categoria}}
