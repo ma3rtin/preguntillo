@@ -5,15 +5,18 @@ class AdminController
 
     private $model;
     private $presenter;
+    private $usuarioModel;
 
-    public function __construct($model, $presenter)
+    public function __construct($model, $presenter, $usuarioModel)
     {
         $this->model = $model;
         $this->presenter = $presenter;
+        $this->usuarioModel = $usuarioModel;
     }
 
     public function showStadistics()
     {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($_SESSION['admin']){
             $data['cantJugadores'] = $this->model->getCantJugadores();
             $data['cantPartidas'] = $this->model->getCantPartidas();
@@ -59,6 +62,7 @@ class AdminController
 
     public function showGraphs()
     {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($_SESSION['admin']){
             $data['css'] = '/public/css/graficos.css';
             $data['js'] = '/public/js/graficos.js';

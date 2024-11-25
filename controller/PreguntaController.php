@@ -99,8 +99,7 @@ class PreguntaController{
 
     public function sugerir(){
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
-        $data['modulos'] = $this->preguntaModel->getAllModules();
-        $data['tipos'] = $this->preguntaModel->getAllTypes();
+        $data['categorias'] = $this->preguntaModel->getAllCategorias();
 
         $this->presenter->show('sugerirPregunta', $data);
     }

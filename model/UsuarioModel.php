@@ -33,7 +33,7 @@ class UsuarioModel
     }
 
     public function getUserData($username){
-        $sql = "SELECT u.id, u.usuario, u.nombre, u.mail, u.año_nac, u.foto, u.longitud, u.latitud 
+        $sql = "SELECT u.id, u.usuario, u.nombre, u.mail, u.año_nac, u.foto,  u.longitud, u.latitud 
                 FROM usuario u
                 WHERE usuario = '" . $username . "'";
         $user = $this->database->query($sql);

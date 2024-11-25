@@ -2,6 +2,13 @@
     margin: 0;
 }
 
+#flecha{
+    text-decoration: none;
+    color: #673eb8;
+    font-size: 32px;
+    margin-left: 5px;
+}
+
 body{
     background-color: #ece9e9;
     font-family: "Lilita One", sans-serif;

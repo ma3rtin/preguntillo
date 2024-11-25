@@ -48,7 +48,11 @@ class UsuarioController
         else{
             $_SESSION['username'] = $user['usuario'];
             $_SESSION['id'] = $user['id'];
-            switch($user['rol']){
+            $_SESSION['admin'] = false;
+            $_SESSION['jugador'] = false;
+            $_SESSION['editor'] = false;
+
+            switch ($user['rol']) {
                 case 'ADMIN':
                     $_SESSION['admin'] = true;
                     break;

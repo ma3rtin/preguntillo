@@ -15,6 +15,7 @@ class EditorController
 
     public function verPreguntasReportadas()
     {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($this->verificarRol()){
             $data['preguntasReportadas'] = $this->preguntaModel->getPreguntasReportadas();
             $data['reportes'] = true;
@@ -41,6 +42,7 @@ class EditorController
     }
 
     public function verPreguntasSugeridas(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($this->verificarRol()){
 
             $data['preguntasSugeridas']  = $this->preguntaModel->getPreguntasSugeridas();
@@ -70,9 +72,9 @@ class EditorController
     }
 
     public function crearPreguntas(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($this->verificarRol()){
-            $data['tipos'] = $this->preguntaModel->getTipos();
-            $data['modulos'] = $this->preguntaModel->getAllModulos();
+            $data['categorias'] = $this->preguntaModel->getAllCategorias();
             $data['js'] = '/public/js/crearPreguntas.js';
             $data['css'] = '/public/css/crearPreguntas.css';
             $this->presenter->show('crearPreguntas', $data);
@@ -80,17 +82,17 @@ class EditorController
     }
 
     public function agregarPregunta(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($this->verificarRol()){
             $pregunta = $_POST['pregunta'] ?? null;
             $opcion1 = $_POST['opcion1'] ?? null;
             $opcion2 = $_POST['opcion2'] ?? null;
             $opcion3 = $_POST['opcion3'] ?? null;
             $opcion4 = $_POST['opcion4'] ?? null;
-            $modulo = $_POST['id_modulo'] ?? null;
-            $tipo = $_POST['id_tipo'] ?? null;
+            $categoria = $_POST['categoria_id'] ?? null;
 
-            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $opcion4 && $modulo && $tipo) {
-                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $modulo, $tipo);
+            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $opcion4 && $categoria) {
+                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $categoria);
             }else{
                 $data['error'] = "Todos los campos son obligatorios";
                 $this->presenter->show('crearPreguntas', $data);
@@ -99,6 +101,7 @@ class EditorController
     }
 
     public function verPreguntasActivas(){
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if($this->verificarRol()){
             $data['preguntasEditables'] = $this->preguntaModel->getPreguntas();
             $data['editar'] = true;
@@ -115,6 +118,7 @@ class EditorController
     }
 
     public function editarPreguntaForm() {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if ($this->verificarRol()) {
             $preguntaId = $_GET['id'] ?? null;
 
@@ -126,20 +130,14 @@ class EditorController
                     $opcion['opcion_correcta'] = $opcion['opcion_correcta'] == "SI";
                 }
 
-                $tipos = $this->preguntaModel->getTipos();
-                foreach ($tipos as &$tipo) {
-                    $tipo['tipo_elegido'] = $tipo['id'] == $pregunta['id_tipo'];
-                }
-
-                $modulos = $this->preguntaModel->getAllModulos();
-                foreach ($modulos as &$modulo) {
-                    $modulo['modulo_elegido'] = $modulo['id'] == $pregunta['id_modulo'];
+                $categorias = $this->preguntaModel->getAllCategorias();
+                foreach ($categorias as &$categoria) {
+                    $categoria['categoria_elegida'] = $categoria['id'] == $pregunta['categoria_id'];
                 }
 
                 $data = [
                     'pregunta' => $pregunta,
-                    'tipos' => $tipos,
-                    'modulos' => $modulos,
+                    'categorias' => $categorias,
                     'opciones' => $opciones,
                     'js' => '/public/js/crearPreguntas.js',
                     'css' => '/public/css/crearPreguntas.css'
@@ -158,14 +156,13 @@ class EditorController
 
             $preguntaId = $_POST['id'] ?? null;
             $preguntaTexto = $_POST['pregunta'] ?? null;
-            $modulo = $_POST['id_modulo'] ?? null;
-            $tipo = $_POST['id_tipo'] ?? null;
+            $categoria = $_POST['categoria_id'] ?? null;
             $opciones = $_POST['opciones'] ?? [];
 
             //echo json_encode($_POST);
 
-            if ($preguntaId && $preguntaTexto && $modulo && $tipo && !empty($opciones)) {
-                $this->preguntaModel->editarPregunta($preguntaId, $preguntaTexto, $modulo, $tipo);
+            if ($preguntaId && $preguntaTexto && $categoria && !empty($opciones)) {
+                $this->preguntaModel->editarPregunta($preguntaId, $preguntaTexto, $categoria);
 
                 foreach ($opciones as $id => $texto) {
                     if (!empty($texto)) {
@@ -178,6 +175,7 @@ class EditorController
 
     public function verificarRol()
     {
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         if(isset($_SESSION['id'])){
             $user = $this->usuarioModel->getUserById($_SESSION['id']);
             if($user['rol'] == 'EDITOR'){

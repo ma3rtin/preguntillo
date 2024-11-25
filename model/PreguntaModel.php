@@ -228,20 +228,20 @@ class PreguntaModel
     }
 
     public function getPreguntasSugeridas() {
-        $sql = "SELECT ps.id AS id, ps.pregunta AS pregunta, m.name AS modulo, GROUP_CONCAT(os.opcion ORDER BY os.opcion ASC) AS opciones FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id JOIN modulo m ON m.id = ps.modulo GROUP BY ps.id, ps.pregunta, m.name;";
+        $sql = "SELECT ps.id AS id, ps.pregunta AS pregunta, c.nombre AS categoria, GROUP_CONCAT(os.opcion ORDER BY os.opcion ASC) AS opciones FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id JOIN categoria c ON c.id = ps.categoria GROUP BY ps.id, ps.pregunta, c.nombre;";
         return $this->database->query($sql);
     }
 
     public function aceptarPregunta($id) {
-        $sqlObtenerPregunta = "SELECT pregunta, modulo 
+        $sqlObtenerPregunta = "SELECT pregunta, categoria 
                            FROM pregunta_sugerida 
                            WHERE id = $id";
         $preguntaAceptada= $this->database->query($sqlObtenerPregunta)[0];
         $pregunta = $preguntaAceptada['pregunta'];
-        $modulo = $preguntaAceptada['modulo'];
+        $categoria = $preguntaAceptada['categoria'];
 
-        $sqlInsertPregunta = "INSERT INTO pregunta (pregunta, id_modulo, estado, id_tipo) 
-                              VALUES ('$pregunta ', $modulo, 'ACTIVA', 1)";
+        $sqlInsertPregunta = "INSERT INTO pregunta (pregunta, categoria_id, estado) 
+                              VALUES ('$pregunta ', $categoria, 'ACTIVA')";
         $this->database->execute($sqlInsertPregunta);
 
         $ultimoId = $this->database->lastInsertId();
@@ -271,9 +271,9 @@ class PreguntaModel
         return $this->database->execute($sql);
     }
 
-    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $modulo, $tipo)
+    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $categoria_id)
     {
-        $sql = "INSERT INTO pregunta (pregunta, estado, id_modulo, id_tipo) VALUES ('$pregunta', 'ACTIVA', $modulo, $tipo);";
+        $sql = "INSERT INTO pregunta (pregunta, estado, categoria_id) VALUES ('$pregunta', 'ACTIVA', $categoria_id);";
         $this->database->execute($sql);
 
         $preguntaId = $this->obtenerIdDePregunta($pregunta);
@@ -303,24 +303,19 @@ class PreguntaModel
         return $this->database->execute($sql);
     }
 
-    public function getTipos(){
-        $sql = "SELECT id, name FROM tipo";
-        return $this->database->query($sql);
-    }
-
-    public function getAllModulos(){
-        $sql = "SELECT id, name FROM modulo";
+    public function getAllCategorias(){
+        $sql = "SELECT id, nombre FROM categoria";
         return $this->database->query($sql);
     }
 
     public function getPreguntas() {
-        $sql = "SELECT p.id AS id, p.pregunta AS pregunta, p.estado AS estado, m.name AS modulo, GROUP_CONCAT(o.opcion ORDER BY o.opcion ASC) AS opciones FROM pregunta p JOIN opcion o ON o.pregunta_id = p.id JOIN modulo m ON m.id = p.id_modulo GROUP BY p.id, p.pregunta, m.name;";
+        $sql = "SELECT p.id AS id, p.pregunta AS pregunta, p.estado AS estado, c.nombre AS categoria, GROUP_CONCAT(o.opcion ORDER BY o.opcion ASC) AS opciones FROM pregunta p JOIN opcion o ON o.pregunta_id = p.id JOIN categoria c ON c.id = p.categoria_id GROUP BY p.id, p.pregunta, c.nombre;";
         return $this->database->query($sql);
     }
 
-    public function editarPregunta($preguntaId, $texto, $moduloId, $tipoId)
+    public function editarPregunta($preguntaId, $texto, $categoria_id)
     {
-        $sql = "UPDATE pregunta SET pregunta = '$texto', id_modulo = $moduloId, id_tipo = $tipoId WHERE id = $preguntaId";
+        $sql = "UPDATE pregunta SET pregunta = '$texto', categoria_id = $categoria_id WHERE id = $preguntaId";
         $this->database->execute($sql);
     }
 

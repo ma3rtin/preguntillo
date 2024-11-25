@@ -15,23 +15,13 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12 col-md-6 mb-4">
-                <div class="form-group">
-                    <label class="form-label">Tipo</label>
-                    <select class="form-select" name="id_tipo" required>
-                        {{#tipos}}
-                            <option value="{{id}}" {{#tipo_elegido}}selected{{/tipo_elegido}}>{{name}}</option>
-                        {{/tipos}}
-                    </select>
-                </div>
-            </div>
             <div class="col-12 col-md-6 mb-4">
                 <div class="form-group">
-                    <label class="form-label">Modulo</label>
-                    <select class="form-select" name="id_modulo" required>
-                        {{#modulos}}
-                            <option value="{{id}}" {{#modulo_elegido}}selected{{/modulo_elegido}}>{{name}}</option>
-                        {{/modulos}}
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" name="categoria_id" required>
+                        {{#categorias}}
+                            <option value="{{id}}" {{#categoria_elegido}}selected{{/categoria_elegido}}>{{nombre}}</option>
+                        {{/categorias}}
                     </select>
                 </div>
             </div>

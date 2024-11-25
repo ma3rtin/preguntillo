@@ -48,7 +48,7 @@ class Configuration
     }
 
     public function getAdminController(){
-        return new AdminController($this->getUsuarioModel(), $this->getPresenter());
+        return new AdminController($this->getUsuarioModel(), $this->getPresenter(), $this->getUsuarioModel());
     }
 
     public function getEditorController(){

@@ -10,24 +10,24 @@
     </section>
 {{#admin}}
     <section class="actions">
-        <a href="/admin/showStadistics">Ver<button class="btn"> estadísticas</button></a>
-        <a href="/admin/showGraphs?fecha=7"><button class="btn">Ver gráficos</button></a>
+        <a href="/admin/showStadistics" class="btn">Ver estadísticas</a>
+        <a href="/admin/showGraphs?fecha=7" class="btn">Ver gráficos</a>
     </section>
     </main>
 {{/admin}}
 {{#editor}}
     <section class="actions">
-        <a href="/editor/verPreguntasReportadas"><button class="btn">Ver preguntas reportadas</button></a>
-        <a href="/editor/verPreguntasSugeridas"><button class="btn">Ver preguntas sugeridas</button></a>
-        <a href="/editor/crearPreguntas"><button class="btn">Crear preguntas</button></a>
-        <a href="/editor/verPreguntasActivas"><button class="btn">Editar preguntas</button></a>
+        <a href="/editor/verPreguntasReportadas" class="btn">Ver preguntas reportadas</a>
+        <a href="/editor/verPreguntasSugeridas" class="btn">Ver preguntas sugeridas</a>
+        <a href="/editor/crearPreguntas" class="btn">Crear preguntas</a>
+        <a href="/editor/verPreguntasActivas" class="btn">Editar preguntas</a>
     </section>
     </main>
 {{/editor}}
 {{#jugador}}
     <section class="actions">
-        <button class="btn"><a href="?page=juego&action=crear">Nueva partida</a></button>
-        <button class="btn"><a href="?page=sugerirPregunta&action=sugerir">Crear pregunta</a></button>
+        <a href="?page=juego&action=crear" class="btn">Nueva partida</a>
+        <a href="?page=pregunta&action=sugerir" class="btn">Crear pregunta</a>
     </section>
 
     <section class="game-history">
