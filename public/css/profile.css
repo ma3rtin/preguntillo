@@ -10,7 +10,10 @@
 }
 
 body{
-    background-color: #ece9e9;
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: 150%;
+    background-position: center -250px;
+    background-repeat: no-repeat;
     font-family: "Lilita One", sans-serif;
     margin: 0;
     padding: 0;

@@ -1,5 +1,5 @@
 html, body {
-    background-color: #e1e3ff;
+    /*background-color: #e1e3ff;*/
     font-family: "Lilita One", sans-serif;
     margin: 0;
     padding: 0;
@@ -7,6 +7,13 @@ html, body {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+body{
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: 125%;
+    background-position: center -250px;
+    background-repeat: no-repeat;
 }
 
 .body-title{

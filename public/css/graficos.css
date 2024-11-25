@@ -1,3 +1,10 @@
+body{
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: 175%;
+    background-position: center -250px;
+    background-repeat: no-repeat;
+}
+
 a{
     text-decoration: none;
     color: #673eb8;

@@ -13,9 +13,12 @@
 
 body {
     font-family: "Lilita One", sans-serif;
-    background-color: #f0f4ff;
     color: #545454;
     letter-spacing: 1px;
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: 125%;
+    background-position: center -250px;
+    background-repeat: no-repeat;
 }
 
 .container {

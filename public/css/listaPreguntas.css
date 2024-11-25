@@ -5,7 +5,7 @@ html, body {
     display: flex;
     flex-direction: column;
     background-image: url("/public/img/Wallpaper.jpg");
-    background-size: cover;
+    background-size: 125%;
     background-position: center -250px;
     background-repeat: repeat;
 }

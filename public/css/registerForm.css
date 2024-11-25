@@ -1,5 +1,9 @@
 body {
     font-family: "Lilita One", sans-serif;
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: 128%;
+    background-position: center -250px;
+    background-repeat: no-repeat;
 }
 
 .wrapper {
