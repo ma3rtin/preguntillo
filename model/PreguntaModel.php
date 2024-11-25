@@ -47,13 +47,14 @@ class PreguntaModel
 
     public function getPreguntaById($id)
     {
-        $sql = "SELECT * FROM pregunta WHERE id = ".$id;
+        $sql = "SELECT * FROM pregunta WHERE id = " . $id;
         $preguntaObtenida = $this->database->query($sql);
         return $preguntaObtenida[0];
     }
 
-    public function getOpcionesByPreguntaId($preguntaId){
-        $sql = "SELECT * FROM opcion WHERE pregunta_id = ".$preguntaId;
+    public function getOpcionesByPreguntaId($preguntaId)
+    {
+        $sql = "SELECT * FROM opcion WHERE pregunta_id = " . $preguntaId;
         return $this->database->query($sql);
     }
 
@@ -76,6 +77,55 @@ class PreguntaModel
 
         return $preguntaPorId[0]['nivel'];
     }
+
+    public function getIdUltimaPreguntaNoRespondida($usuarioId) {
+        $sql = "SELECT id 
+            FROM pregunta p
+            WHERE p.id IN (
+                SELECT pregunta_id 
+                FROM usuario_pregunta 
+                WHERE usuario_id = $usuarioId AND respondida = FALSE
+            ) LIMIT 1";
+
+        $result = $this->database->query($sql);
+
+        if (is_array($result) && !empty($result)) {
+            return $result[0]['id'];
+        } else {
+            return $this->getPreguntaRandom($usuarioId);
+        }
+    }
+
+    public function preguntaContestada($pregunta_id, $usuario_id) {
+        $sql = "SELECT 1 FROM usuario_pregunta WHERE usuario_id = $usuario_id AND pregunta_id = $pregunta_id LIMIT 1";
+
+        $result = $this->database->query($sql);
+
+        if (!empty($result)) {
+            $sqlUpdate = "
+            UPDATE usuario_pregunta SET respondida = TRUE WHERE usuario_id = $usuario_id AND pregunta_id = $pregunta_id";
+
+            $this->database->execute($sqlUpdate);
+        } else {
+            $sqlInsert = " INSERT INTO usuario_pregunta (usuario_id, pregunta_id, respondida) VALUES ($usuario_id, $pregunta_id, TRUE)";
+
+            $this->database->execute($sqlInsert);
+        }
+    }
+
+
+    public function preguntaMostrada($usuarioId, $pregunta_id) {
+        $sqlCheck = "SELECT 1 FROM usuario_pregunta WHERE usuario_id = $usuarioId AND pregunta_id = $pregunta_id LIMIT 1";
+        $result = $this->database->query($sqlCheck);
+
+        if (empty($result)) {
+            $sql = "INSERT INTO usuario_pregunta (usuario_id, pregunta_id, respondida) 
+                VALUES ($usuarioId, $pregunta_id, FALSE)";
+            $this->database->execute($sql);
+        }
+    }
+
+
 
     public function getPreguntaRandom($usuarioId)
     {
@@ -204,7 +254,8 @@ class PreguntaModel
         return $resultado;
     }
 
-    public function actualizarDificultad($id, $esCorrecta) {
+    public function actualizarDificultad($id, $esCorrecta)
+    {
         $sql = "SELECT * FROM pregunta WHERE id = $id";
         $pregunta = $this->database->query($sql)[0];
 
@@ -227,16 +278,18 @@ class PreguntaModel
         return $this->database->query($sql);
     }
 
-    public function getPreguntasSugeridas() {
+    public function getPreguntasSugeridas()
+    {
         $sql = "SELECT ps.id AS id, ps.pregunta AS pregunta, c.nombre AS categoria, GROUP_CONCAT(os.opcion ORDER BY os.opcion ASC) AS opciones FROM pregunta_sugerida ps JOIN opcion_sugerida os ON os.pregunta_id = ps.id JOIN categoria c ON c.id = ps.categoria GROUP BY ps.id, ps.pregunta, c.nombre;";
         return $this->database->query($sql);
     }
 
-    public function aceptarPregunta($id) {
+    public function aceptarPregunta($id)
+    {
         $sqlObtenerPregunta = "SELECT pregunta, categoria 
                            FROM pregunta_sugerida 
                            WHERE id = $id";
-        $preguntaAceptada= $this->database->query($sqlObtenerPregunta)[0];
+        $preguntaAceptada = $this->database->query($sqlObtenerPregunta)[0];
         $pregunta = $preguntaAceptada['pregunta'];
         $categoria = $preguntaAceptada['categoria'];
 
@@ -264,7 +317,8 @@ class PreguntaModel
         return $this->database->execute($sqlEliminarPreguntaSugerida);
     }
 
-    public function rechazarPregunta($id) {
+    public function rechazarPregunta($id)
+    {
         $sql = "DELETE FROM opcion_sugerida WHERE pregunta_id = $id";
         $this->database->execute($sql);
         $sql = "DELETE FROM pregunta_sugerida WHERE id = $id";
@@ -293,22 +347,26 @@ class PreguntaModel
         return $this->database->query($sql)[0]['id'];
     }
 
-    public function deshabilitarPregunta($id){
+    public function deshabilitarPregunta($id)
+    {
         $sql = "UPDATE pregunta SET estado = 'INACTIVA' WHERE id = $id";
         return $this->database->execute($sql);
     }
 
-    public function habilitarPregunta($id){
+    public function habilitarPregunta($id)
+    {
         $sql = "UPDATE pregunta SET estado = 'ACTIVA' WHERE id = $id";
         return $this->database->execute($sql);
     }
 
-    public function getAllCategorias(){
+    public function getAllCategorias()
+    {
         $sql = "SELECT id, nombre FROM categoria";
         return $this->database->query($sql);
     }
 
-    public function getPreguntas() {
+    public function getPreguntas()
+    {
         $sql = "SELECT p.id AS id, p.pregunta AS pregunta, p.estado AS estado, c.nombre AS categoria, GROUP_CONCAT(o.opcion ORDER BY o.opcion ASC) AS opciones FROM pregunta p JOIN opcion o ON o.pregunta_id = p.id JOIN categoria c ON c.id = p.categoria_id GROUP BY p.id, p.pregunta, c.nombre;";
         return $this->database->query($sql);
     }

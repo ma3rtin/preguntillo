@@ -120,11 +120,6 @@ class PartidaModel {
         return $partidas;
     }
 
-    public function preguntaContestada($idPregunta, $idUsuario){
-        $sql = "INSERT INTO usuario_pregunta (usuario_id, pregunta_id) VALUES ($idUsuario, $idPregunta)";
-        $this->database->execute($sql);
-    }
-
     public function getNivelUsuario($id) {
         if (!$id) {
             return null;

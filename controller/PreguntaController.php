@@ -23,33 +23,40 @@ class PreguntaController{
     public function show() {
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $data['css'] = "/public/css/pregunta.css";
+        $usuarioId = $data['user']['id'];
 
-        $idPregunta = $_GET['params'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
-        $idPregunta = $_SESSION['pregunta_id'] ?? $this->preguntaModel->getPreguntaRandom($_SESSION['id']);
-        $_SESSION['pregunta_id'] = $idPregunta;
+        $idPregunta = $this->preguntaModel->getIdUltimaPreguntaNoRespondida($_SESSION['id']);
 
         if ($idPregunta == null) {
+            $idPregunta = $this->preguntaModel->getPreguntaRandom($usuarioId);
             Redirect::to('/juego/perdido');
         }
 
-        $_SESSION['pregunta_start_time'] = time();
+        $_SESSION['pregunta_id'] = $idPregunta;
 
+        $_SESSION['pregunta_start_time'] = $_SESSION['pregunta_start_time'] ?? time();
+
+        $tiempoTranscurrido = time() - $_SESSION['pregunta_start_time'];
         $tiempoTotal = 20;
-        $data['tiempoRestante'] = $tiempoTotal;
+        $tiempoRestante = max(0, $tiempoTotal - $tiempoTranscurrido);
+
+        $data['tiempoRestante'] = $tiempoRestante;
 
         $data['pregunta'] = $this->preguntaModel->getPreguntaById($idPregunta);
         $data['pregunta_id'] = $idPregunta;
         $data['opciones'] = $this->opcionModel->getOpciones($idPregunta);
         $data['categoria'] = $this->preguntaModel->getCategoria($idPregunta);
 
+        $this->preguntaModel->preguntaMostrada($usuarioId,$idPregunta);
+
         $this->presenter->show('pregunta', $data);
     }
-
-
 
     public function validarOpcion() {
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
         $data['css'] = "/public/css/pregunta.css";
+
+        unset($_SESSION['pregunta_id']);
 
         $pregunta_id = $_POST['pregunta_id'];
         $opcionSeleccionada = $_POST['opcion_id'];
@@ -62,7 +69,7 @@ class PreguntaController{
             return;
         }
 
-        $this->partidaModel->preguntaContestada($pregunta_id, $_SESSION['id']);
+        $this->preguntaModel->preguntaContestada($pregunta_id, $_SESSION['id']);
         $opcionCorrecta = $this->opcionModel->getOpcionCorrecta($pregunta_id)[0];
 
         if ($opcionSeleccionada == $opcionCorrecta['id']) {
@@ -80,8 +87,9 @@ class PreguntaController{
                 return;
             }
 
+
             $data['siguiente_id'] = $siguiente_id;
-            $_SESSION['pregunta_id'] = $siguiente_id; // Asignar solo si existe
+            $_SESSION['pregunta_id'] = $siguiente_id;
 
             $data['correcta'] = true;
             $data['pregunta'] = $this->preguntaModel->getPreguntaById($pregunta_id);

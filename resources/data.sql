@@ -99,6 +99,7 @@ CREATE TABLE opcion_sugerida (
 create table usuario_pregunta(
                                  usuario_id int,
                                  pregunta_id int,
+                                 respondida boolean,
                                  constraint usuario_pregunta_fk primary key(pregunta_id,usuario_id),
                                  foreign key(pregunta_id) references pregunta(id),
                                  foreign key(usuario_id) references usuario(id));
