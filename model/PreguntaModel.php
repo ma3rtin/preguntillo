@@ -325,21 +325,26 @@ class PreguntaModel
         return $this->database->execute($sql);
     }
 
-    public function crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $categoria_id)
+    public function crearPregunta($pregunta, $opciones, $respuestaCorrecta, $categoria_id)
     {
-        $sql = "INSERT INTO pregunta (pregunta, estado, categoria_id) VALUES ('$pregunta', 'ACTIVA', $categoria_id);";
-        $this->database->execute($sql);
+        $sqlPregunta = "INSERT INTO pregunta (pregunta, estado, categoria_id) VALUES ('$pregunta', 'ACTIVA', $categoria_id)";
+        $this->database->execute($sqlPregunta);
 
         $preguntaId = $this->obtenerIdDePregunta($pregunta);
 
-        $sql = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) 
-        VALUES ($preguntaId, '$opcion1', 'SI'),
-               ($preguntaId, '$opcion2', 'NO'),
-               ($preguntaId, '$opcion3', 'NO'),
-               ($preguntaId, '$opcion4', 'NO')";
+        $sqlOpciones = "INSERT INTO opcion (pregunta_id, opcion, opcion_correcta) VALUES ";
+        $values = [];
 
-        return $this->database->execute($sql);
+        foreach ($opciones as $key => $opcion) {
+            $esCorrecta = ($key === $respuestaCorrecta) ? 'SI' : 'NO';
+            $values[] = "($preguntaId, '$opcion', '$esCorrecta')";
+        }
+
+        $sqlOpciones .= implode(', ', $values);
+
+        return $this->database->execute($sqlOpciones);
     }
+
 
     public function obtenerIdDePregunta($pregunta)
     {

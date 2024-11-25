@@ -1,33 +1,65 @@
-body{
+html, body {
     background-color: #e1e3ff;
     font-family: "Lilita One", sans-serif;
     margin: 0;
     padding: 0;
     color: #444444;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-label{
+label {
     display: block;
     font-size: 20px;
 }
 
-.mb-5{
+.mb-5 {
     text-align: center;
     margin: 0;
 }
 
-form{
+form {
     max-width: 60%;
     margin: auto;
 }
 
-.my-3{
+.my-3 {
     text-align: center;
 }
 
-a{
+a {
     text-decoration: none;
     color: #673eb8;
     font-size: 32px;
     margin-left: 5px;
+}
+
+.form-label {
+    text-align: center;
+}
+
+#formPregunta {
+    width: 700px;
+    margin-bottom: 40px;
+}
+
+.option-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.option-group input[type="radio"] {
+    margin-right: 10px;
+}
+
+#salir{
+    background: #d80f0f;
+    border: none;
+}
+
+#salir:hover{
+    background: darkred;
+
 }

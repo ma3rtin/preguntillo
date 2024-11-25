@@ -13,7 +13,7 @@ header {
 body{
     background-image: url("/public/img/Wallpaper.jpg");
     background-size: cover;
-    background-position: center -250px; /* Mueve la imagen hacia la parte superior */
+    background-position: center -250px;
     background-repeat: no-repeat;
 }
 

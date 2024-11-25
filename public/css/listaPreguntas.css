@@ -1,3 +1,15 @@
+html, body {
+    font-family: "Lilita One", sans-serif;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: cover;
+    background-position: center -250px;
+    background-repeat: repeat;
+}
+
 thead{
     background-color: #333;
     color: #fff;
@@ -31,4 +43,8 @@ a{
 
 .botones button{
     margin: 10px 0;
+}
+
+.table-responsive{
+    background: #ececec;
 }

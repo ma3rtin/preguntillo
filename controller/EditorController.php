@@ -81,24 +81,32 @@ class EditorController
         }
     }
 
-    public function agregarPregunta(){
+    public function agregarPregunta()
+    {
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
-        if($this->verificarRol()){
+
+        if ($this->verificarRol()) {
             $pregunta = $_POST['pregunta'] ?? null;
-            $opcion1 = $_POST['opcion1'] ?? null;
-            $opcion2 = $_POST['opcion2'] ?? null;
-            $opcion3 = $_POST['opcion3'] ?? null;
-            $opcion4 = $_POST['opcion4'] ?? null;
+            $opciones = $_POST['opciones'] ?? [];
+            $respuestaCorrecta = $_POST['respuesta_correcta'] ?? null;
             $categoria = $_POST['categoria_id'] ?? null;
 
-            if($pregunta && $opcion1 && $opcion2 && $opcion3 && $opcion4 && $categoria) {
-                $this->preguntaModel->crearPregunta($pregunta, $opcion1, $opcion2, $opcion3, $opcion4, $categoria);
-            }else{
-                $data['error'] = "Todos los campos son obligatorios";
+            if ($pregunta && $opciones && $respuestaCorrecta && count($opciones) === 4 && $categoria) {
+                $opcionCorrecta = $opciones[$respuestaCorrecta] ?? null;
+
+                if ($opcionCorrecta) {
+                    $this->preguntaModel->crearPregunta($pregunta, $opciones, $respuestaCorrecta, $categoria);
+                } else {
+                    $data['error'] = "La opción correcta no es válida.";
+                    $this->presenter->show('crearPreguntas', $data);
+                }
+            } else {
+                $data['error'] = "Todos los campos son obligatorios.";
                 $this->presenter->show('crearPreguntas', $data);
             }
         }
     }
+
 
     public function verPreguntasActivas(){
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
