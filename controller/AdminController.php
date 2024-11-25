@@ -2,7 +2,6 @@
 
 class AdminController
 {
-
     private $model;
     private $presenter;
     private $usuarioModel;

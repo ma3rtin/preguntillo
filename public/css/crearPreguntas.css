@@ -66,5 +66,8 @@ a {
 
 #salir:hover{
     background: darkred;
+}
 
+.fa-arrow-left{
+    color: #f6edfd;
 }

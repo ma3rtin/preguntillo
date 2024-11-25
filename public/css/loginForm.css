@@ -9,12 +9,12 @@ html, body {
     flex-direction: column;
 }
 
-body{
-    background-image: url("/public/img/Wallpaper.jpg");
-    background-size: 125%;
-    background-position: center -250px;
-    background-repeat: no-repeat;
-}
+    body{
+        background-image: url("/public/img/Wallpaper.jpg");
+        background-size: 125%;
+        background-position: center -250px;
+        background-repeat: no-repeat;
+    }
 
 .body-title{
     text-align: center;
