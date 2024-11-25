@@ -56,6 +56,8 @@ class PreguntaController{
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
         $data['css'] = "/public/css/pregunta.css";
 
+        $_SESSION['pregunta_start_time'] = time();
+
         unset($_SESSION['pregunta_id']);
 
         $pregunta_id = $_POST['pregunta_id'];
