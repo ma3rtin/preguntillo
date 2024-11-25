@@ -43,6 +43,7 @@ class EditorController{
 
                 $data['preguntas'] = $pregunta;
                 $data['opciones'] = $opciones;
+                //$data['categoria'] = $categoria;
                 $data['css'] = '/public/css/reporte.css';
 
                 $this->presenter->show("editar", $data);
@@ -54,8 +55,27 @@ class EditorController{
     }
 
     public function guardarCambios() {
+        if ($_SESSION['editor']) {
+            $data = (object)[
+                'pregunta_id' => $_POST['id'],
+                'pregunta' => $_POST['pregunta'],
+                'categoria_id' => $_POST['categoria_id'],
+                'estado' => $_POST['estado']
+            ];
 
+            $this->preguntaModel->update($data);
+
+            $dataOpcion['opcion'] = $_POST['opcion'];
+            $dataOpcion['opcion_correcta'] = $_POST['opcion_correcta'];
+            $dataOpcion['id_pregunta'] = $_POST['id'];
+
+            $this->opcionModel->updateOpciones($dataOpcion);
+            $this->preguntaModel->updateReportePregunta($_SESSION['id']);
+        }else {
+            Redirect::to('login');
+        }
     }
+
 
 
 }

@@ -71,4 +71,6 @@ class OpcionModel
         $_SESSION[$sqlStatus ? 'success' : 'error'] = $sqlStatus ? 'Pregunta y Opciones creadas!' : 'Pregunta y Opciones no creadas!';
         return $sqlStatus;
     }
+
+
 }

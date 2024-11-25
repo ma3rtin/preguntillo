@@ -36,7 +36,7 @@ class PreguntaModel
 
     public function getModulos()
     {
-        $sql = "SELECT DISTINCT id_modulo FROM pregunta";
+        $sql = "SELECT DISTINCT categoria_id FROM pregunta";
         $resultado = $this->database->query($sql);
 
         return $resultado;
@@ -47,7 +47,7 @@ class PreguntaModel
         $sql = "SELECT p.pregunta, GROUP_CONCAT(o.opcion SEPARATOR ';') AS opcion, MAX(CASE WHEN o.opcion_correcta = 'SI' THEN o.opcion END) AS opcion_correcta 
                 FROM pregunta AS p
                 LEFT JOIN opcion AS o ON p.id = o.pregunta_id
-                WHERE p.modulo = '$moduleName'
+                WHERE p.categoria = '$moduleName'
                 GROUP BY p.id";
 
         $resultado = $this->database->query($sql);
@@ -143,13 +143,10 @@ class PreguntaModel
     public function update($data)
     {
         try {
-            $accesible = $data->accesible ?? null;
             $sql = "UPDATE pregunta SET 
                         pregunta = '$data->pregunta',
                         estado = '$data->estado',
-                        accesible = '$accesible',
-                        id_modulo = '$data->id_modulo',
-                        id_tipo = '$data->id_tipo'
+                        categoria_id = '$data->categoria_id'
                     WHERE id = '$data->pregunta_id'";
             return $this->database->query($sql);
         } catch (PDOException $e) {
@@ -162,8 +159,8 @@ class PreguntaModel
     {
         try {
             $accesible = $data->accesible ?? null;
-            $sql = "INSERT INTO pregunta (pregunta, estado, accesible, id_modulo, id_tipo, dificultad_id)
-                    VALUES ('$data->pregunta', '$data->estado', '$accesible', '$data->id_modulo', '$data->id_tipo', '$data->dificultad_id')";
+            $sql = "INSERT INTO pregunta (pregunta, estado, accesible, categoria_id, id_tipo, dificultad_id)
+                    VALUES ('$data->pregunta', '$data->estado', '$accesible', '$data->categoria_id', '$data->id_tipo', '$data->dificultad_id')";
             return $this->database->query($sql);
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -174,8 +171,8 @@ class PreguntaModel
     public function sugerir($data)
     {
         try {
-            $sql = "INSERT INTO pregunta_sugerida (pregunta, modulo, id_tipo)
-                    VALUES ('$data->pregunta', '$data->modulo', '$data->id_tipo')";
+            $sql = "INSERT INTO pregunta_sugerida (pregunta, categoria, id_tipo)
+                    VALUES ('$data->pregunta', '$data->categoria', '$data->id_tipo')";
             return $this->database->query($sql);
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -239,6 +236,11 @@ class PreguntaModel
                 join usuario us on us.id = rp.usuario_id
                 where rp.resuelto = 'NO'";
         return $this->database->query($sql);
+    }
+
+    public function updateReportePregunta($usuarioId)
+    {
+        $this->database->execute("update reporte_pregunta set resuelto = 'SI' where usuario_id = $usuarioId");
     }
 
 }
