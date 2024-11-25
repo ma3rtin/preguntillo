@@ -25,6 +25,7 @@ class JuegoController
 
     public function perdido()
     {
+        $data['css'] = "/public/css/juegoPerdido.css";
         $data['userSession'] = $this->usuarioModel->getCurrentSession();
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
         $nuevoPuntaje = $this->partidaModel->getPuntajeUser($_SESSION['id']);

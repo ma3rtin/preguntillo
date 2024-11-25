@@ -1,0 +1,86 @@
+body {
+    font-family: "Lilita One", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #444444;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.contenedor {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    margin-top: 150px;
+}
+
+.titulo {
+    font-size: 2rem;
+    color: #e63946;
+    margin-bottom: 15px;
+}
+
+.mensaje {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #555;
+}
+
+.alerta-error {
+    background-color: #ffcccb;
+    color: #900;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.botones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.boton {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.boton-nuevo {
+    background-color: #8c52ff;
+    box-shadow: 4px 4px 0 #5300f7;
+}
+
+.boton-nuevo:hover {
+    background-color: #673eb8;
+}
+
+.boton-lobby {
+    background-color: #8c52ff;
+    box-shadow: 4px 4px 0 #5300f7;
+}
+
+.boton-lobby:hover {
+    background-color: #673eb8;
+}
