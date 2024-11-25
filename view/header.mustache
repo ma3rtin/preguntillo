@@ -16,12 +16,12 @@
 
 <header>
     <div class="header-content">
-        <img src="/public/img/logo.png" class="logo" alt="logo">
-        <h1 class="header-title">Preguntillo</h1>
-            {{#user}}
-                <a href="/usuario/logout" class="logout-icon">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                </a>
-            {{/user}}
+        <img src="/public/img/logo.png" class="logo" alt="logo"> <!-- Imagen a la izquierda -->
+        <h1 class="header-title">Preguntillo</h1> <!-- Título centrado -->
+        {{#user}}
+            <a href="/usuario/logout" class="logout-icon">
+                <i class="fas fa-sign-out-alt"></i><p>Cerrar sesión</p>
+            </a>
+        {{/user}} <!-- Ícono de logout a la derecha -->
     </div>
 </header>

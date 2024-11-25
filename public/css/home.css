@@ -4,12 +4,19 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     font-family: "Lilita One", sans-serif;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     background-color: #f0f4ff;
     color: #545454;
     letter-spacing: 1px;
-
+    background-image: url("/public/img/Wallpaper.jpg");
+    background-size: cover;
+    background-position: center -250px; /* Mueve la imagen hacia la parte superior */
+    background-repeat: no-repeat;
 }
 
 .container {
@@ -53,6 +60,8 @@ body {
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
+    padding: 0 20px; /* Añade un poco de espacio a los lados */
 }
 
 .btn{
@@ -62,11 +71,10 @@ body {
     color: white;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
     box-shadow: 4px 4px 0 #5300f7;
     background-color: #8c52ff;
     margin: 15px 0;
-    width: 300px;
+    width: calc(100% - 40px); /* Se ajusta para que no toque los bordes */
 }
 
 .btn:hover {
@@ -123,5 +131,13 @@ th, td {
     .actions {
         flex-direction: column;
         gap: 10px;
+        align-items: center;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .btn {
+        width: calc(100% - 40px);
+        font-size: 20px;
     }
 }
