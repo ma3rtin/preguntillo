@@ -107,12 +107,12 @@ class PreguntaController{
     }
 
 
-    public function sugerir(){
-        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
-        $data['categorias'] = $this->preguntaModel->getAllCategorias();
-
-        $this->presenter->show('sugerirPregunta', $data);
-    }
+//    public function sugerir(){
+//        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
+//        $data['categorias'] = $this->preguntaModel->getAllCategorias();
+//
+//        $this->presenter->show('sugerirPregunta', $data);
+//    }
 
     public function reporteForm() {
         $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
@@ -131,4 +131,39 @@ class PreguntaController{
 
         Redirect::to('/usuario/home');
     }
+
+    public function sugerirPregunta(){
+        $data['css'] = "/public/css/crearPreguntas.css";
+        $data['categorias'] = $this->preguntaModel->getAllCategorias();
+
+        $data['user'] = $this->usuarioModel->getUserData($_SESSION['username']);
+        $this->presenter->show('sugerirPregunta', $data);
+    }
+
+    public function sugerir()
+    {
+        $pregunta = $_POST['pregunta'] ?? null;
+        $opciones = $_POST['opciones'] ?? [];
+        $respuestaCorrecta = $_POST['respuesta_correcta'] ?? null;
+        $categoria = $_POST['categoria_id'] ?? null;
+
+        $data['css'] = "/public/css/crearPreguntas.css";
+        if ($pregunta && $opciones && $respuestaCorrecta && count($opciones) === 4 && $categoria) {
+            $opcionCorrecta = $opciones[$respuestaCorrecta] ?? null;
+
+            if ($opcionCorrecta) {
+                $this->preguntaModel->sugerirPregunta($pregunta, $opciones, $respuestaCorrecta, $categoria);
+
+                $data['exito'] = "Pregunta sugerida con exito.";
+                $this->presenter->show('sugerirPregunta', $data);
+            } else {
+                $data['error'] = "La opción correcta no es válida.";
+                $this->presenter->show('sugerirPregunta', $data);
+            }
+        } else {
+            $data['error'] = "Todos los campos son obligatorios.";
+            $this->presenter->show('sugerirPregunta', $data);
+        }
+    }
+
 }

@@ -210,12 +210,27 @@ class PreguntaModel
         }
     }
 
-    public function sugerir($data)
+    public function sugerirPregunta($pregunta, $opciones, $respuestaCorrecta, $categoria_id)
     {
         try {
-            $sql = "INSERT INTO pregunta_sugerida (pregunta, categoria_id)
-                    VALUES ('$data->pregunta', '$data->categoria_id')";
-            return $this->database->query($sql);
+            $sql = "INSERT INTO pregunta_sugerida (pregunta, categoria)
+                    VALUES ('$pregunta', $categoria_id)";
+            $this->database->execute($sql);
+
+            $preguntaId = $this->database->lastInsertId();
+
+            $sqlOpciones = "INSERT INTO opcion_sugerida (pregunta_id, opcion, opcion_correcta) VALUES ";
+            $values = [];
+
+            foreach ($opciones as $key => $opcion) {
+                $esCorrecta = ($key === $respuestaCorrecta) ? 'SI' : 'NO';
+                $values[] = "($preguntaId, '$opcion', '$esCorrecta')";
+            }
+
+            $sqlOpciones .= implode(', ', $values);
+
+            return $this->database->execute($sqlOpciones);
+
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;

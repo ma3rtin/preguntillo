@@ -1,6 +1,6 @@
 <a href="/usuario/home"><i class="fa-solid fa-arrow-left"></i></a>
-<h1 class="mb-5">{{#pregunta}}Editar pregunta{{/pregunta}}{{^pregunta}}Crear pregunta{{/pregunta}}</h1>
-<form id="formPregunta" data-action="{{#pregunta}}/editor/editarPregunta{{/pregunta}}{{^pregunta}}/editor/agregarPregunta{{/pregunta}}{{#sugerir}}/pregunta/sugerir{{/sugerir}}" enctype="application/x-www-form-urlencoded" class="card card-body">
+<h1 class="mb-5">Sugerir pregunta</h1>
+<form id="formPregunta" action="/pregunta/sugerir" method="post" enctype="application/x-www-form-urlencoded" class="card card-body">
     <div class="container">
         <div class="row mb-4">
             <div class="col-12">
@@ -8,7 +8,7 @@
                     <label class="form-label">Categoría:</label>
                     <select class="form-select" name="categoria_id" required>
                         {{#categorias}}
-                            <option value="{{id}}" {{#categoria_elegido}}selected{{/categoria_elegido}}>{{nombre}}</option>
+                            <option value="{{id}}">{{nombre}}</option>
                         {{/categorias}}
                     </select>
                 </div>
@@ -19,9 +19,6 @@
             <div class="col-12">
                 <div class="form-group">
                     <label class="form-label">Pregunta:</label>
-                    {{#pregunta}}
-                        <input type="hidden" name="id" value="{{id}}">
-                    {{/pregunta}}
                     <textarea name="pregunta" required class="form-control" placeholder="Escribí la nueva pregunta">{{pregunta.pregunta}}</textarea>
                 </div>
             </div>
@@ -32,16 +29,6 @@
                 <label class="form-label">Respuestas (seleccionar la respuesta correcta):</label>
             </div>
 
-            {{#opciones}}
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="option-group">
-                        <input type="radio" name="respuesta_correcta" value="{{id}}" {{#opcion_correcta}}checked{{/opcion_correcta}} required>
-                        <input type="text" name="opciones[{{id}}]" value="{{opcion}}" required class="form-control" placeholder="Opción {{id}}">
-                    </div>
-                </div>
-            {{/opciones}}
-
-            {{^opciones}}
                 <div class="col-12 col-md-6 mb-4">
                     <div class="option-group">
                         <input type="radio" name="respuesta_correcta" value="opcion1" required>
@@ -69,14 +56,13 @@
                         <input type="text" name="opciones[opcion4]" placeholder="Opción 4" required class="form-control">
                     </div>
                 </div>
-            {{/opciones}}
         </div>
     </div>
 
     <div class="my-3">
         <a class="btn btn-success btn-lg" id="salir" href="/usuario/home">Volver</a>
         <button type="submit" class="btn btn-success btn-lg">
-            {{#pregunta}}Guardar cambios{{/pregunta}}{{^pregunta}}Crear pregunta{{/pregunta}}
+            Sugerir pregunta
         </button>
     </div>
 </form>
@@ -88,4 +74,3 @@
     <script>alert('{{exito}}');</script>
 {{/exito}}
 
-<script src="{{js}}"></script>
